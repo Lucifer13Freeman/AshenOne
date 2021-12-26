@@ -21,15 +21,15 @@ const Posts: React.FC<PostsProps> = ({ posts }) =>
     // const { auth, error: auth_error } = useTypedSelector(state => state.auth);
 
     const { posts: state_posts, error: posts_error } = useTypedSelector(state => state.post);
-    const { async_get_all_posts } = useActions();
+    const { async_get_all_posts, async_create_post } = useActions();
 
-    // const { data: post_data, error: post_error } = useSubscription(NEW_POST);
+    const { data: post_data, error: post_error } = useSubscription(NEW_POST);
 
-    // useEffect(() => 
-    // {
-    //     if (post_error) console.log(post_error);
-    //     if (post_data) async_get_all_posts([...state_posts, post_data.new_post]);
-    // }, [post_data, post_error]);
+    useEffect(() => 
+    {
+        if (post_error) console.log(post_error);
+        if (post_data) async_create_post(post_data.new_post);
+    }, [post_data, post_error]);
     
     return (
         // <>

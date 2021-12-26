@@ -151,6 +151,9 @@ type Query {
   get_comment(input: GetCommentInput!): CommentType
   get_all_comments(input: GetAllCommentsInput!): [CommentType!]
   search_comments(input: SearchCommentInput!): [CommentType!]
+  get_group(input: GetGroupInput!): GroupType
+  get_all_groups: [GroupType!]
+  search_groups(input: SearchGroupInput!): [GroupType!]
 }
 
 input GetUserInput {
@@ -281,6 +284,21 @@ input SearchCommentInput {
   offset: Int = 0
 }
 
+input GetGroupInput {
+  id: ID!
+  current_user_id: ID
+  is_private: Boolean
+  is_secure: Boolean
+}
+
+input SearchGroupInput {
+  username: String
+  post_text: String
+  current_user_id: ID
+  limit: Int
+  offset: Int = 0
+}
+
 type Mutation {
   login(input: LoginUserInput!): LoginType!
   register(input: RegisterUserInput!): UserType!
@@ -289,8 +307,8 @@ type Mutation {
   create_chat(input: CreateChatInput!): ChatType!
   delete_chat(input: GetChatInput!): String!
   delete_all_messages_in_chat(input: GetChatInput!): ChatType!
-  add_member(input: GetMemberInput!): ChatType!
-  remove_member(input: GetMemberInput!): ChatType!
+  add_member(input: GetMemberInput!): GroupType!
+  remove_member(input: GetMemberInput!): GroupType!
   create_message(input: CreateMessageInput!): MessageType!
   update_message(input: UpdateMessageInput!): MessageType!
   create_reaction(input: CreateReactionInput!): ReactionType!
@@ -308,6 +326,7 @@ type Mutation {
   like_comment(input: LikeInput!): LikeType!
   delete_comment(input: GetCommentInput!): String!
   create_group(input: CreateGroupInput!): GroupType!
+  delete_group(input: GetGroupInput!): String!
 }
 
 input LoginUserInput {
@@ -342,7 +361,7 @@ input CreateChatInput {
 
 input GetMemberInput {
   user_id: ID!
-  chat_id: ID!
+  group_id: ID!
   current_user_id: ID
 }
 

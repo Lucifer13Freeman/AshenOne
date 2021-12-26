@@ -39,7 +39,7 @@ const PostForm: React.FC<PostFormProps> = () =>
 
     const [create_post, { loading: post_loading }] = useMutation(CREATE_POST, 
     {
-        onCompleted: (data) => async_create_post(data.create_post),
+        // onCompleted: (data) => async_create_post(data.create_post),
         onError: (err) => 
         {
             console.log(err);

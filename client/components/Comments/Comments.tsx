@@ -18,19 +18,19 @@ interface CommentsProps
 
 const Comments: React.FC<CommentsProps> = ({ comments, post_id }) =>
 {
-    //const { chat, error: chat_error } = useTypedSelector(state => state.chat);
-    const { state_comments, error: comments_error } = useTypedSelector(state => state.comment);
-    const { state_post, error: state_post_error } = useTypedSelector(state => state.post);
+    // //const { chat, error: chat_error } = useTypedSelector(state => state.chat);
+    // const { state_comments, error: comments_error } = useTypedSelector(state => state.comment);
+    // const { state_post, error: state_post_error } = useTypedSelector(state => state.post);
     
-    const { async_get_post, async_get_all_comments } = useActions();
+    // const { async_get_post, async_create_comment, async_get_all_comments } = useActions();
 
 
-    const { data: comment_data, error: comment_error } = useSubscription(NEW_COMMENT);
+    // const { data: comment_data, error: comment_error } = useSubscription(NEW_COMMENT);
 
     // useEffect(() => 
     // {
     //     if (comment_error) console.log(comment_error);
-    //     if (comment_data) async_get_all_comments([...state_comments, comment_data.new_comment]);
+    //     if (comment_data) async_create_comment(comment_data.new_comment);
     // }, [comment_data, comment_error]);
 
 
@@ -45,7 +45,9 @@ const Comments: React.FC<CommentsProps> = ({ comments, post_id }) =>
     return (
         <Grid>
             { comments.length > 0 
-                ? <CommentList comments={comments} post_id={post_id}/>
+                ? <CommentList comments={/*comment_data.new_comment 
+                                        ? [...comments, comment_data.new_comment] 
+                                        :*/ comments} post_id={post_id}/>
                 : <div className={styles.no_comments}>Send your first comment...</div>
             }
         </Grid>
