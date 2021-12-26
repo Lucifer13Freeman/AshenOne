@@ -1,0 +1,26 @@
+@import "variables";
+
+
+.no_posts
+{
+    text-align: center;
+    color: $secondary_color;
+    margin: 10px;
+    font-size: 1.5rem;
+}
+
+.posts_container
+{
+    height: 56vh;
+    overflow-y: scroll;
+    display: flex;
+    // flex-direction: column-reverse;
+    // background-color: $secondary_background_color; //$gradient_background; //$background_color;
+
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar
+    {
+        display: none;
+    }
+}

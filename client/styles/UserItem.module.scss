@@ -1,0 +1,30 @@
+@import "variables";
+
+
+.user
+{
+    margin: 4px 0;
+    //padding: 10px;
+    display: flex;
+    align-items: center;
+    //cursor: pointer;
+
+
+    .username
+    {
+        //@at-root: black;
+        cursor: pointer;
+
+        &:hover
+        {
+            text-decoration: underline;
+        }
+    }
+
+    &:hover
+    {
+        //background-color: #cccccc;
+        background-color: $primary_hover_color;
+        color: white;
+    }
+}

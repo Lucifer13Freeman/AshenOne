@@ -1,0 +1,441 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserType {
+  id: ID!
+  username: String!
+  email: String
+  avatar: String
+  role: String
+  is_banned: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type LoginType {
+  token: String
+  cookie: String
+  user: UserType
+}
+
+type ReactionType {
+  id: ID!
+  user_id: ID!
+  message_id: ID!
+  content: String
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type MessageType {
+  id: ID!
+  chat_id: ID!
+  user: UserType!
+  text: String!
+  image: String
+  audio: String
+  video: String
+  is_edited: Boolean
+  is_forwarded: Boolean
+  reactions: [ReactionType!]
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type ChatType {
+  id: ID!
+  admin_id: ID!
+  members: [UserType!]!
+  messages: [MessageType!]
+  is_open: Boolean
+  is_secure: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type SubscriptionType {
+  id: ID!
+  follower: UserType!
+  profile: UserType!
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type LikeType {
+  id: ID!
+  post_id: ID
+  comment_id: ID
+  user_id: ID!
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type CommentType {
+  id: ID!
+  post_id: ID!
+  user: UserType!
+  text: String!
+  image: String
+  audio: String
+  video: String
+  likes: [LikeType!]
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type PostType {
+  id: ID!
+  user: UserType!
+  group_id: ID
+  text: String!
+  image: String
+  audio: String
+  video: String
+  views: Float
+  likes: [LikeType!]
+  comments: [CommentType!]
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type GroupType {
+  id: ID!
+  name: String!
+  user_id: ID!
+  members: [UserType!]!
+  posts: [PostType!]
+  is_open: Boolean
+  is_secure: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type ReportType {
+  total_users: Int
+  total_banned_users: Int
+  total_messages: Int
+  total_reactions: Int
+  total_posts: Int
+  total_post_likes: Int
+  total_comments: Int
+  total_comment_likes: Int
+  total_subscriptions: Int
+  total_groups: Int
+  created_at: DateTime!
+}
+
+type Query {
+  get_user(input: GetUserInput!): UserType
+  get_all_users(input: GetAllUsersInput!): [UserType!]
+  search_users(input: SearchUserInput!): [UserType!]
+  get_current_user: UserType!
+  get_statistics_report: ReportType
+  get_chat(input: GetChatInput!): ChatType
+  get_all_chats(input: GetAllChatsInput!): [ChatType!]
+  search_chats(input: SearchChatInput!): [ChatType!]
+  get_message(input: GetMessageInput!): MessageType
+  get_all_messages(input: GetAllMessagesInput!): [MessageType!]
+  search_messages(input: SearchMessageInput!): [MessageType!]
+  get_subscription(input: GetSubscriptionInput!): SubscriptionType
+  get_all_subscriptions(input: GetAllSubscriptionsInput!): [SubscriptionType!]
+  check_subscription(input: GetSubscriptionInput!): Boolean
+  get_post(input: GetPostInput!): PostType
+  get_all_posts(input: GetAllPostsInput!): [PostType!]
+  search_posts(input: SearchPostInput!): [PostType!]
+  get_comment(input: GetCommentInput!): CommentType
+  get_all_comments(input: GetAllCommentsInput!): [CommentType!]
+  search_comments(input: SearchCommentInput!): [CommentType!]
+}
+
+input GetUserInput {
+  id: ID
+  current_user_id: ID
+  email: String
+  is_for_admin: Boolean
+  is_banned: Boolean
+}
+
+input GetAllUsersInput {
+  limit: Int
+  offset: Int = 0
+  user_ids: [ID!] = []
+}
+
+input SearchUserInput {
+  username: String!
+  limit: Int
+  offset: Int = 0
+}
+
+input GetChatInput {
+  id: ID!
+  current_user_id: ID
+}
+
+input GetAllChatsInput {
+  current_user_id: ID
+  limit: Int
+  offset: Int = 0
+}
+
+input SearchChatInput {
+  username: String
+  message_text: String
+  current_user_id: ID
+  limit: Int
+  offset: Int = 0
+}
+
+input GetMessageInput {
+  id: ID!
+  current_user_id: ID
+}
+
+input GetAllMessagesInput {
+  chat_id: ID!
+  current_user_id: ID
+  limit: Int
+  offset: Int = 0
+}
+
+input SearchMessageInput {
+  chat_id: ID!
+  current_user_id: ID
+  text: String!
+  limit: Int
+  offset: Int = 0
+}
+
+input GetSubscriptionInput {
+  id: ID
+  profile_id: ID
+  follower_id: ID
+  current_user_id: ID
+}
+
+input GetAllSubscriptionsInput {
+  current_user_id: ID
+  profile_id: ID
+  follower_id: ID
+  limit: Int
+  offset: Int = 0
+}
+
+input GetPostInput {
+  id: ID!
+  current_user_id: ID
+}
+
+input GetAllPostsInput {
+  user_id: ID
+  current_user_id: ID
+  group_id: ID
+  is_order_by_desc: Boolean = false
+  is_for_followers: Boolean = false
+  is_for_group_members: Boolean = false
+  limit: Int
+  offset: Int = 0
+}
+
+input SearchPostInput {
+  current_user_id: ID
+  user_id: ID
+  group_id: ID
+  is_order_by_desc: Boolean = false
+  text: String
+  username: String
+  is_for_followers: Boolean = false
+  is_for_group_members: Boolean = false
+  limit: Int
+  offset: Int = 0
+}
+
+input GetCommentInput {
+  id: ID!
+  current_user_id: ID
+}
+
+input GetAllCommentsInput {
+  post_id: ID!
+  user_id: ID
+  current_user_id: ID
+  is_order_by_desc: Boolean = false
+  limit: Int
+  offset: Int = 0
+}
+
+input SearchCommentInput {
+  post_id: ID!
+  current_user_id: ID
+  user_id: ID
+  text: String
+  username: String
+  is_order_by_desc: Boolean = false
+  limit: Int
+  offset: Int = 0
+}
+
+type Mutation {
+  login(input: LoginUserInput!): LoginType!
+  register(input: RegisterUserInput!): UserType!
+  update_user(input: UpdateUserInput!): UserType!
+  delete_user(input: GetUserInput!): String!
+  create_chat(input: CreateChatInput!): ChatType!
+  delete_chat(input: GetChatInput!): String!
+  delete_all_messages_in_chat(input: GetChatInput!): ChatType!
+  add_member(input: GetMemberInput!): ChatType!
+  remove_member(input: GetMemberInput!): ChatType!
+  create_message(input: CreateMessageInput!): MessageType!
+  update_message(input: UpdateMessageInput!): MessageType!
+  create_reaction(input: CreateReactionInput!): ReactionType!
+  delete_reaction(input: GetReactionInput!): ReactionType!
+  delete_message(input: GetMessageInput!): String!
+  create_subscription(input: CreateSubscriptionInput!): SubscriptionType!
+  delete_subscription(input: GetSubscriptionInput!): String!
+  create_post(input: CreatePostInput!): PostType!
+  update_post(input: UpdatePostInput!): PostType!
+  like_post(input: LikeInput!): LikeType!
+  delete_post(input: GetPostInput!): String!
+  delete_all_comments_in_post(input: GetPostInput!): PostType!
+  create_comment(input: CreateCommentInput!): CommentType!
+  update_comment(input: UpdateCommentInput!): CommentType!
+  like_comment(input: LikeInput!): LikeType!
+  delete_comment(input: GetCommentInput!): String!
+  create_group(input: CreateGroupInput!): GroupType!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input RegisterUserInput {
+  username: String!
+  email: String!
+  password: String!
+  confirm_password: String!
+}
+
+input UpdateUserInput {
+  id: ID
+  current_user_id: ID
+  username: String
+  email: String
+  password: String
+  confirm_password: String
+  avatar: Upload
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateChatInput {
+  current_user_id: ID
+  members: [ID!]
+}
+
+input GetMemberInput {
+  user_id: ID!
+  chat_id: ID!
+  current_user_id: ID
+}
+
+input CreateMessageInput {
+  chat_id: ID!
+  current_user_id: ID
+  text: String!
+  image: String
+  audio: String
+  video: String
+}
+
+input UpdateMessageInput {
+  message_id: ID!
+  current_user_id: ID
+  text: String
+  image: String
+  audio: String
+  video: String
+}
+
+input CreateReactionInput {
+  current_user_id: ID
+  message_id: ID!
+  content: String!
+}
+
+input GetReactionInput {
+  id: ID!
+  current_user_id: ID
+}
+
+input CreateSubscriptionInput {
+  current_user_id: ID
+  profile_id: ID!
+}
+
+input CreatePostInput {
+  current_user_id: ID
+  group_id: ID
+  text: String!
+  image: String
+  audio: String
+  video: String
+}
+
+input UpdatePostInput {
+  post_id: ID!
+  current_user_id: ID
+  text: String
+  image: String
+  audio: String
+  video: String
+}
+
+input LikeInput {
+  post_id: ID
+  comment_id: ID
+  current_user_id: ID
+}
+
+input CreateCommentInput {
+  post_id: ID!
+  current_user_id: ID
+  text: String!
+  image: String
+  audio: String
+  video: String
+}
+
+input UpdateCommentInput {
+  comment_id: ID!
+  current_user_id: ID
+  text: String
+  image: String
+  audio: String
+  video: String
+}
+
+input CreateGroupInput {
+  current_user_id: ID
+  members: [ID!]
+  name: String!
+  avatar: String
+  is_private: Boolean
+  is_secure: Boolean
+}
+
+type Subscription {
+  new_message: MessageType!
+  new_reaction: ReactionType!
+  new_post: PostType!
+  new_like_post: LikeType!
+  new_comment: CommentType!
+  new_like_comment: LikeType!
+}

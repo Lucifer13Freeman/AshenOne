@@ -1,0 +1,55 @@
+@import "variables";
+
+
+.no_messages
+{
+    text-align: center;
+    color: $secondary_color;
+    margin: 10px;
+    font-size: 1.5rem;
+}
+
+.messages_container
+{
+    height: 56vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: $secondary_background_color; //$gradient_background; //$background_color;
+
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar
+    {
+        display: none;
+    }
+}
+
+.message_input
+{
+    width: calc(100% - 90px);
+    border-radius: 20px;
+    //width: 100%;
+    //margin: 50px;
+    //width: 60vw;
+}
+
+.send_button
+{
+    height: 75px;
+    width: 80px;
+}
+
+.message_input_box
+{
+    margin: 10px 20px 20px 20px;
+    //display: flex;
+    //justify-items: auto;
+    // overflow-y: scroll;
+    // scrollbar-width: none;
+
+    // &::-webkit-scrollbar
+    // {
+    //     display: none;
+    // }
+}
