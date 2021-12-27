@@ -61,35 +61,35 @@ export const message_reducer = (state = initial_state, action: MessageAction): I
                 error: undefined
             }
         }
-        case MessageActionTypes.SET_ALL_MESSAGES_ERROR:
-        {
-            return {
-                ...state, 
-                error: action.payload
-            }
-        }
-        case MessageActionTypes.UPDATE_MESSAGE:
-        {
-            const update_messages = state.messages.map((message: IMessage) => 
-            { 
-                if (message.id === action.payload.id) message = action.payload
-                return message 
-            });
+        // case MessageActionTypes.SET_ALL_MESSAGES_ERROR:
+        // {
+        //     return {
+        //         ...state, 
+        //         error: action.payload
+        //     }
+        // }
+        // case MessageActionTypes.UPDATE_MESSAGE:
+        // {
+        //     const update_messages = state.messages.map((message: IMessage) => 
+        //     { 
+        //         if (message.id === action.payload.id) message = action.payload
+        //         return message 
+        //     });
 
-            return {
-                ...state, 
-                message: action.payload,
-                messages: update_messages,
-                error: undefined
-            }
-        }
-        case MessageActionTypes.UPDATE_MESSAGE_ERROR:
-        {
-            return {
-                ...state,
-                error: action.payload
-            }
-        }
+        //     return {
+        //         ...state, 
+        //         message: action.payload,
+        //         messages: update_messages,
+        //         error: undefined
+        //     }
+        // }
+        // case MessageActionTypes.UPDATE_MESSAGE_ERROR:
+        // {
+        //     return {
+        //         ...state,
+        //         error: action.payload
+        //     }
+        // }
         case MessageActionTypes.DELETE_MESSAGE:
         {
             const update_messages = state.messages.filter((message: IMessage) => message.id !== action.payload);

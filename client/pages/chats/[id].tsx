@@ -29,7 +29,7 @@ import styles from '../../styles/Messages.module.scss';
 import app_styles from '../../styles/App.module.scss';
 import { useInput } from "../../hooks/useInput";
 import { useEffect, useState } from "react";
-import { NEW_MESSAGE } from "../../graphql/subscriptions/messages";
+import { DELETED_MESSAGE, NEW_MESSAGE } from "../../graphql/subscriptions/messages";
 import { GET_CHAT } from "../../graphql/queries.ts/chats";
 import ChatMembers from '../../components/Chats/Members/ChatMembers';
 import MessageForm from '../../components/Messages/MessageForm';
@@ -58,7 +58,9 @@ const ChatPage: React.FC = () =>
     const { chat, chats, error: chat_error } = useTypedSelector(state => state.chat);
     const { messages, error: messages_error } = useTypedSelector(state => state.message);
 
-    const { async_set_all_messages, async_set_chat, async_set_all_chats, async_logout } = useActions();
+    const { async_set_all_messages, async_set_chat, 
+        async_create_message, async_set_message,
+        async_delete_message, async_logout } = useActions();
 
 
     const /*[get_current_chat, */{ loading: chat_loading, data: chat_data } = useQuery(GET_CHAT,   
@@ -88,17 +90,31 @@ const ChatPage: React.FC = () =>
 
 
     const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
+    const { data: deleted_message_data, error: deleted_message_error } = useSubscription(DELETED_MESSAGE);
 
     useEffect(() => 
     {
         if (message_error) console.log(message_error);
         if (message_data) 
         { 
-            async_set_all_messages([...messages, message_data.new_message]);
+            if (message_data.is_create)
+                async_set_all_messages([...messages, message_data.new_message]);
+            else if (message_data.is_update)
+                async_set_message(message_data.new_message);
+            // else if (message_data.is_delete)
+            //     async_delete_message(message_data.new_message);
+            // async_create_message(message_data.new_message);
             //get_current_chat();
             //update_chats();
         }
     }, [message_data, message_error]);
+
+    useEffect(() => 
+    {
+        if (deleted_message_error) console.log(deleted_message_error);
+        if (deleted_message_data) async_delete_message(deleted_message_data.deleted_message);
+    }, [deleted_message_data, deleted_message_error]);
+
 
 
     const [query, set_query] = useState<string>('');

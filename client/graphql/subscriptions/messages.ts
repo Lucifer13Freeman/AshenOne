@@ -34,8 +34,15 @@ const NEW_REACTION = gql`
   }
 `;
 
+const DELETED_MESSAGE = gql`
+  subscription deleted_message {
+    deleted_message
+  }
+`;
+
 
 export {
     NEW_MESSAGE,
-    NEW_REACTION
+    NEW_REACTION,
+    DELETED_MESSAGE
 }

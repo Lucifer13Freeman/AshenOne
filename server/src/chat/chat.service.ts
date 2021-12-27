@@ -633,11 +633,11 @@ export class ChatService
                 throw new UserInputError('You are member of this chat already!', { errors });
             }
 
-            await this.user_service.get({ id: user_id });
+            const user = await this.user_service.get({ id: user_id ? user_id : current_user_id });
 
             let chat = await this.get({ id: chat_id, current_user_id });
             
-            const is_member = chat.member_ids.find((id: string) => id === user_id);
+            const is_member = chat.member_ids.find((id: string) => id === user.id);
 
             if (is_member === undefined)
             {
@@ -684,7 +684,7 @@ export class ChatService
 
             const { user_id, chat_id, current_user_id } = dto;
 
-            const user = await this.user_service.get({ id: user_id });
+            const user = await this.user_service.get({ id: user_id ? user_id : current_user_id });
             
             let chat = await this.get({ id: chat_id, 
                                     current_user_id: current_user_id });

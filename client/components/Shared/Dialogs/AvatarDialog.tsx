@@ -41,7 +41,7 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }
 
     const [image, set_image]: any = useState(null);
     const [image_base64, set_image_base64]: any = useState(null);
-    const { async_set_user, async_login } = useActions();
+    const { async_set_user, async_login, async_set_group } = useActions();
 
     const form_data = new FormData();
 
@@ -58,7 +58,14 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }
                     async_login({ user: res.data, is_auth: true });
                 })
                 .catch(e => console.log(e));
-        else if (group_id) return;
+        else if (group_id) 
+            axios.post(`${LINKS.HTTP_BASE}${ROUTES.GROUPS}${group_id}/avatar`, form_data)
+                .then(res => 
+                {
+                    async_set_group({ ...res.data });
+                    async_login({ user: res.data, is_auth: true });
+                })
+                .catch(e => console.log(e));
 
         set_open_avatar_dialog(false);
         set_image(null);

@@ -54,8 +54,9 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
         }
     });
 
-    const leave_group = () =>
+    const leave_group = (e: any) =>
     {
+        e.stopPropagation();
         const input = { input: { 
             group_id: group.id,
             user_id: auth.user.id
@@ -115,10 +116,10 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
                 </Grid>
             </CardActionArea>
             <IconButton 
-                onClick={e => e.stopPropagation()} 
+                onClick={leave_group} 
                 style={{marginLeft: 'auto'}}
             >
-                <DeleteIcon onClick={leave_group} />
+                <DeleteIcon/>
             </IconButton>
         </Card>
     );

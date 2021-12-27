@@ -119,8 +119,9 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
         }
     });
 
-    const leave_chat = () =>
+    const leave_chat = (e: any) =>
     {
+        e.stopPropagation();
         const input = { input: { 
             chat_id: chat.id,
             user_id: auth.user.id
@@ -187,10 +188,10 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
                 </Grid>
             </CardActionArea>
             <IconButton 
-                onClick={e => e.stopPropagation()} 
+                onClick={leave_chat}
                 style={{marginLeft: 'auto'}}
             >
-                <DeleteIcon onClick={leave_chat} />
+                <DeleteIcon />
             </IconButton>
         </Card>
     );

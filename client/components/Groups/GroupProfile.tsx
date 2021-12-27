@@ -9,10 +9,13 @@ import { useRouter } from 'next/router';
 import { IGroup } from '../../types/group';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useAction';
-import { LINKS, ROLES } from '../../utils/constants';
+import { LINKS, ROLES, ROUTES } from '../../utils/constants';
 import AvatarDialog from '../Shared/Dialogs/AvatarDialog';
 import { date_format } from '../../utils/date-format';
 import MembersList from '../Shared/Lists/MembersList';
+import { ADD_GROUP_MEMBER, REMOVE_GROUP_MEMBER } from '../../graphql/mutations/groups';
+import { TOKEN } from '../../utils/token';
+import { GET_GROUP } from '../../graphql/queries.ts/groups';
 
 
 interface GroupProfileProps 
@@ -29,60 +32,80 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     const [is_followed, set_is_followed] = useState(false);
     const [followers_count, set_followers_count] = useState(0);
-    // const [open_avatar_dialog, set_open_avatar_dialog] = useState(false);
-
-    // const handle_open_avatar_dialog = () => { set_open_avatar_dialog(true); };
-    // const handle_close_avatar_dialog = () => { set_open_avatar_dialog(false); };
     
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
-    //const { group, groups, error: groups_error } = useTypedSelector(state => state.group);
-    const { subscription, subscriptions, 
-            error: subscriptions_error } = useTypedSelector(state => state.subscription);
+    const { state_group, groups, error: groups_error } = useTypedSelector(state => state.group);
+    const { async_set_group, async_logout } = useActions();
 
-    const get_all_subscriptions_input = { input: { profile_id: group?.id } }
+    const check_auth = auth.is_auth && auth.user;
+    const check_admin = check_auth && auth.user.role === ROLES.ADMIN;
+    const check_group_admin = check_auth && group.admin_id === auth.user.id;
+    const check_group_moderator = check_auth 
+        && group.moderator_ids.find(id => id === auth.user.id) !== undefined;
 
-    const { async_set_group, async_logout, 
-            async_set_subscription, async_set_all_subscriptions,
-            async_create_subscription, async_delete_subscription } = useActions();
+    const is_available = check_admin || check_group_admin || check_group_moderator;
 
-    const check_auth = auth.is_auth && auth.user ? true : false;
-    const check_admin = check_auth && auth.user.role === ROLES.ADMIN ? true : false;
-    const check_group_admin = check_auth && group.admin_id === auth.user.id ? true : false;
-    const check_group_moderator = check_auth && auth.user.role === ROLES.ADMIN ? true : false;
+    useEffect(() => {
+        set_is_followed(group.members.find(mem => mem.id === auth.user.id) !== undefined);
+        set_followers_count(group.members.length);
+    }, []);
 
-    // const { loading: group_loading, data: group_data } = useQuery(GET_GROUP,   
-    // {
-    //     variables: input,
-    //     onCompleted: data => async_set_group(data.get_group),
-    //     onError: err => 
-    //     {
-    //         console.log(err);
-    //         async_set_group(null);
+    const [become_member, 
+        { loading: become_member_loading }] = useMutation(ADD_GROUP_MEMBER, 
+    {
+        onCompleted: (data) => 
+        {
+            async_set_group(data.add_group_member)
+            set_is_followed(true);
+            set_followers_count(followers_count + 1);
+        },
+        onError: (err) => console.log(err)
+    });
+
+    const [leave_group, 
+        { loading: leave_group_loading }] = useMutation(REMOVE_GROUP_MEMBER, 
+    {
+        onCompleted: (data) => 
+        { 
+            async_set_group(data.remove_group_member)
+            set_is_followed(false);
+            set_followers_count(followers_count - 1);
+        },
+        onError: (err) => console.log(err)
+    });
+
+    const { loading: group_loading, data: group_data } = useQuery(GET_GROUP,   
+    {
+        variables: { input: { id: group.id }},
+        onCompleted: data => 
+        {
+            async_set_group(data.get_group)
+        },
+        onError: err => 
+        {
+            console.log(err);
+            // async_set_group(null);
             
-    //         if (err.message === TOKEN.ERROR_MESSAGE) 
-    //         {
-    //             async_logout();
-    //             router.push(ROUTES.LOGIN);
-    //         }
-    //     },
-    //     nextFetchPolicy: "cache-first"
-    // });
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+        },
+        nextFetchPolicy: "cache-first"
+    });
     
-    // const follow = () =>
-    // {
-    //     let subscription_input = { input: { profile_id: group.id } }
-
-    //     if (is_followed) delete_subscription({ variables: subscription_input });
-    //     else create_subscription({ variables: subscription_input });
-
-    //     // get_subscriptions();
-    // }
+    const follow = () =>
+    {
+        const input = { input: { group_id: group.id } }
+        if (is_followed) leave_group({ variables: input });
+        else become_member({ variables: input });
+        // get_subscriptions();
+    }
     
     return (
-
         <>
         { group ? 
-           
             <Card className={styles.card}>
                 <Grid 
                     container 
@@ -99,7 +122,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                             />
                         </IconButton>
                         {/* <UploadGroupAvatar group_id={group.id}/> */}
-                        {auth.user.id === group.admin_id 
+                        {is_available 
                             && <AvatarDialog group_id={group.id} 
                             avatar={LINKS.STATIC_FILES_LINK + group.avatar}/>}
                     </Grid> 
@@ -119,7 +142,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                         </div>
                         { !group.is_private &&
                             <Button
-                                //onClick={() => follow()}
+                                onClick={() => follow()}
                                 style={{marginTop: 40}}
                                 variant="contained" 
                                 color="primary"

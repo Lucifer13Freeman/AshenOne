@@ -113,7 +113,7 @@ export class MessageResolver
             //                                             current_user_id: user.id });
                                                         
                 
-            this.pubsub.publish(EVENTS.NEW_MESSAGE_EVENT, { new_message: message/*, chat_members: chat.members*/ });
+            this.pubsub.publish(EVENTS.NEW_MESSAGE_EVENT, { new_message: message, is_create: true/*, chat_members: chat.members*/ });
 
             return message;
         }
@@ -132,8 +132,9 @@ export class MessageResolver
     {
         try
         {
-            return await this.message_service.update({ ...input, 
-                                                    current_user_id: user.id });
+            const message = await this.message_service.update({ ...input, current_user_id: user.id });
+            this.pubsub.publish(EVENTS.NEW_MESSAGE_EVENT, { new_message: message, is_update: true });
+            return message;
         }
         catch (err) 
         {
@@ -190,8 +191,10 @@ export class MessageResolver
     {
         try 
         {
-            return await this.message_service.delete({ ...input, 
+            const message_id = await this.message_service.delete({ ...input, 
                                                     current_user_id: user.id });
+            this.pubsub.publish(EVENTS.DELETE_MESSAGE_EVENT, { deleted_message: message_id });
+            return message_id;
         } 
         catch (err) 
         {
@@ -246,6 +249,17 @@ export class MessageResolver
     async new_message(/*@CurrentUser() user: GetUserInput*/) 
     {
         return this.pubsub.asyncIterator(EVENTS.NEW_MESSAGE_EVENT);
+    }
+
+    @Subscription(() => String, 
+    {
+        /*filter: (payload, variables) =>
+        payload.new_message.user_id.id === variables.user.id 
+        || payload.chat_members.find((u: User) => u.email === variables.user.email)*/
+    })
+    async deleted_message(/*@CurrentUser() user: GetUserInput*/) 
+    {
+        return this.pubsub.asyncIterator(EVENTS.DELETE_MESSAGE_EVENT);
     }
 
     @Subscription(() => ReactionType, 

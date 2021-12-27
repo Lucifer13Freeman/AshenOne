@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { Group } from "@prisma/client";
 import { UserInputError } from "apollo-server-express";
+import { FileType } from "src/config/configs/consts.config";
+import { FileService } from "src/file/file.service";
 import { GetPostInput } from "src/post/inputs/post/get-post.input";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UserService } from "src/user/user.service";
@@ -18,7 +20,8 @@ import { select_group } from "./selects/group.select";
 export class GroupService 
 {
     constructor(private prisma: PrismaService,
-                private user_service: UserService) {}
+                private user_service: UserService,
+                private file_service: FileService) {}
 
 
     async create(dto: CreateGroupInput): Promise<Group> 
@@ -93,7 +96,7 @@ export class GroupService
                     throw new UserInputError('Group not found!', { errors });
                 }
 
-                if (current_user_id) 
+                if (current_user_id && get_group.is_private) 
                 {
                     const is_member = get_group.member_ids.find((id: string) => id === current_user_id);
 
@@ -106,9 +109,7 @@ export class GroupService
 
                 return get_group;
             });
-
-            console.log(group)
-
+            
             return group;
         }
         catch(err)
@@ -298,7 +299,7 @@ export class GroupService
                 throw new UserInputError('You are member of this group already!', { errors });
             }
 
-            const user = await this.user_service.get({ id: user_id });
+            const user = await this.user_service.get({ id: user_id ? user_id : current_user_id });
 
             let group = await this.get({ id: group_id, 
                                         current_user_id: current_user_id });
@@ -307,7 +308,7 @@ export class GroupService
 
             if (is_member === undefined)
             {
-                group.member_ids.push(user_id);
+                group.member_ids.push(user.id);
                 
                 group = await this.prisma.$transaction(async (prisma) => 
                 {
@@ -338,7 +339,7 @@ export class GroupService
         {
             const { user_id, group_id, current_user_id } = dto;
 
-            const user = await this.user_service.get({ id: user_id });
+            const user = await this.user_service.get({ id: user_id ? user_id : current_user_id });
             
             let group = await this.get({ id: group_id, 
                                     current_user_id: current_user_id });
@@ -440,6 +441,51 @@ export class GroupService
                 return update_group;
             });
             
+            return group;
+        } 
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+    async update_avatar(dto: UpdateGroupInput, image): Promise<Group>
+    {
+        let errors = { user_id: undefined }
+
+        try 
+        {
+            const { id, current_user_id} = dto;
+
+            let group = await this.get({ id, current_user_id });
+
+            const is_admin = group.admin_id === current_user_id;
+            const is_moderator = group.moderator_ids.find(id => id === current_user_id) !== undefined;
+
+            if (is_admin || is_moderator)
+            {
+                this.file_service.remove_file(group.avatar);
+                const imagepath = this.file_service.create_file(FileType.IMAGE, image);
+
+                group = await this.prisma.$transaction(async (prisma) => 
+                {
+                    const update_group = prisma.group.update(
+                    {
+                        where: { id },
+                        data: { avatar: imagepath },
+                        select: select_group
+                    });
+                    
+                    return update_group;
+                });
+            }
+            else
+            {
+                errors.user_id = 'Access denied!';
+                throw new UserInputError('Access denied!', { errors });
+            }
+
             return group;
         } 
         catch (err) 

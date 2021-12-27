@@ -468,13 +468,14 @@ input CreateGroupInput {
 }
 
 input GetGroupMemberInput {
-  user_id: ID!
+  user_id: ID
   group_id: ID!
   current_user_id: ID
 }
 
 type Subscription {
   new_message: MessageType!
+  deleted_message: String!
   new_reaction: ReactionType!
   new_post: PostType!
   new_like_post: LikeType!

@@ -52,8 +52,8 @@ const Group: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            async_set_group(null);
-            async_set_all_posts([]);
+            // async_set_group(null);
+            // async_set_all_posts([]);
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {

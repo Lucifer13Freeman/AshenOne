@@ -11,19 +11,19 @@ export class UpdateGroupInput
     readonly current_user_id?: string;
 
     @Field()
-    readonly name: string;
+    readonly name?: string;
 
     @Field({ nullable: true })
-    readonly avatar: string;
+    readonly avatar?: string;
 
     // @Field({ nullable: true })
     // readonly is_my?: boolean;
 
     @Field({ nullable: true })
-    readonly add_moderator_id: string;
+    readonly add_moderator_id?: string;
 
     @Field({ nullable: true })
-    readonly remove_moderator_id: string;
+    readonly remove_moderator_id?: string;
 
     @Field({ nullable: true })
     readonly is_private?: boolean;
