@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { ROUTES } from "../../utils/constants";
 import { TOKEN } from "../../utils/token";
 import { GET_USER } from "../../graphql/queries.ts/users";
-import { GET_ALL_POSTS } from "../../graphql/queries.ts/posts";
+import { GET_ALL_POSTS, GET_USER_POSTS } from "../../graphql/queries.ts/posts";
 import Posts from "../../components/Posts/Posts";
 import Followers from "../../components/Subscriptions/Followers";
 import { GET_ALL_SUBSCRIPTIONS } from "../../graphql/queries.ts/subscription";
@@ -41,17 +41,17 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
     const { user, error: users_error } = useTypedSelector(state => state.user);
     const { posts, error: posts_error } = useTypedSelector(state => state.post);
     const { subscription, subscriptions, error: subscriptions_error } = useTypedSelector(state => state.subscription);
-    const { async_get_user, async_logout, async_get_all_posts, async_get_all_comments,
-            async_get_subscription, async_get_all_subscriptions } = useActions();
+    const { async_set_user, async_logout, async_set_all_posts, async_set_all_comments,
+            async_set_subscription, async_set_all_subscriptions } = useActions();
 
     const { loading: user_loading, data: user_data } = useQuery(GET_USER,   
     {
         variables: { input: { id: user_id } },
-        onCompleted: data => async_get_user(data.get_user),
+        onCompleted: data => async_set_user(data.get_user),
         onError: err => 
         {
             console.log(err);
-            async_get_user(null);
+            async_set_user(null);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -64,13 +64,13 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
         nextFetchPolicy: "cache-first"
     });
 
-    const { loading: posts_loading, data: posts_data } = useQuery(GET_ALL_POSTS,   
+    const { loading: posts_loading, data: posts_data } = useQuery(GET_USER_POSTS,   
     {
         variables: { input: { user_id, is_order_by_desc: true } },
         onCompleted: data => 
         {
-            const posts = data.get_all_posts;
-            async_get_all_posts(posts);
+            const posts = data.get_user_posts;
+            async_set_all_posts(posts);
             
             if (posts)
             {
@@ -81,13 +81,13 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
                 // comments = comments.map((arr: IComment[]) )
                 // if (comments?.length > 1) comments = [...comments].reverse();
                 // console.log(comments)
-                async_get_all_comments(comments);
+                async_set_all_comments(comments);
             }
         },
         onError: err => 
         {
             console.log(err);
-            async_get_user(null);
+            async_set_user(null);
                 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -110,7 +110,7 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
     
      //const find_user = users?.find((u: IUser) => u.id === user_id);
 
-    //if (find_user !== undefined) async_get_user(find_user);
+    //if (find_user !== undefined) async_set_user(find_user);
     // if (user && user.id !== user_id)
     // //else
     // {   
@@ -119,7 +119,7 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
         // const { loading: user_loading, data: user_data } = useQuery(GET_USER,   
         // {
         //     variables: input,
-        //     onCompleted: data => async_get_user(data.get_user),
+        //     onCompleted: data => async_set_user(data.get_user),
         //     onError: err => console.log(err),
         //     nextFetchPolicy: "cache-first"
         // });
@@ -129,15 +129,15 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
 
     // const input = { input: { id: user_id } }
 
-    // const [gql_get_user, { loading: user_loading, data: user_data } ]= useLazyQuery(GET_USER,   
+    // const [gql_set_user, { loading: user_loading, data: user_data } ]= useLazyQuery(GET_USER,   
     // {
     //     //variables: input,
-    //     onCompleted: data => async_get_user(data.get_user),
+    //     onCompleted: data => async_set_user(data.get_user),
     //     onError: err => console.log(err),
     //     nextFetchPolicy: "cache-first"
     // });
 
-    // if (user && user.id !== user_id) gql_get_user();
+    // if (user && user.id !== user_id) gql_set_user();
 
     // if (!auth.user || !auth.is_auth) 
     // {
@@ -157,9 +157,9 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
     //         //     (sub: ISubscription) => sub.follower.id === user_id || sub.profile.id == user_id
     //         // );
     
-    //         // if (profile) async_get_user({ ...profile });
+    //         // if (profile) async_set_user({ ...profile });
     
-    //         async_get_all_subscriptions(data.get_all_subscriptions);
+    //         async_set_all_subscriptions(data.get_all_subscriptions);
     
     //         let check_subscription = data.get_all_subscriptions.find(
     //             (sub: ISubscription) => sub.follower.id === auth.user.id
@@ -193,7 +193,7 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
                 {/* <Followers subscriptions={subscriptions} /*user_id={user.id}/> */}
             {/* </Grid> */}
             { auth.user.id === user?.id && 
-            <Grid>
+            <Grid container justifyContent='center'>
                 <PostForm />
             </Grid> }
             <Grid container justifyContent='center'>

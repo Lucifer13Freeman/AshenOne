@@ -367,6 +367,8 @@ export class PostService
 
                     const group_ids = groups.map(gr => gr.id);
 
+                    // console.log(groups)
+
                     get_group_posts = await prisma.post.findMany(
                     {
                         where: { group_id: { in: group_ids } },
@@ -375,6 +377,8 @@ export class PostService
                         select: select_post,
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
+
+                    // console.log(get_group_posts)
                 }
                 else if (group_id && !user_id)
                 {
@@ -432,7 +436,7 @@ export class PostService
                     {
                         get_user_posts = await prisma.post.findMany(
                         {
-                            where: { user_id: { in: profile_ids } },
+                            where: { user_id: { in: profile_ids }, group_id: null },
                             //where: { user: { id: { in: profile_ids } } },
                             skip: offset,
                             take: limit,
@@ -445,7 +449,7 @@ export class PostService
                 {
                     get_user_posts = await prisma.post.findMany(
                     {
-                        where: { user_id },
+                        where: { user_id, group_id: null },
                         //where: { user: { id: user_id } },
                         skip: offset,
                         take: limit,
@@ -457,7 +461,7 @@ export class PostService
                 {
                     get_user_posts = await prisma.post.findMany(
                     {
-                        where: { user_id: current_user_id },
+                        where: { user_id: current_user_id, group_id: null },
                         //where: { user: { id: current_user_id } },
                         skip: offset,
                         take: limit,
@@ -794,6 +798,7 @@ export class PostService
                         {
                             where: { 
                                 user_id: { in: profile_ids },
+                                group_id: null,
                                 // OR: {
                                 //     text: { contains: text, mode: 'insensitive' },
                                 //     user: { username: { contains: username, mode: 'insensitive' } }
@@ -815,6 +820,7 @@ export class PostService
                         where: { 
                             //user_id,
                             user: { id: user_id },
+                            group_id: null,
                             text: { contains: search_text, mode: 'insensitive' }
                         },
                         skip: offset,
@@ -829,7 +835,8 @@ export class PostService
                     {
                         where: { 
                             user: { username: { contains: search_username, mode: 'insensitive' } },
-                            text: { contains: search_text, mode: 'insensitive' }
+                            text: { contains: search_text, mode: 'insensitive' },
+                            group_id: null
                         },
                         skip: offset,
                         take: limit,
@@ -840,7 +847,8 @@ export class PostService
                     {
                         where: { 
                             user_id: current_user_id,
-                            text: { contains: search_text, mode: 'insensitive' }
+                            text: { contains: search_text, mode: 'insensitive' },
+                            group_id: null
                         },
                         skip: offset,
                         take: limit,

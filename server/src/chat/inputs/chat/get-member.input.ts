@@ -3,7 +3,7 @@ import { InputType, Field, ID } from '@nestjs/graphql';
 
 
 @InputType()
-export class GetMemberInput 
+export class GetChatMemberInput 
 {
     @Field(() => ID)
     readonly user_id: string;//ObjectId;

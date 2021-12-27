@@ -12,7 +12,7 @@ import { GetChatInput } from './inputs/chat/get-chat.input';
 import { GetAllChatsInput } from './inputs/chat/get-all-chats.input';
 import { SearchChatInput } from './inputs/chat/search-chat.input';
 import { GqlCurrentUser } from 'src/decorators/gql-current-user.decorator';
-import { GetMemberInput } from './inputs/chat/get-member.input';
+import { GetChatMemberInput } from './inputs/chat/get-member.input';
 // import { Message, MessageDocument } from './schemas/message.schema';
 import { MessageService } from './message.service';
 import { Chat, User } from '@prisma/client';
@@ -21,6 +21,7 @@ import { select_user } from 'src/user/selects/user.select';
 import { select_chat } from './selects/chat.select';
 import { ObjectId } from 'bson';
 import { UpdateChatInput } from './inputs/chat/update-chat.input';
+import { connect } from 'http2';
 
 
 @Injectable()
@@ -613,7 +614,7 @@ export class ChatService
     }
 
 
-    async add_member(dto: GetMemberInput): Promise<Chat/*Document*/>//: Promise<Chat> 
+    async add_member(dto: GetChatMemberInput): Promise<Chat/*Document*/>//: Promise<Chat> 
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -632,21 +633,23 @@ export class ChatService
                 throw new UserInputError('You are member of this chat already!', { errors });
             }
 
-            const user = await this.user_service.get({ id: user_id });
+            await this.user_service.get({ id: user_id });
 
-            let chat = await this.get({ id: chat_id, 
-                                        current_user_id: current_user_id });
+            let chat = await this.get({ id: chat_id, current_user_id });
             
-            const is_member = chat.member_ids.find((id: string) => id === user.id);
+            const is_member = chat.member_ids.find((id: string) => id === user_id);
 
             if (is_member === undefined)
             {
+                chat.member_ids.push(user_id);
+
                 chat = await this.prisma.$transaction(async (prisma) => 
                 {
                     const update_chat = await prisma.chat.update(
                     {
                         where: { id: chat_id },
-                        data: { member_ids: { push: user_id } }
+                        data: { member_ids: { set: chat.member_ids } },
+                        select: select_chat
                     });
 
                     return update_chat;
@@ -668,7 +671,7 @@ export class ChatService
     }
 
     
-    async remove_member(dto: GetMemberInput): Promise<Chat | null/*Document*/>//: Promise<Chat> 
+    async remove_member(dto: GetChatMemberInput): Promise<Chat | null/*Document*/>//: Promise<Chat> 
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -709,7 +712,8 @@ export class ChatService
                             data: {
                                 member_ids: { set: chat.member_ids },
                                 admin_id: chat.admin_id === user.id ? chat.member_ids[0] : chat.admin_id
-                            }
+                            },
+                            select: select_chat
                         });
 
                         return update_chat;

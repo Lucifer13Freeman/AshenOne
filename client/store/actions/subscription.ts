@@ -1,13 +1,13 @@
 import { SubscriptionsActionTypes, ISubscription } from '../../types/subscription';
 
 
-export const get_all_subscriptions = ({ payload }: any) =>
+export const set_all_subscriptions = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: SubscriptionsActionTypes.GET_ALL_SUBSCRIPTIONS,
+            type: SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS,
             payload
         });
     } 
@@ -15,25 +15,25 @@ export const get_all_subscriptions = ({ payload }: any) =>
     {
         return (
         { 
-            type: SubscriptionsActionTypes.GET_ALL_SUBSCRIPTIONS_ERROR, 
+            type: SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS_ERROR, 
             payload: 'Users loading error!'
         });
     }
 }
 
-export const async_get_all_subscriptions = (payload: ISubscription[]) => (
+export const async_set_all_subscriptions = (payload: ISubscription[]) => (
 {
-    type: SubscriptionsActionTypes.ASYNC_GET_ALL_SUBSCRIPTIONS,
+    type: SubscriptionsActionTypes.ASYNC_SET_ALL_SUBSCRIPTIONS,
     payload
 });
 
-export const get_subscription = ({ payload }: any) =>
+export const set_subscription = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: SubscriptionsActionTypes.GET_SUBSCRIPTION,
+            type: SubscriptionsActionTypes.SET_SUBSCRIPTION,
             payload
         });
     } 
@@ -41,15 +41,15 @@ export const get_subscription = ({ payload }: any) =>
     {
         return (
         { 
-            type: SubscriptionsActionTypes.GET_SUBSCRIPTION_ERROR, 
+            type: SubscriptionsActionTypes.SET_SUBSCRIPTION_ERROR, 
             payload: 'Users loading error!'
         });
     }
 }
 
-export const async_get_subscription = (payload: ISubscription | null) => (
+export const async_set_subscription = (payload: ISubscription | null) => (
 {
-    type: SubscriptionsActionTypes.ASYNC_GET_SUBSCRIPTION,
+    type: SubscriptionsActionTypes.ASYNC_SET_SUBSCRIPTION,
     payload
 });
 

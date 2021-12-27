@@ -2,7 +2,7 @@ import { Card, Grid, IconButton, Avatar, Typography, CardContent, CardActionArea
 import { useRouter } from "next/router";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import styles from "../../../styles/Item.module.scss";
-import { ROUTES, URL } from "../../../utils/constants";
+import { ROUTES, LINKS } from "../../../utils/constants";
 import { IChat } from "../../../types/chat";
 import { IMessage } from "../../../types/message";
 import { date_format } from "../../../utils/date-format";
@@ -15,7 +15,7 @@ import { GET_ALL_MESSAGES } from "../../../graphql/queries.ts/messages";
 import React, { useEffect } from "react";
 import { GET_CHAT } from "../../../graphql/queries.ts/chats";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { REMOVE_MEMBER } from "../../../graphql/mutations/chats";
+import { REMOVE_CHAT_MEMBER } from "../../../graphql/mutations/chats";
 
 
 interface ChatItemProps 
@@ -72,22 +72,22 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
 
     // const input = { input: { id: chat.id } }
 
-    // const { async_get_all_messages, async_get_chat, async_logout } = useActions();
+    // const { async_set_all_messages, async_set_chat, async_logout } = useActions();
 
     // const [get_chat, { loading: chat_loading, data: chat_data }] = useLazyQuery(GET_CHAT,   
     // {
     //     variables: input,
     //     onCompleted: data => 
     //     {
-    //         async_get_chat(data.get_chat);
-    //         async_get_all_messages(data.get_chat.messages);
+    //         async_set_chat(data.get_chat);
+    //         async_set_all_messages(data.get_chat.messages);
     //         //router.push(ROUTES.CHATS + data.get_chat.id);
     //     },
     //     onError: err => 
     //     {
     //         console.log(err);
-    //         async_get_chat(null);
-    //         async_get_all_messages([]);
+    //         async_set_chat(null);
+    //         async_set_all_messages([]);
 
     //         if (err.message === TOKEN.ERROR_MESSAGE) 
     //         {
@@ -104,9 +104,9 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
     //     router.push(ROUTES.CHATS + chat.id);
     // }
 
-    const [gql_leave_chat, { loading: leave_chat_loading }] = useMutation(REMOVE_MEMBER, 
+    const [gql_leave_chat, { loading: leave_chat_loading }] = useMutation(REMOVE_CHAT_MEMBER, 
     {
-        onCompleted: (data) => async_leave_chat(data.remve_member),
+        onCompleted: (data) => async_leave_chat(data.remove_chat_member),
         onError: (err) => 
         {
             console.log(err);
@@ -135,7 +135,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
             <IconButton onClick={() => router.push(ROUTES.PEOPLE + from?.id)}>
                 <Avatar 
                     alt={from?.username} 
-                    src={URL.STATIC_FILES_LINK + from?.avatar}
+                    src={LINKS.STATIC_FILES_LINK + from?.avatar}
                 />
             </IconButton>
             <CardActionArea style={{ borderRadius: 10, padding: 4 }}>
@@ -163,9 +163,11 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
                         variant="body2" 
                         component="p"
                     >
-                        {chat.messages && chat.messages?.length > 0 
-                        ? latest_message?.text 
-                        : 'Send your first message...'}
+                        {chat.messages && 
+                            !chat.is_private && 
+                            chat.messages?.length > 0 
+                                ? latest_message?.text 
+                                : 'Send your first message...'}
                     </Typography>
                     <Typography 
                         className={styles.latest_message} 
@@ -193,6 +195,5 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
         </Card>
     );
 }
-
 
 export default ChatItem;

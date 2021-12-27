@@ -15,7 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IComment } from '../../../types/comment';
-import { ROUTES, URL } from '../../../utils/constants';
+import { ROUTES, LINKS } from '../../../utils/constants';
 import { date_format } from '../../../utils/date-format';
 import styles from '../../../styles/App.module.scss';
 import { LIKE_COMMENT } from '../../../graphql/mutations/likes';
@@ -23,7 +23,7 @@ import { TOKEN } from '../../../utils/token';
 import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useActions } from '../../../hooks/useAction';
-import { async_get_all_comments } from '../../../store/actions/comment';
+import { async_set_all_comments } from '../../../store/actions/comment';
 import { useRouter } from 'next/router';
 import EditPopper from '../../Shared/Poppers/EditPopper';
 import { Button, FormGroup, Grid } from '@mui/material';
@@ -47,11 +47,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
 
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { comment: state_comment, error: comments_error } = useTypedSelector(state => state.comment);
-    const { async_delete_comment, async_update_comment, 
-            async_logout, async_like_comment, async_get_post } = useActions();
+    const { async_delete_comment, async_set_comment, 
+            async_logout, async_like_comment, async_set_post } = useActions();
 
     // React.useEffect(() => {
-    //     async_get_all_comments(comment);
+    //     async_set_all_comments(comment);
     // }, [comment]);
 
     // const { data: new_like_comment_data, error: new_like_comment_error } = useSubscription(NEW_LIKE_COMMENT);
@@ -93,7 +93,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
 
     // const [get_post, { loading: post_loading, data: post_data }] = useLazyQuery(GET_POST,   
     // {
-    //     onCompleted: data => async_get_post(data.get_post),
+    //     onCompleted: data => async_set_post(data.get_post),
     //     onError: (err) => 
     //     {
     //         console.log(err);
@@ -147,7 +147,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
 
     const [gql_update_comment, { loading: update_comment_loading }] = useMutation(UPDATE_COMMENT, 
     {
-        onCompleted: (data) => async_update_comment(data.update_comment),
+        onCompleted: (data) => async_set_comment(data.update_comment),
         onError: (err) => 
         {
             console.log(err);
@@ -178,7 +178,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
                     <IconButton onClick={() => router.push(ROUTES.PEOPLE + comment.user.id)}>
                         <Avatar 
                             alt={comment.user?.username} 
-                            src={URL.STATIC_FILES_LINK + comment.user.avatar}
+                            src={LINKS.STATIC_FILES_LINK + comment.user.avatar}
                         />
                     </IconButton>
                 }

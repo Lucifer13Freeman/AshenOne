@@ -15,7 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IPost } from '../../../types/post';
-import { ROUTES, URL } from '../../../utils/constants';
+import { ROUTES, LINKS } from '../../../utils/constants';
 import { date_format } from '../../../utils/date-format';
 import styles from '../../../styles/App.module.scss';
 import { LIKE_POST } from '../../../graphql/mutations/likes';
@@ -57,21 +57,23 @@ const ExpandMore = styled((props: ExpandMoreProps) =>
 interface PostItemProps
 {
     post: IPost;
+    is_for_group?: boolean;
     // expanded: boolean;
     // set_expanded: Function;
     // handle_expand_click: Function;
 }
 
-const PostItem: React.FC<PostItemProps> = ({ post/*, expanded, set_expanded*/ }) => 
+const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expanded, set_expanded*/ }) => 
 {
     const [expanded, set_expanded] = React.useState(false);
     const handle_expand_click = () => { set_expanded(!expanded); };
 
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
+    const { group, error: group_error } = useTypedSelector(state => state.group);
     const { post: state_post, error: posts_error } = useTypedSelector(state => state.post);
     const { comments, comment, error: comments_error } = useTypedSelector(state => state.comment);
     const { async_logout, async_delete_post, async_like_post, 
-            async_get_post, async_update_post } = useActions();
+            async_set_post } = useActions();
 
     
 
@@ -84,7 +86,7 @@ const PostItem: React.FC<PostItemProps> = ({ post/*, expanded, set_expanded*/ })
     // }, [new_like_post_data, new_like_post_error]);
 
     // React.useEffect(() => {
-    //     async_get_all_comments(post.comments);
+    //     async_set_all_comments(post.comments);
     // }, [post]);
 
     const [gql_like_post, { data: like_post_data, loading: like_post_loading }] = useMutation(LIKE_POST, 
@@ -105,7 +107,7 @@ const PostItem: React.FC<PostItemProps> = ({ post/*, expanded, set_expanded*/ })
 
     const [get_post, { loading: post_loading, data: post_data }] = useLazyQuery(GET_POST,   
     {
-        onCompleted: data => async_get_post(data.get_post),
+        onCompleted: data => async_set_post(data.get_post),
         onError: (err) => 
         {
             console.log(err);
@@ -126,22 +128,18 @@ const PostItem: React.FC<PostItemProps> = ({ post/*, expanded, set_expanded*/ })
         // {
         // if (like_post_data?.like_post && 
         //     post.id === like_post_data?.like_post.post_id) 
-            get_post({ variables: { input: { id: post.id/*like_post_data.like_post.post_id*/ }}}); 
+            // get_post({ variables: { input: { id: post.id/*like_post_data.like_post.post_id*/ }}}); 
         //     console.log("works")
         // }
+
+        get_post({ variables: { input: { id: post.id }}});
         
     }, [comment/*like_post_data?.like_post*/]);
 
     const like_post = (e: React.FormEvent) =>
     {
         e.preventDefault();
-
-        const input = {
-            input: {
-                post_id: post.id
-            }
-        }
-
+        const input = { input: { post_id: post.id }}
         gql_like_post({ variables: input });
     }
 
@@ -171,7 +169,7 @@ const PostItem: React.FC<PostItemProps> = ({ post/*, expanded, set_expanded*/ })
     
     const [gql_update_post, { loading: update_post_loading }] = useMutation(UPDATE_POST, 
     {
-        onCompleted: (data) => async_update_post(data.update_post),
+        onCompleted: (data) => async_set_post(data.update_post),
         onError: (err) => 
         {
             console.log(err);
@@ -199,15 +197,19 @@ const PostItem: React.FC<PostItemProps> = ({ post/*, expanded, set_expanded*/ })
         <Card className={styles.card} sx={{ maxWidth: 345 }} style={{marginBottom: 10}}>
             <CardHeader
                 avatar={
-                    <IconButton onClick={() => router.push(ROUTES.PEOPLE + post.user.id)}>
+                    <IconButton onClick={() => router.push(ROUTES.PEOPLE + (is_for_group 
+                                                                            ? group?.id 
+                                                                            : post.user.id))}>
                         <Avatar 
-                            alt={post.user.username} 
-                            src={URL.STATIC_FILES_LINK + post.user.avatar}
+                            alt={is_for_group ? group?.name : post.user.username} 
+                            src={LINKS.STATIC_FILES_LINK + (is_for_group 
+                                                            ? group?.avatar 
+                                                            : post.user.avatar)}
                         />
                     </IconButton>
                 }
                 action={
-                    auth.user.id === post.user.id && (
+                    auth.user.id === post.user?.id && (
                     <EditPopper>
                         <Grid container direction="column">
                             {/* <Button style={{marginBottom: 6}}>Edit</Button> */}
@@ -256,7 +258,7 @@ const PostItem: React.FC<PostItemProps> = ({ post/*, expanded, set_expanded*/ })
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="like post" onClick={like_post}>
-                    <FavoriteIcon />{post.likes.length}
+                    <FavoriteIcon />{post.likes?.length}
                 </IconButton>
                 <ExpandMore
                     expand={expanded}

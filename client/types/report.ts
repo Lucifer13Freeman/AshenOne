@@ -22,9 +22,9 @@ export interface IReportState
 
 export enum ReportActionTypes
 {
-    GET_STATISTICS_REPORT = 'GET_STATISTICS_REPORT',
-    ASYNC_GET_STATISTICS_REPORT = 'ASYNC_GET_STATISTICS_REPORT',
-    GET_STATISTICS_REPORT_ERROR = 'GET_STATISTICS_REPORT_ERROR',
+    SET_STATISTICS_REPORT = 'SET_STATISTICS_REPORT',
+    ASYNC_SET_STATISTICS_REPORT = 'ASYNC_SET_STATISTICS_REPORT',
+    SET_STATISTICS_REPORT_ERROR = 'SET_STATISTICS_REPORT_ERROR',
 
     DELETE_STATISTICS_REPORT = 'DELETE_STATISTICS_REPORT',
     ASYNC_DELETE_STATISTICS_REPORT = 'ASYNC_DELETE_STATISTICS_REPORT',
@@ -33,19 +33,19 @@ export enum ReportActionTypes
 
 interface IGetStatisticsReportAction
 {
-    type: ReportActionTypes.GET_STATISTICS_REPORT;
+    type: ReportActionTypes.SET_STATISTICS_REPORT;
     payload: IStatisticsReport;
 }
 
 interface IAsyncStatisticsReportAction
 {
-    type: ReportActionTypes.ASYNC_GET_STATISTICS_REPORT;
+    type: ReportActionTypes.ASYNC_SET_STATISTICS_REPORT;
     payload: IStatisticsReport;
 }
 
 interface IGetStatisticsReportErrorAction
 {
-    type: ReportActionTypes.GET_STATISTICS_REPORT_ERROR;
+    type: ReportActionTypes.SET_STATISTICS_REPORT_ERROR;
     payload: string
 }
 

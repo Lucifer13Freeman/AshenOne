@@ -31,7 +31,7 @@ export const message_reducer = (state = initial_state, action: MessageAction): I
                 error: action.payload
             }
         }
-        case MessageActionTypes.GET_MESSAGE:
+        case MessageActionTypes.SET_MESSAGE:
         {
             const update_messages = state.messages.map((message: IMessage) => 
             { 
@@ -46,14 +46,14 @@ export const message_reducer = (state = initial_state, action: MessageAction): I
                 error: undefined
             }
         }
-        case MessageActionTypes.GET_MESSAGE_ERROR:
+        case MessageActionTypes.SET_MESSAGE_ERROR:
         {
             return {
                 ...state,
                 error: action.payload
             }
         }
-        case MessageActionTypes.GET_ALL_MESSAGES:
+        case MessageActionTypes.SET_ALL_MESSAGES:
         {
             return {
                 ...state, 
@@ -61,7 +61,7 @@ export const message_reducer = (state = initial_state, action: MessageAction): I
                 error: undefined
             }
         }
-        case MessageActionTypes.GET_ALL_MESSAGES_ERROR:
+        case MessageActionTypes.SET_ALL_MESSAGES_ERROR:
         {
             return {
                 ...state, 

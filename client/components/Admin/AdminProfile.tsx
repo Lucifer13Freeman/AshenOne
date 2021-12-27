@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import {  Card, Grid, IconButton, Avatar, Typography, Button  } from "@mui/material";
 import { date_format } from "../../utils/date-format";
-import { URL } from "../../utils/constants";
+import { LINKS } from "../../utils/constants";
 import { IUser } from "../../types/user";
 import AvatarDialog from "../Shared/Dialogs/AvatarDialog";
 import styles from "../../styles/App.module.scss";
@@ -39,14 +39,14 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ user }) =>
                             <Avatar 
                                 variant="square" 
                                 alt={user.username} 
-                                src={URL.STATIC_FILES_LINK + user.avatar}
+                                src={LINKS.STATIC_FILES_LINK + user.avatar}
                                 style={{ 
                                     height: 150,
                                     width: 150
                                 }}
                             />
                         </IconButton>
-                        <AvatarDialog user_id = {user.id} avatar={URL.STATIC_FILES_LINK + user.avatar}/>
+                        <AvatarDialog user_id = {user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>
                     </Grid> 
                     <Grid
                         //container
@@ -63,7 +63,7 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ user }) =>
                             Registered at: { date_format(user.created_at) }
                         </div>
                         <Button variant="contained" style={{ margin: '60px 0' }}
-                            onClick={() => {window.location.href = URL.DB_ADMIN_LINK}}
+                            onClick={() => {window.location.href = LINKS.DB_ADMIN_LINK}}
                         >
                             DB Admin Panel
                         </Button>

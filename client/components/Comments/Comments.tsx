@@ -22,7 +22,7 @@ const Comments: React.FC<CommentsProps> = ({ comments, post_id }) =>
     // const { state_comments, error: comments_error } = useTypedSelector(state => state.comment);
     // const { state_post, error: state_post_error } = useTypedSelector(state => state.post);
     
-    // const { async_get_post, async_create_comment, async_get_all_comments } = useActions();
+    // const { async_set_post, async_create_comment, async_set_all_comments } = useActions();
 
 
     // const { data: comment_data, error: comment_error } = useSubscription(NEW_COMMENT);
@@ -39,7 +39,7 @@ const Comments: React.FC<CommentsProps> = ({ comments, post_id }) =>
     // useEffect(() => 
     // {
     //     if (post_error) console.log(post_error);
-    //     if (post_data) async_get_all_posts([...posts, post_data.new_post]);
+    //     if (post_data) async_set_all_posts([...posts, post_data.new_post]);
     // }, [post_data, post_error]);
     
     return (

@@ -1,16 +1,17 @@
 import { put } from 'redux-saga/effects';
-import { create_message, delete_message, get_all_messages, get_message, update_message } from '../../store/actions/message';
+import { create_message, delete_message, 
+        set_all_messages, set_message } from '../../store/actions/message';
 import { IMessage } from '../../types/message';
 
 
-export function* get_all_messages_worker(payload: IMessage[]): Generator<any>
+export function* set_all_messages_worker(payload: IMessage[]): Generator<any>
 {
-    yield put(get_all_messages(payload));
+    yield put(set_all_messages(payload));
 }
 
-export function* get_message_worker(payload: IMessage): Generator<any>
+export function* set_message_worker(payload: IMessage): Generator<any>
 {
-    yield put(get_message(payload));
+    yield put(set_message(payload));
 }
 
 export function* create_message_worker(payload: IMessage): Generator<any>
@@ -18,10 +19,10 @@ export function* create_message_worker(payload: IMessage): Generator<any>
     yield put(create_message(payload));
 }
 
-export function* update_message_worker(payload: IMessage): Generator<any>
-{
-    yield put(update_message(payload));
-}
+// export function* update_message_worker(payload: IMessage): Generator<any>
+// {
+//     yield put(update_message(payload));
+// }
 
 export function* delete_message_worker(payload: string): Generator<any>
 {

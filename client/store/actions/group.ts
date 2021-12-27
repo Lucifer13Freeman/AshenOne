@@ -1,13 +1,13 @@
-import { GroupActionTypes, IGroup } from '../../types/groups';
+import { GroupActionTypes, IGroup } from '../../types/group';
 
 
-export const get_all_groups = ({ payload }: any) =>
+export const set_all_groups = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: GroupActionTypes.GET_ALL_GROUPS,
+            type: GroupActionTypes.SET_ALL_GROUPS,
             payload
         });
     } 
@@ -15,25 +15,25 @@ export const get_all_groups = ({ payload }: any) =>
     {
         return (
         { 
-            type: GroupActionTypes.GET_ALL_GROUPS_ERROR, 
+            type: GroupActionTypes.SET_ALL_GROUPS_ERROR, 
             payload: 'Groups loading error!'
         });
     }
 }
 
-export const async_get_all_groups = (payload: IGroup[]) => (
+export const async_set_all_groups = (payload: IGroup[]) => (
 {
-    type: GroupActionTypes.ASYNC_GET_ALL_GROUPS,
+    type: GroupActionTypes.ASYNC_SET_ALL_GROUPS,
     payload
 });
 
-export const get_group = ({ payload }: any) =>
+export const set_group = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: GroupActionTypes.GET_GROUP,
+            type: GroupActionTypes.SET_GROUP,
             payload
         });
     } 
@@ -41,15 +41,66 @@ export const get_group = ({ payload }: any) =>
     {
         return (
         { 
-            type: GroupActionTypes.GET_GROUP_ERROR, 
+            type: GroupActionTypes.SET_GROUP_ERROR, 
             payload: 'Group loading error!'
         });
     }
 }
 
-export const async_get_group = (payload: IGroup | null) => (
+export const async_set_group = (payload: IGroup | null) => (
 {
-    type: GroupActionTypes.ASYNC_GET_GROUP,
+    type: GroupActionTypes.ASYNC_SET_GROUP,
     payload
 });
 
+export const create_group = ({ payload }: any) =>
+{
+    try
+    { 
+        return (
+        {
+            type: GroupActionTypes.CREATE_GROUP,
+            payload
+        });
+    } 
+    catch (err) 
+    {
+        return (
+        { 
+            type: GroupActionTypes.CREATE_GROUP_ERROR, 
+            payload: 'Group loading error!'
+        });
+    }
+}
+
+export const async_create_group = (payload: IGroup | null) => (
+{
+    type: GroupActionTypes.ASYNC_CREATE_GROUP,
+    payload
+});
+
+export const leave_group = ({ payload }: any) =>
+{
+    try
+    { 
+        return (
+        {
+            type: GroupActionTypes.LEAVE_GROUP,
+            payload
+        });
+    } 
+    catch (err) 
+    {
+        return (
+        { 
+            type: GroupActionTypes.LEAVE_GROUP_ERROR, 
+            payload: 'Group loading error!'
+        });
+    }
+}
+
+export const async_leave_group = (payload: IGroup | null) => (
+{
+    type: GroupActionTypes.ASYNC_LEAVE_GROUP,
+    payload
+});

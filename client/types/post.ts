@@ -39,17 +39,17 @@ export enum PostActionTypes
     ASYNC_CREATE_POST = 'ASYNC_CREATE_POST',
     CREATE_POST_ERROR = 'CREATE_POST_ERROR',
 
-    GET_POST = 'GET_POST',
-    ASYNC_GET_POST = 'ASYNC_GET_POST',
-    GET_POST_ERROR = 'GET_POST_ERROR',
+    SET_POST = 'SET_POST',
+    ASYNC_SET_POST = 'ASYNC_SET_POST',
+    SET_POST_ERROR = 'SET_POST_ERROR',
 
-    GET_ALL_POSTS = 'GET_ALL_POSTS',
-    ASYNC_GET_ALL_POSTS = 'ASYNC_GET_ALL_POSTS',
-    GET_ALL_POSTS_ERROR = 'GET_ALL_POSTS_ERROR',
+    SET_ALL_POSTS = 'SET_ALL_POSTS',
+    ASYNC_SET_ALL_POSTS = 'ASYNC_SET_ALL_POSTS',
+    SET_ALL_POSTS_ERROR = 'SET_ALL_POSTS_ERROR',
 
-    UPDATE_POST = 'UPDATE_POST',
-    ASYNC_UPDATE_POST = 'ASYNC_UPDATE_POST',
-    UPDATE_POST_ERROR = 'UPDATE_POST_ERROR',
+    // UPDATE_POST = 'UPDATE_POST',
+    // ASYNC_UPDATE_POST = 'ASYNC_UPDATE_POST',
+    // UPDATE_POST_ERROR = 'UPDATE_POST_ERROR',
 
     LIKE_POST = 'LIKE_POST',
     ASYNC_LIKE_POST = 'ASYNC_LIKE_POST',
@@ -96,57 +96,57 @@ interface ICreatePostErrorAction
 
 interface IGetPostAction
 {
-    type: PostActionTypes.GET_POST;
+    type: PostActionTypes.SET_POST;
     payload: IPost;
 }
 
 interface IAsyncGetPostAction
 {
-    type: PostActionTypes.ASYNC_GET_POST;
+    type: PostActionTypes.ASYNC_SET_POST;
     payload: IPost;
 }
 
 interface IGetPostErrorAction
 {
-    type: PostActionTypes.GET_POST_ERROR;
+    type: PostActionTypes.SET_POST_ERROR;
     payload: string;
 }
 
 interface IGetAllPostsAction
 {
-    type: PostActionTypes.GET_ALL_POSTS;
+    type: PostActionTypes.SET_ALL_POSTS;
     payload: IPost[];
 }
 
 interface IAsyncGetAllPostsAction
 {
-    type: PostActionTypes.ASYNC_GET_ALL_POSTS;
+    type: PostActionTypes.ASYNC_SET_ALL_POSTS;
     payload: IPost[];
 }
 
 interface IGetAllPostsErrorAction
 {
-    type: PostActionTypes.GET_ALL_POSTS_ERROR;
+    type: PostActionTypes.SET_ALL_POSTS_ERROR;
     payload: string;
 }
 
-interface IUpdatePostAction
-{
-    type: PostActionTypes.UPDATE_POST;
-    payload: IPost;
-}
+// interface IUpdatePostAction
+// {
+//     type: PostActionTypes.UPDATE_POST;
+//     payload: IPost;
+// }
 
-interface IAsyncUpdatePostAction
-{
-    type: PostActionTypes.ASYNC_UPDATE_POST;
-    payload: IPost;
-}
+// interface IAsyncUpdatePostAction
+// {
+//     type: PostActionTypes.ASYNC_UPDATE_POST;
+//     payload: IPost;
+// }
 
-interface IUpdatePostErrorAction
-{
-    type: PostActionTypes.UPDATE_POST_ERROR;
-    payload: string;
-}
+// interface IUpdatePostErrorAction
+// {
+//     type: PostActionTypes.UPDATE_POST_ERROR;
+//     payload: string;
+// }
 
 // interface IUpdateCommentsInPostAction
 // {
@@ -249,9 +249,9 @@ export type PostAction = ICreatePostAction
                         | IAsyncGetAllPostsAction
                         | IGetAllPostsAction
                         | IGetAllPostsErrorAction
-                        | IUpdatePostAction
-                        | IAsyncUpdatePostAction
-                        | IUpdatePostErrorAction
+                        // | IUpdatePostAction
+                        // | IAsyncUpdatePostAction
+                        // | IUpdatePostErrorAction
                         | ILikePostAction
                         | IAsyncLikePostAction
                         | ILikePostErrorAction

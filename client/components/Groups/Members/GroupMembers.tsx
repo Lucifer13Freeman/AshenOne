@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { IUser } from "../../types/user";
-import { ROUTES, URL } from "../../utils/constants";
+import { IUser } from "../../../types/user";
+import { ROUTES, LINKS } from "../../../utils/constants";
 import { Button, 
         Avatar, 
         MenuList, 
@@ -15,20 +15,20 @@ import { Button,
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 
-interface ChatMembersProps
+interface GroupMembersProps
 {
     //members?: IUser[];
-    chat_id?: string | string[];
+    group_id?: string | string[];
 }
 
-const ChatMembers: React.FC<ChatMembersProps> = ({ /*members,*/ chat_id }) =>
+const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group_id }) =>
 {
     const router = useRouter();
 
-    const { chat, error: chat_error } = useTypedSelector(state => state.chat);
+    const { group, error: group_error } = useTypedSelector(state => state.group);
     
     const [open_members, set_open_members] = useState(false);
     const anchor_ref = useRef<HTMLButtonElement>(null);
@@ -99,7 +99,7 @@ const ChatMembers: React.FC<ChatMembersProps> = ({ /*members,*/ chat_id }) =>
                                     id="members"
                                     onKeyDown={handle_list_key_down}
                                 >
-                                    {chat.members.map(({ id, username, avatar }: any) => (
+                                    {group.members.map(({ id, username, avatar }: any) => (
                                         <ListItem
                                             button
                                             key={id}
@@ -108,7 +108,7 @@ const ChatMembers: React.FC<ChatMembersProps> = ({ /*members,*/ chat_id }) =>
                                             <ListItemIcon>
                                                 <Avatar
                                                     alt={username}
-                                                    src={URL.STATIC_FILES_LINK + avatar}
+                                                    src={LINKS.STATIC_FILES_LINK + avatar}
                                                     style={{ width: 30, height: 30 }}
                                                 />
                                             </ListItemIcon>
@@ -126,4 +126,4 @@ const ChatMembers: React.FC<ChatMembersProps> = ({ /*members,*/ chat_id }) =>
 }
 
 
-export default ChatMembers;
+export default GroupMembers;

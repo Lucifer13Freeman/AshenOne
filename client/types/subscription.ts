@@ -24,13 +24,13 @@ export enum SubscriptionsActionTypes
     ASYNC_CREATE_SUBSCRIPTION = 'ASYNC_CREATE_SUBSCRIPTION',
     CREATE_SUBSCRIPTION_ERROR = 'CREATE_SUBSCRIPTION_ERROR',
 
-    GET_SUBSCRIPTION = 'GET_SUBSCRIPTION',
-    ASYNC_GET_SUBSCRIPTION = 'ASYNC_GET_SUBSCRIPTION',
-    GET_SUBSCRIPTION_ERROR = 'GET_SUBSCRIPTION_ERROR',
+    SET_SUBSCRIPTION = 'SET_SUBSCRIPTION',
+    ASYNC_SET_SUBSCRIPTION = 'ASYNC_SET_SUBSCRIPTION',
+    SET_SUBSCRIPTION_ERROR = 'SET_SUBSCRIPTION_ERROR',
 
-    GET_ALL_SUBSCRIPTIONS = 'GET_ALL_SUBSCRIPTIONS',
-    ASYNC_GET_ALL_SUBSCRIPTIONS = 'ASYNC_GET_ALL_SUBSCRIPTIONS',
-    GET_ALL_SUBSCRIPTIONS_ERROR = 'GET_ALL_SUBSCRIPTIONS_ERROR',
+    SET_ALL_SUBSCRIPTIONS = 'SET_ALL_SUBSCRIPTIONS',
+    ASYNC_SET_ALL_SUBSCRIPTIONS = 'ASYNC_SET_ALL_SUBSCRIPTIONS',
+    SET_ALL_SUBSCRIPTIONS_ERROR = 'SET_ALL_SUBSCRIPTIONS_ERROR',
 
     DELETE_SUBSCRIPTION = 'DELETE_SUBSCRIPTION',
     ASYNC_DELETE_SUBSCRIPTION = 'ASYNC_DELETE_SUBSCRIPTION',
@@ -57,37 +57,37 @@ interface ICreateSubscriptionErrorAction
 
 interface IGetSubscriptionAction
 {
-    type: SubscriptionsActionTypes.GET_SUBSCRIPTION;
+    type: SubscriptionsActionTypes.SET_SUBSCRIPTION;
     payload: ISubscription
 }
 
 interface IAsyncGetSubscriptionAction
 {
-    type: SubscriptionsActionTypes.ASYNC_GET_SUBSCRIPTION;
+    type: SubscriptionsActionTypes.ASYNC_SET_SUBSCRIPTION;
     payload: ISubscription
 }
 
 interface IGetSubscriptionErrorAction
 {
-    type: SubscriptionsActionTypes.GET_SUBSCRIPTION_ERROR;
+    type: SubscriptionsActionTypes.SET_SUBSCRIPTION_ERROR;
     payload: string
 }
 
 interface IGetAllSubscriptionsAction
 {
-    type: SubscriptionsActionTypes.GET_ALL_SUBSCRIPTIONS;
+    type: SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS;
     payload: ISubscription[]
 }
 
 interface IAsyncGetAllSubscriptionsAction
 {
-    type: SubscriptionsActionTypes.ASYNC_GET_ALL_SUBSCRIPTIONS;
+    type: SubscriptionsActionTypes.ASYNC_SET_ALL_SUBSCRIPTIONS;
     payload: ISubscription[];
 }
 
 interface IGetAllSubscriptionsErrorAction
 {
-    type: SubscriptionsActionTypes.GET_ALL_SUBSCRIPTIONS_ERROR;
+    type: SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS_ERROR;
     payload: string
 }
 

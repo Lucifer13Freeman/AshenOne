@@ -1,14 +1,25 @@
 import { put } from 'redux-saga/effects';
-import { get_all_groups, get_group } from '../../store/actions/group';
-import { IGroup } from '../../types/groups';
+import { create_group, set_all_groups, 
+    set_group, leave_group } from '../../store/actions/group';
+import { IGroup } from '../../types/group';
 
 
-export function* get_all_groups_worker(payload: IGroup[]): Generator<any>
+export function* set_all_groups_worker(payload: IGroup[]): Generator<any>
 {
-    yield put(get_all_groups(payload));
+    yield put(set_all_groups(payload));
 }
 
-export function* get_group_worker(payload: IGroup): Generator<any>
+export function* set_group_worker(payload: IGroup): Generator<any>
 {
-    yield put(get_group(payload));
+    yield put(set_group(payload));
+}
+
+export function* create_group_worker(payload: IGroup): Generator<any>
+{
+    yield put(create_group(payload));
+}
+
+export function* leave_group_worker(payload: IGroup): Generator<any>
+{
+    yield put(leave_group(payload));
 }

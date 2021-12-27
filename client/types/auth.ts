@@ -22,8 +22,8 @@ export enum AuthActionTypes
     LOGOUT = 'LOGOUT',
     ASYNC_LOGOUT = 'ASYNC_LOGOUT',
     LOGOUT_ERROR = 'LOGOUT_ERROR'
-    // GET_CURRENT_USER = 'GET_CURRENT_USER',
-    // GET_CURRENT_USER_ERROR = 'GET_CURRENT_USER_ERROR',
+    // SET_CURRENT_USER = 'SET_CURRENT_USER',
+    // SET_CURRENT_USER_ERROR = 'SET_CURRENT_USER_ERROR',
     // SET_CURRENT_USER = 'SET_CURRENT_USER',
     // SET_CURRENT_USER_ERROR = 'SET_CURRENT_USER_ERROR',
     // REGISTER = 'REGISTER',
@@ -68,13 +68,13 @@ interface ILogoutErrorAction
 
 /*interface IGetCurrentUserAction
 {
-    type: AuthActionTypes.GET_CURRENT_USER;
+    type: AuthActionTypes.SET_CURRENT_USER;
     payload: IUser;
 }
 
 interface IGetCurrentUserErrorAction
 {
-    type: AuthActionTypes.GET_CURRENT_USER_ERROR;
+    type: AuthActionTypes.SET_CURRENT_USER_ERROR;
     payload: string;
 }
 

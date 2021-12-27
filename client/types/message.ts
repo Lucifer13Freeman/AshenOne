@@ -39,17 +39,17 @@ export enum MessageActionTypes
     ASYNC_CREATE_MESSAGE = 'ASYNC_CREATE_MESSAGE',
     CREATE_MESSAGE_ERROR = 'CREATE_MESSAGE_ERROR',
 
-    GET_MESSAGE = 'GET_MESSAGE',
-    ASYNC_GET_MESSAGE = 'ASYNC_GET_MESSAGE',
-    GET_MESSAGE_ERROR = 'GET_MESSAGE_ERROR',
+    SET_MESSAGE = 'SET_MESSAGE',
+    ASYNC_SET_MESSAGE = 'ASYNC_SET_MESSAGE',
+    SET_MESSAGE_ERROR = 'SET_MESSAGE_ERROR',
 
-    GET_ALL_MESSAGES = 'GET_ALL_MESSAGES',
-    ASYNC_GET_ALL_MESSAGES = 'ASYNC_GET_ALL_MESSAGES',
-    GET_ALL_MESSAGES_ERROR = 'GET_ALL_MESSAGES_ERROR',
+    SET_ALL_MESSAGES = 'SET_ALL_MESSAGES',
+    ASYNC_SET_ALL_MESSAGES = 'ASYNC_SET_ALL_MESSAGES',
+    SET_ALL_MESSAGES_ERROR = 'SET_ALL_MESSAGES_ERROR',
 
-    UPDATE_MESSAGE = 'UPDATE_MESSAGE',
-    ASYNC_UPDATE_MESSAGE = 'ASYNC_UPDATE_MESSAGE',
-    UPDATE_MESSAGE_ERROR = 'UPDATE_MESSAGE_ERROR',
+    // UPDATE_MESSAGE = 'UPDATE_MESSAGE',
+    // ASYNC_UPDATE_MESSAGE = 'ASYNC_UPDATE_MESSAGE',
+    // UPDATE_MESSAGE_ERROR = 'UPDATE_MESSAGE_ERROR',
 
     SEARCH_MESSAGES = 'SEARCH_MESSAGES',
     ASYNC_SEARCH_MESSAGE = 'ASYNC_SEARCH_MESSAGE',
@@ -84,57 +84,57 @@ interface ICreateMessageErrorAction
 
 interface IGetMessageAction
 {
-    type: MessageActionTypes.GET_MESSAGE;
+    type: MessageActionTypes.SET_MESSAGE;
     payload: IMessage;
 }
 
 interface IAsyncGetMessageAction
 {
-    type: MessageActionTypes.ASYNC_GET_MESSAGE;
+    type: MessageActionTypes.ASYNC_SET_MESSAGE;
     payload: IMessage;
 }
 
 interface IGetMessageErrorAction
 {
-    type: MessageActionTypes.GET_MESSAGE_ERROR;
+    type: MessageActionTypes.SET_MESSAGE_ERROR;
     payload: string;
 }
 
 interface IGetAllMessagesAction
 {
-    type: MessageActionTypes.GET_ALL_MESSAGES;
+    type: MessageActionTypes.SET_ALL_MESSAGES;
     payload: IMessage[];
 }
 
 interface IAsyncGetAllMessagesAction
 {
-    type: MessageActionTypes.ASYNC_GET_ALL_MESSAGES;
+    type: MessageActionTypes.ASYNC_SET_ALL_MESSAGES;
     payload: IMessage[];
 }
 
 interface IGetAllMessagesErrorAction
 {
-    type: MessageActionTypes.GET_ALL_MESSAGES_ERROR;
+    type: MessageActionTypes.SET_ALL_MESSAGES_ERROR;
     payload: string;
 }
 
-interface IUpdateMessageAction
-{
-    type: MessageActionTypes.UPDATE_MESSAGE;
-    payload: IMessage;
-}
+// interface IUpdateMessageAction
+// {
+//     type: MessageActionTypes.UPDATE_MESSAGE;
+//     payload: IMessage;
+// }
 
-interface IAsyncUpdateMessageAction
-{
-    type: MessageActionTypes.ASYNC_UPDATE_MESSAGE;
-    payload: IMessage;
-}
+// interface IAsyncUpdateMessageAction
+// {
+//     type: MessageActionTypes.ASYNC_UPDATE_MESSAGE;
+//     payload: IMessage;
+// }
 
-interface IUpdateMessageErrorAction
-{
-    type: MessageActionTypes.UPDATE_MESSAGE_ERROR;
-    payload: string;
-}
+// interface IUpdateMessageErrorAction
+// {
+//     type: MessageActionTypes.UPDATE_MESSAGE_ERROR;
+//     payload: string;
+// }
 
 interface IDeleteMessageAction
 {
@@ -182,9 +182,9 @@ export type MessageAction = ICreateMessageAction
                             | IGetAllMessagesAction
                             | IAsyncGetAllMessagesAction
                             | IGetAllMessagesErrorAction
-                            | IUpdateMessageAction
-                            | IAsyncUpdateMessageAction
-                            | IUpdateMessageErrorAction
+                            // | IUpdateMessageAction
+                            // | IAsyncUpdateMessageAction
+                            // | IUpdateMessageErrorAction
                             | IDeleteMessageAction
                             | IAsyncDeleteMessageAction
                             | IDeleteMessageErrorAction

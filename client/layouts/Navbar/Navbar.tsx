@@ -23,7 +23,7 @@ import { Avatar, CardActionArea,
 import styles from '../../styles/Navbar.module.scss'
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useAction';
-import { NavMenu, NAV_MENU, ROLES, ROUTES, URL } from '../../utils/constants';
+import { NavMenu, NAV_MENU, ROLES, ROUTES, LINKS } from '../../utils/constants';
 import { AppBar, CssBaseline, Drawer, IconButton, List, ListItem, ListItemIcon, 
         ListItemText, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -131,7 +131,7 @@ const Navbar: React.FC = () =>
           <ListItemIcon>
             <Avatar 
               alt={auth.user.username} 
-              src={URL.STATIC_FILES_LINK + auth.user.avatar}
+              src={LINKS.STATIC_FILES_LINK + auth.user.avatar}
               style={{ width: 30, height: 30 }}
             />
           </ListItemIcon>
@@ -254,7 +254,7 @@ const Navbar: React.FC = () =>
           { is_md && check_auth &&
           <div style={{ marginLeft: 'auto' }}>
             <IconButton onClick={() => router.push(ROUTES.PEOPLE + auth.user.id)}>
-              <Avatar alt={auth.user.username} src={URL.STATIC_FILES_LINK + auth.user.avatar}/>
+              <Avatar alt={auth.user.username} src={LINKS.STATIC_FILES_LINK + auth.user.avatar}/>
             </IconButton>
           </div> }
         </Toolbar>

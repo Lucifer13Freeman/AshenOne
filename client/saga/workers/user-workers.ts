@@ -1,14 +1,14 @@
 import { put } from 'redux-saga/effects';
-import { get_all_users, get_user } from '../../store/actions/user';
+import { set_all_users, set_user } from '../../store/actions/user';
 import { IUser } from '../../types/user';
 
 
-export function* get_all_users_worker(payload: IUser[]): Generator<any>
+export function* set_all_users_worker(payload: IUser[]): Generator<any>
 {
-    yield put(get_all_users(payload));
+    yield put(set_all_users(payload));
 }
 
-export function* get_user_worker(payload: IUser): Generator<any>
+export function* set_user_worker(payload: IUser): Generator<any>
 {
-    yield put(get_user(payload));
+    yield put(set_user(payload));
 }

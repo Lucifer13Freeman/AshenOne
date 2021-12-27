@@ -16,9 +16,10 @@ import { ROUTES } from "../../utils/constants";
 import { TOKEN } from "../../utils/token";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import app_styles from '../../styles/App.module.scss';
-import ChatMembers from '../../components/ChatMembers/ChatMembers';
+// import ChatMembers from './Members/ChatMembers';
 import MessageForm from '../Messages/MessageForm';
 import Messages from "../../components/Messages/Messages";
+import MembersList from "../Shared/Lists/MembersList";
 
 
 interface ChatProps
@@ -37,7 +38,8 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
     const { chat, chats, error: chat_error } = useTypedSelector(state => state.chat);
     const { messages, error: messages_error } = useTypedSelector(state => state.message);
 
-    const { async_get_all_messages, async_get_chat, async_logout } = useActions();
+    const { async_set_all_messages, async_set_chat, 
+            async_logout, async_create_message } = useActions();
 
 
     const { loading: chat_loading, data: chat_data } = useQuery(GET_CHAT,   
@@ -45,14 +47,14 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
         variables: input,
         onCompleted: data => 
         {
-            async_get_chat(data.get_chat);
-            async_get_all_messages(data.get_chat.messages);
+            async_set_chat(data.get_chat);
+            async_set_all_messages(data.get_chat.messages);
         },
         onError: err => 
         {
             console.log(err);
-            async_get_chat(null);
-            async_get_all_messages([]);
+            async_set_chat(null);
+            async_set_all_messages([]);
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -68,7 +70,7 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
     useEffect(() => 
     {
         if (message_error) console.log(message_error);
-        if (message_data) async_get_all_messages([...messages, message_data.new_message]);
+        if (message_data) async_create_message(message_data.new_message);
     }, [message_data, message_error]);
 
 
@@ -100,7 +102,8 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
                                         </InputAdornment> )
                                 }}
                             />
-                            <ChatMembers /*members={chat.members}*//>
+                            {/* <ChatMembers /*members={chat.members}*//> */}
+                            <MembersList members={chat.members} />
                         </Grid>
                     </Box>
                     {/* <Grid className={styles.messages_container}>

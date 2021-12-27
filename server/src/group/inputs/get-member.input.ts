@@ -2,7 +2,7 @@ import { InputType, Field, ID } from '@nestjs/graphql';
 
 
 @InputType()
-export class GetMemberInput 
+export class GetGroupMemberInput 
 {
     @Field(() => ID)
     readonly user_id: string;

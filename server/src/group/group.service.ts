@@ -7,7 +7,7 @@ import { UserService } from "src/user/user.service";
 import { CreateGroupInput } from "./inputs/create-group.input";
 import { GetAllGroupsInput } from "./inputs/get-all-groups.input";
 import { GetGroupInput } from "./inputs/get-group.input";
-import { GetMemberInput } from "./inputs/get-member.input";
+import { GetGroupMemberInput } from "./inputs/get-member.input";
 import { SearchGroupInput } from "./inputs/search-group.input";
 import { UpdateGroupInput } from "./inputs/update-group.input";
 import { select_group } from "./selects/group.select";
@@ -107,6 +107,8 @@ export class GroupService
                 return get_group;
             });
 
+            console.log(group)
+
             return group;
         }
         catch(err)
@@ -121,20 +123,36 @@ export class GroupService
     {
         try 
         {
-            const { current_user_id, limit, offset } = dto;
+            const { current_user_id, is_my, limit, offset } = dto;
 
             await this.user_service.get({ id: current_user_id });
 
             const groups = await this.prisma.$transaction(async (prisma) => 
             {
-                const get_all_groups = await prisma.group.findMany(
+                let get_all_groups;
+                
+                if (is_my)
                 {
-                    //where: { member_ids: { hasSome: [current_user_id] } },
-                    where: { members: { some: { id: current_user_id } } },
-                    skip: offset,
-                    take: limit,
-                    select: select_group
-                });
+                    get_all_groups = await prisma.group.findMany(
+                    {
+                        //where: { member_ids: { hasSome: [current_user_id] } },
+                        where: { members: { some: { id: current_user_id } } },
+                        skip: offset,
+                        take: limit,
+                        select: select_group
+                    });
+                }
+                else 
+                {
+                    get_all_groups = await prisma.group.findMany(
+                    {
+                        //where: { member_ids: { hasSome: [current_user_id] } },
+                        where: { is_private: false },
+                        skip: offset,
+                        take: limit,
+                        select: select_group
+                    });
+                }
 
                 return get_all_groups;
             });
@@ -264,7 +282,7 @@ export class GroupService
     }
 
 
-    async add_member(dto: GetMemberInput): Promise<Group>
+    async add_member(dto: GetGroupMemberInput): Promise<Group>
     {
         try 
         {
@@ -289,12 +307,14 @@ export class GroupService
 
             if (is_member === undefined)
             {
+                group.member_ids.push(user_id);
+                
                 group = await this.prisma.$transaction(async (prisma) => 
                 {
                     const update_group = await prisma.group.update(
                     {
                         where: { id: group_id },
-                        data: { member_ids: { push: user_id } },
+                        data: { member_ids: { set: group.member_ids } },
                         select: select_group
                     });
 
@@ -312,7 +332,7 @@ export class GroupService
     }
 
     
-    async remove_member(dto: GetMemberInput): Promise<Group | null/*Document*/>//: Promise<Chat> 
+    async remove_member(dto: GetGroupMemberInput): Promise<Group | null/*Document*/>//: Promise<Chat> 
     {
         try 
         {

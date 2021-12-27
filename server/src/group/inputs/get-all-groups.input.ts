@@ -8,8 +8,8 @@ export class GetAllGroupsInput
     @Field(() => ID, { nullable: true })
     readonly current_user_id?: string;//ObjectId;
 
-    // @Field({ nullable: true })
-    // readonly is_my?: boolean;
+    @Field({ nullable: true })
+    readonly is_my?: boolean;
 
     @Field({ nullable: true })
     readonly is_private?: boolean;

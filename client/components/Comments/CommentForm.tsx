@@ -33,7 +33,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ post_id }) =>
     // const handle_comment_text = (event: React.ChangeEvent<HTMLInputElement>) => set_comment_text(event.target.value);
 
     const { comment, error: comments_error } = useTypedSelector(state => state.comment);
-    const { async_logout, async_get_user, async_create_comment } = useActions();
+    const { async_logout, async_set_user, async_create_comment } = useActions();
 
     const [create_comment, { loading: comment_loading }] = useMutation(CREATE_COMMENT, 
     {

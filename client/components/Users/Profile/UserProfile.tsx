@@ -9,7 +9,7 @@ import { useActions } from "../../../hooks/useAction";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { GET_USER } from "../../../graphql/queries.ts/users";
 import { TOKEN } from "../../../utils/token";
-import { ROUTES, URL } from "../../../utils/constants";
+import { ROUTES, LINKS } from "../../../utils/constants";
 import { GET_ALL_SUBSCRIPTIONS } from "../../../graphql/queries.ts/subscription";
 import { CREATE_SUBSCRIPTION, DELETE_SUBSCRIPTION } from "../../../graphql/mutations/subscription";
 import { useEffect, useState } from "react";
@@ -44,23 +44,24 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
     
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     //const { user, users, error: users_error } = useTypedSelector(state => state.user);
-    const { subscription, subscriptions, error: subscriptions_error } = useTypedSelector(state => state.subscription);
+    const { subscription, subscriptions, 
+            error: subscriptions_error } = useTypedSelector(state => state.subscription);
 
     const get_all_subscriptions_input = { input: { profile_id: user?.id } }
 
-    const { async_get_user, async_logout, 
-            async_get_subscription, async_get_all_subscriptions,
+    const { async_set_user, async_logout, 
+            async_set_subscription, async_set_all_subscriptions,
             async_create_subscription, async_delete_subscription } = useActions();
 
 
     // const { loading: user_loading, data: user_data } = useQuery(GET_USER,   
     // {
     //     variables: input,
-    //     onCompleted: data => async_get_user(data.get_user),
+    //     onCompleted: data => async_set_user(data.get_user),
     //     onError: err => 
     //     {
     //         console.log(err);
-    //         async_get_user(null);
+    //         async_set_user(null);
             
     //         if (err.message === TOKEN.ERROR_MESSAGE) 
     //         {
@@ -71,7 +72,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
     //     nextFetchPolicy: "cache-first"
     // });
 
-    const [get_subscriptions, { loading: follower_loading, data: follower_data }] = useLazyQuery(GET_ALL_SUBSCRIPTIONS,   
+    const [get_subscriptions, 
+        { loading: follower_loading, 
+            data: follower_data }] = useLazyQuery(GET_ALL_SUBSCRIPTIONS,   
     {
         variables: get_all_subscriptions_input,
         onCompleted: data => 
@@ -80,9 +83,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
             //     (sub: ISubscription) => sub.follower.id === user_id || sub.profile.id == user_id
             // );
 
-            // if (profile) async_get_user({ ...profile });
+            // if (profile) async_set_user({ ...profile });
 
-            async_get_all_subscriptions(data.get_all_subscriptions);
+            async_set_all_subscriptions(data.get_all_subscriptions);
 
             let check_subscription = data.get_all_subscriptions.find(
                 (sub: ISubscription) => sub.follower.id === auth.user.id
@@ -106,7 +109,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
         nextFetchPolicy: "cache-first"
     });
 
-    const [create_subscription, { loading: create_subscription_loading }] = useMutation(CREATE_SUBSCRIPTION, 
+    const [create_subscription, 
+        { loading: create_subscription_loading }] = useMutation(CREATE_SUBSCRIPTION, 
     {
         onCompleted: (data) => 
         {
@@ -117,7 +121,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
         onError: (err) => console.log(err)
     });
 
-    const [delete_subscription, { loading: delete_subscription_loading }] = useMutation(DELETE_SUBSCRIPTION, 
+    const [delete_subscription, 
+        { loading: delete_subscription_loading }] = useMutation(DELETE_SUBSCRIPTION, 
     {
         onCompleted: (data) => 
         { 
@@ -158,12 +163,13 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
                             <Avatar 
                                 variant="square" 
                                 alt={user.username} 
-                                src={URL.STATIC_FILES_LINK + user.avatar}
+                                src={LINKS.STATIC_FILES_LINK + user.avatar}
                                 style={{ height: 150, width: 150 }}
                             />
                         </IconButton>
                         {/* <UploadUserAvatar user_id={user.id}/> */}
-                        {auth.user.id === user.id && <AvatarDialog user_id={user.id} avatar={URL.STATIC_FILES_LINK + user.avatar}/>}
+                        {auth.user.id === user.id 
+                            && <AvatarDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>}
                     </Grid> 
                     <Grid
                         //container

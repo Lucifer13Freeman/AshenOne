@@ -8,7 +8,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { URL } from '../utils/constants';
+import { LINKS } from '../utils/constants';
 import { get_token_from_cookie } from "../utils/token";
 // import { createUploadLink } from 'apollo-upload-client';
 //import { HTTP_LINK, WS_LINK } from "../constants/links";
@@ -18,7 +18,7 @@ import { get_token_from_cookie } from "../utils/token";
   
 let http_link = createHttpLink(
 {
-    uri: URL.HTTP_LINK,
+    uri: LINKS.HTTP_LINK,
     credentials: 'include'
     //uri: '/graphql'
 });
@@ -42,7 +42,7 @@ http_link = auth_link.concat(http_link);
   
 const ws_link = typeof window !== 'undefined' ? new WebSocketLink(
 {
-    uri: URL.WS_LINK,
+    uri: LINKS.WS_LINK,
     //uri: `ws://${host}/graphql`,
     options: {
         reconnect: true,

@@ -1,13 +1,13 @@
 import { IStatisticsReport, ReportActionTypes } from "../../types/report";
 
 
-export const get_statistics_report = ({ payload }: any) =>
+export const set_statistics_report = ({ payload }: any) =>
 {
     try
     {
         return (
         {
-            type: ReportActionTypes.GET_STATISTICS_REPORT,
+            type: ReportActionTypes.SET_STATISTICS_REPORT,
             payload
         });
     } 
@@ -15,15 +15,15 @@ export const get_statistics_report = ({ payload }: any) =>
     {
         return (
         { 
-            type: ReportActionTypes.GET_STATISTICS_REPORT_ERROR, 
+            type: ReportActionTypes.SET_STATISTICS_REPORT_ERROR, 
             payload: 'Statistics report loading error!'
         });
     }
 }
 
-export const async_get_statistics_report = (payload: IStatisticsReport | null) => (
+export const async_set_statistics_report = (payload: IStatisticsReport | null) => (
 {
-    type: ReportActionTypes.ASYNC_GET_STATISTICS_REPORT,
+    type: ReportActionTypes.ASYNC_SET_STATISTICS_REPORT,
     payload
 });
 

@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useActions } from '../../../hooks/useAction';
 import axios from 'axios';
 import router from 'next/router';
-import { ROUTES, URL } from '../../../utils/constants';
+import { ROUTES, LINKS } from '../../../utils/constants';
 import { set_auth_token } from '../../../utils/set_auth_token';
 import FileUpload from '../../Files/FileUpload';
 import { CardMedia } from '@mui/material';
@@ -27,11 +27,12 @@ const AvatarDialogStyle = styled(Dialog)(({ theme }) => (
 
 interface AvatarDialogProps
 {
-    user_id: string;
+    user_id?: string;
     avatar: string;
+    group_id?: string;
 }
 
-const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, avatar }) => 
+const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }) => 
 {
     const [open_avatar_dialog, set_open_avatar_dialog] = useState(false);
 
@@ -40,7 +41,7 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, avatar }) =>
 
     const [image, set_image]: any = useState(null);
     const [image_base64, set_image_base64]: any = useState(null);
-    const { async_get_user, async_login } = useActions();
+    const { async_set_user, async_login } = useActions();
 
     const form_data = new FormData();
 
@@ -48,14 +49,19 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, avatar }) =>
     {
         form_data.append('image', image);
         set_auth_token();
-        axios.post(`${URL.HTTP_BASE}${ROUTES.PEOPLE}${user_id}/avatar`, form_data)
+
+        if (user_id) 
+            axios.post(`${LINKS.HTTP_BASE}${ROUTES.PEOPLE}${user_id}/avatar`, form_data)
                 .then(res => 
                 {
-                    async_get_user({ ...res.data });
+                    async_set_user({ ...res.data });
                     async_login({ user: res.data, is_auth: true });
                 })
                 .catch(e => console.log(e));
+        else if (group_id) return;
+
         set_open_avatar_dialog(false);
+        set_image(null);
     }
 
     let image_markup;
@@ -65,8 +71,8 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, avatar }) =>
 
     return (
         <div>
-            <IconButton>
-                <SettingsIcon onClick={handle_open_avatar_dialog}/>
+            <IconButton onClick={handle_open_avatar_dialog}>
+                <SettingsIcon/>
             </IconButton>
             <AvatarDialogStyle
                 onClose={handle_close_avatar_dialog}

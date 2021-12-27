@@ -6,7 +6,7 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useAction";
 import Printer from "../../components/Printer/Printer";
 import PrinterForm from "../../components/Printer/PrinterForm";
-import { ROUTES, URL } from "../../utils/constants";
+import { ROUTES, LINKS } from "../../utils/constants";
 import MainLayout from "../../layouts/MainLayout";
 import AdminProfile from "../../components/Admin/AdminProfile";
 import { TOKEN } from "../../utils/token";

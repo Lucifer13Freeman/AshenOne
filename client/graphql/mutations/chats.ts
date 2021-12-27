@@ -18,7 +18,7 @@ const CREATE_CHAT = gql`
                 created_at 
                 updated_at 
             }
-            is_open
+            is_private
             is_secure
             created_at 
             updated_at
@@ -32,9 +32,9 @@ const DELETE_CHAT = gql`
     }
 `;
 
-const ADD_MEMBER = gql`
-    mutation add_member( $input: GetMemberInput! ) {
-        add_member( input: $input ) {
+const ADD_CHAT_MEMBER = gql`
+    mutation add_chat_member( $input: GetChatMemberInput! ) {
+        add_chat_member( input: $input ) {
             id 
             admin_id
             members { id username avatar role is_banned }
@@ -49,7 +49,7 @@ const ADD_MEMBER = gql`
                 created_at 
                 updated_at 
             }
-            is_open
+            is_private
             is_secure
             created_at 
             updated_at
@@ -57,9 +57,9 @@ const ADD_MEMBER = gql`
     }
 `;
 
-const REMOVE_MEMBER = gql`
-    mutation remove_member( $input: GetMemberInput! ) {
-        remove_member( input: $input ) {
+const REMOVE_CHAT_MEMBER = gql`
+    mutation remove_chat_member( $input: GetChatMemberInput! ) {
+        remove_chat_member( input: $input ) {
             id 
             admin_id
             members { id username avatar }
@@ -74,7 +74,7 @@ const REMOVE_MEMBER = gql`
                 created_at 
                 updated_at 
             }
-            is_open
+            is_private
             is_secure
             created_at 
             updated_at
@@ -86,6 +86,6 @@ const REMOVE_MEMBER = gql`
 export {
     CREATE_CHAT,
     DELETE_CHAT,
-    ADD_MEMBER,
-    REMOVE_MEMBER
+    ADD_CHAT_MEMBER,
+    REMOVE_CHAT_MEMBER
 }

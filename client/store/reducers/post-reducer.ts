@@ -30,7 +30,7 @@ export const post_reducer = (state = initial_state, action: PostAction): IPostSt
                 error: action.payload
             }
         }
-        case PostActionTypes.GET_POST:
+        case PostActionTypes.SET_POST:
         {
             // const new_post = action.payload;
             // let update_posts = [...state.posts];
@@ -50,14 +50,14 @@ export const post_reducer = (state = initial_state, action: PostAction): IPostSt
                 error: undefined
             }
         }
-        case PostActionTypes.GET_POST_ERROR:
+        case PostActionTypes.SET_POST_ERROR:
         {
             return {
                 ...state,
                 error: action.payload
             }
         }
-        case PostActionTypes.GET_ALL_POSTS:
+        case PostActionTypes.SET_ALL_POSTS:
         {
             return {
                 ...state, 
@@ -65,7 +65,7 @@ export const post_reducer = (state = initial_state, action: PostAction): IPostSt
                 error: undefined
             }
         }
-        case PostActionTypes.GET_ALL_POSTS_ERROR:
+        case PostActionTypes.SET_ALL_POSTS_ERROR:
         {
             return {
                 ...state, 

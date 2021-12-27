@@ -3,7 +3,7 @@ import { Card, CardContent, Grid, IconButton, Avatar,
 import { useRouter } from "next/router";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import styles from "../../../styles/MessageItem.module.scss";
-import { ROUTES, URL } from "../../../utils/constants";
+import { ROUTES, LINKS } from "../../../utils/constants";
 import { IChat } from "../../../types/chat";
 import { IMessage } from "../../../types/message";
 import { date_format } from "../../../utils/date-format";
@@ -30,7 +30,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
 
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { message: state_message, error: messages_error } = useTypedSelector(state => state.message);
-    const { async_delete_message, async_update_message, async_logout } = useActions();
+    const { async_delete_message, async_set_message, async_logout } = useActions();
 
     const check_sender = () =>
     {
@@ -64,7 +64,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
     
     const [gql_update_message, { loading: update_message_loading }] = useMutation(UPDATE_MESSAGE, 
     {
-        onCompleted: (data) => async_update_message(data.update_message),
+        onCompleted: (data) => async_set_message(data.update_message),
         onError: (err) => 
         {
             console.log(err);
@@ -119,7 +119,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                         >
                             <Avatar 
                                 alt={message.user?.username} 
-                                src={URL.STATIC_FILES_LINK + message.user?.avatar}
+                                src={LINKS.STATIC_FILES_LINK + message.user?.avatar}
                             />
                         </IconButton>
                     </Grid>
@@ -165,7 +165,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                         >
                             <Avatar 
                                 alt={message.user?.username} 
-                                src={URL.STATIC_FILES_LINK + message.user?.avatar}
+                                src={LINKS.STATIC_FILES_LINK + message.user?.avatar}
                             />
                         </IconButton>
                     </Grid>

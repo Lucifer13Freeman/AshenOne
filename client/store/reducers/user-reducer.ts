@@ -13,7 +13,7 @@ export const user_reducer = (state = initial_state, action: UserAction): IUserSt
 {
     switch (action.type) 
     {
-        case UserActionTypes.GET_USER:
+        case UserActionTypes.SET_USER:
         {
             const update_users = state.users.map((user: IUser) => 
             { 
@@ -28,14 +28,14 @@ export const user_reducer = (state = initial_state, action: UserAction): IUserSt
                 error: undefined
             }
         }
-        case UserActionTypes.GET_USER_ERROR:
+        case UserActionTypes.SET_USER_ERROR:
         {
             return {
                 ...state,
                 error: action.payload
             }
         }
-        case UserActionTypes.GET_ALL_USERS:
+        case UserActionTypes.SET_ALL_USERS:
         {
             return {
                 ...state, 
@@ -43,7 +43,7 @@ export const user_reducer = (state = initial_state, action: UserAction): IUserSt
                 error: undefined
             }
         }
-        case UserActionTypes.GET_ALL_USERS_ERROR:
+        case UserActionTypes.SET_ALL_USERS_ERROR:
         {
             return {
                 ...state, 

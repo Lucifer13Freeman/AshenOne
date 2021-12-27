@@ -26,17 +26,17 @@ const Followers: React.FC<FollowersProps> = ({ subscriptions }) =>
     // const { user, users, error: users_error } = useTypedSelector(state => state.user);
     // const { subscriptions, error: subscriptions_error } = useTypedSelector(state => state.subscription);
 
-    // const { async_get_all_subscriptions, async_logout } = useActions();
+    // const { async_set_all_subscriptions, async_logout } = useActions();
     
 
     // const { loading: subscriptions_loading, data: subscriptions_data } = useQuery(GET_ALL_SUBSCRIPTIONS,   
     // {
     //     variables: input,
-    //     onCompleted: data => async_get_all_subscriptions(data.get_all_subscriptions),
+    //     onCompleted: data => async_set_all_subscriptions(data.get_all_subscriptions),
     //     onError: err => 
     //     {
     //         console.log(err);
-    //         async_get_all_subscriptions([]);
+    //         async_set_all_subscriptions([]);
                     
     //         if (err.message === TOKEN.ERROR_MESSAGE) 
     //         {

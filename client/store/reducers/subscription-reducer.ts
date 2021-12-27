@@ -48,7 +48,7 @@ export const subscription_reducer = (state = initial_state, action: Subscription
                 error: action.payload
             }
         }
-        case SubscriptionsActionTypes.GET_SUBSCRIPTION:
+        case SubscriptionsActionTypes.SET_SUBSCRIPTION:
         {
             const update_subscriptions = state.subscriptions.map((subscription: ISubscription) => 
             { 
@@ -63,14 +63,14 @@ export const subscription_reducer = (state = initial_state, action: Subscription
                 error: undefined
             }
         }
-        case SubscriptionsActionTypes.GET_SUBSCRIPTION_ERROR:
+        case SubscriptionsActionTypes.SET_SUBSCRIPTION_ERROR:
         {
             return {
                 ...state,
                 error: action.payload
             }
         }
-        case SubscriptionsActionTypes.GET_ALL_SUBSCRIPTIONS:
+        case SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS:
         {
             return {
                 ...state, 
@@ -78,7 +78,7 @@ export const subscription_reducer = (state = initial_state, action: Subscription
                 error: undefined
             }
         }
-        case SubscriptionsActionTypes.GET_ALL_SUBSCRIPTIONS_ERROR:
+        case SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS_ERROR:
         {
             return {
                 ...state, 

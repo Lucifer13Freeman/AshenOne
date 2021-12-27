@@ -35,17 +35,17 @@ export enum CommentActionTypes
     ASYNC_CREATE_COMMENT = 'ASYNC_CREATE_COMMENT',
     CREATE_COMMENT_ERROR = 'CREATE_COMMENT_ERROR',
 
-    GET_COMMENT = 'GET_COMMENT',
-    ASYNC_GET_COMMENT = 'ASYNC_GET_COMMENT',
-    GET_COMMENT_ERROR = 'GET_COMMENT_ERROR',
+    SET_COMMENT = 'SET_COMMENT',
+    ASYNC_SET_COMMENT = 'ASYNC_SET_COMMENT',
+    SET_COMMENT_ERROR = 'SET_COMMENT_ERROR',
 
-    GET_ALL_COMMENTS = 'GET_ALL_COMMENTS',
-    ASYNC_GET_ALL_COMMENTS = 'ASYNC_GET_ALL_COMMENTS',
-    GET_ALL_COMMENTS_ERROR = 'GET_ALL_COMMENTS_ERROR',
+    SET_ALL_COMMENTS = 'SET_ALL_COMMENTS',
+    ASYNC_SET_ALL_COMMENTS = 'ASYNC_SET_ALL_COMMENTS',
+    SET_ALL_COMMENTS_ERROR = 'SET_ALL_COMMENTS_ERROR',
 
-    UPDATE_COMMENT = 'UPDATE_COMMENT',
-    ASYNC_UPDATE_COMMENT = 'ASYNC_UPDATE_COMMENT',
-    UPDATE_COMMENT_ERROR = 'UPDATE_COMMENT_ERROR',
+    // UPDATE_COMMENT = 'UPDATE_COMMENT',
+    // ASYNC_UPDATE_COMMENT = 'ASYNC_UPDATE_COMMENT',
+    // UPDATE_COMMENT_ERROR = 'UPDATE_COMMENT_ERROR',
 
     LIKE_COMMENT = 'LIKE_COMMENT',
     ASYNC_LIKE_COMMENT = 'ASYNC_LIKE_COMMENT',
@@ -80,57 +80,57 @@ interface ICreateCommentErrorAction
 
 interface IGetCommentAction
 {
-    type: CommentActionTypes.GET_COMMENT;
+    type: CommentActionTypes.SET_COMMENT;
     payload: IComment;
 }
 
 interface IAsyncGetCommentAction
 {
-    type: CommentActionTypes.ASYNC_GET_COMMENT;
+    type: CommentActionTypes.ASYNC_SET_COMMENT;
     payload: IComment;
 }
 
 interface IGetCommentErrorAction
 {
-    type: CommentActionTypes.GET_COMMENT_ERROR;
+    type: CommentActionTypes.SET_COMMENT_ERROR;
     payload: string;
 }
 
 interface IGetAllCommentsAction
 {
-    type: CommentActionTypes.GET_ALL_COMMENTS;
+    type: CommentActionTypes.SET_ALL_COMMENTS;
     payload: IComment[];
 }
 
 interface IAsyncGetAllCommentsAction
 {
-    type: CommentActionTypes.ASYNC_GET_ALL_COMMENTS;
+    type: CommentActionTypes.ASYNC_SET_ALL_COMMENTS;
     payload: IComment[];
 }
 
 interface IGetAllCommentsErrorAction
 {
-    type: CommentActionTypes.GET_ALL_COMMENTS_ERROR;
+    type: CommentActionTypes.SET_ALL_COMMENTS_ERROR;
     payload: string;
 }
 
-interface IUpdateCommentAction
-{
-    type: CommentActionTypes.UPDATE_COMMENT;
-    payload: IComment;
-}
+// interface IUpdateCommentAction
+// {
+//     type: CommentActionTypes.UPDATE_COMMENT;
+//     payload: IComment;
+// }
 
-interface IAsyncUpdateCommentAction
-{
-    type: CommentActionTypes.ASYNC_UPDATE_COMMENT;
-    payload: IComment;
-}
+// interface IAsyncUpdateCommentAction
+// {
+//     type: CommentActionTypes.ASYNC_UPDATE_COMMENT;
+//     payload: IComment;
+// }
 
-interface IUpdateCommentErrorAction
-{
-    type: CommentActionTypes.UPDATE_COMMENT_ERROR;
-    payload: string;
-}
+// interface IUpdateCommentErrorAction
+// {
+//     type: CommentActionTypes.UPDATE_COMMENT_ERROR;
+//     payload: string;
+// }
 
 interface ILikeCommentAction
 {
@@ -178,9 +178,9 @@ export type CommentAction = ICreateCommentAction
                             | IGetAllCommentsAction
                             | IAsyncGetAllCommentsAction
                             | IGetAllCommentsErrorAction
-                            | IUpdateCommentAction
-                            | IAsyncUpdateCommentAction
-                            | IUpdateCommentErrorAction
+                            // | IUpdateCommentAction
+                            // | IAsyncUpdateCommentAction
+                            // | IUpdateCommentErrorAction
                             | ILikeCommentAction
                             | IAsyncLikeCommentAction
                             | ILikeCommentErrorAction

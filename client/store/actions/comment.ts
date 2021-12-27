@@ -1,13 +1,13 @@
 import { IComment, CommentActionTypes, ILikeComment } from '../../types/comment';
 
 
-export const get_all_comments = ({ payload }: any) =>
+export const set_all_comments = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: CommentActionTypes.GET_ALL_COMMENTS,
+            type: CommentActionTypes.SET_ALL_COMMENTS,
             payload
         });
     } 
@@ -15,25 +15,25 @@ export const get_all_comments = ({ payload }: any) =>
     {
         return (
         { 
-            type: CommentActionTypes.GET_ALL_COMMENTS_ERROR, 
+            type: CommentActionTypes.SET_ALL_COMMENTS_ERROR, 
             payload: 'Comments loading error!'
         });
     }
 }
 
-export const async_get_all_comments = (payload: IComment[]) => (
+export const async_set_all_comments = (payload: IComment[]) => (
 {
-    type: CommentActionTypes.ASYNC_GET_ALL_COMMENTS,
+    type: CommentActionTypes.ASYNC_SET_ALL_COMMENTS,
     payload
 });
 
-export const get_comment = ({ payload }: any) =>
+export const set_comment = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: CommentActionTypes.GET_COMMENT,
+            type: CommentActionTypes.SET_COMMENT,
             payload
         });
     } 
@@ -41,15 +41,15 @@ export const get_comment = ({ payload }: any) =>
     {
         return (
         { 
-            type: CommentActionTypes.GET_COMMENT_ERROR, 
+            type: CommentActionTypes.SET_COMMENT_ERROR, 
             payload: 'Comment loading error!'
         });
     }
 }
 
-export const async_get_comment = (payload: IComment | null) => (
+export const async_set_comment = (payload: IComment | null) => (
 {
-    type: CommentActionTypes.ASYNC_GET_COMMENT,
+    type: CommentActionTypes.ASYNC_SET_COMMENT,
     payload
 });
 
@@ -79,31 +79,31 @@ export const async_create_comment = (payload: IComment | null) => (
     payload
 });
 
-export const update_comment = ({ payload }: any) =>
-{
-    try
-    { 
-        return (
-        {
-            type: CommentActionTypes.UPDATE_COMMENT,
-            payload
-        });
-    } 
-    catch (err) 
-    {
-        return (
-        { 
-            type: CommentActionTypes.UPDATE_COMMENT_ERROR, 
-            payload: 'Comment loading error!'
-        });
-    }
-}
+// export const update_comment = ({ payload }: any) =>
+// {
+//     try
+//     { 
+//         return (
+//         {
+//             type: CommentActionTypes.UPDATE_COMMENT,
+//             payload
+//         });
+//     } 
+//     catch (err) 
+//     {
+//         return (
+//         { 
+//             type: CommentActionTypes.UPDATE_COMMENT_ERROR, 
+//             payload: 'Comment loading error!'
+//         });
+//     }
+// }
 
-export const async_update_comment = (payload: IComment | null) => (
-{
-    type: CommentActionTypes.ASYNC_UPDATE_COMMENT,
-    payload
-});
+// export const async_update_comment = (payload: IComment | null) => (
+// {
+//     type: CommentActionTypes.ASYNC_UPDATE_COMMENT,
+//     payload
+// });
 
 export const like_comment = ({ payload }: any) =>
 {

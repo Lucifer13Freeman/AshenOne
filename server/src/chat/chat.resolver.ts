@@ -11,7 +11,7 @@ import { GetUserInput } from 'src/user/inputs/get-user.input';
 import { GetChatInput } from './inputs/chat/get-chat.input';
 import { GetAllChatsInput } from './inputs/chat/get-all-chats.input';
 import { SearchChatInput } from './inputs/chat/search-chat.input';
-import { GetMemberInput } from './inputs/chat/get-member.input';
+import { GetChatMemberInput } from './inputs/chat/get-member.input';
 import { ChatType } from './dto/chat.dto';
 
 
@@ -125,8 +125,8 @@ export class ChatResolver
 
 
     @Mutation(() => ChatType)
-    async add_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetMemberInput) 
+    async add_chat_member(@GqlCurrentUser() user: GetUserInput,
+                    @Args('input') input: GetChatMemberInput) 
     {
         try
         {
@@ -142,8 +142,8 @@ export class ChatResolver
 
 
     @Mutation(() => ChatType)
-    async remove_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetMemberInput) 
+    async remove_chat_member(@GqlCurrentUser() user: GetUserInput,
+                    @Args('input') input: GetChatMemberInput) 
     {
         try
         {

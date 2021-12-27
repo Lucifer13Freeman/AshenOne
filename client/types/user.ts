@@ -21,13 +21,13 @@ export interface IUserState
 
 export enum UserActionTypes
 {
-    GET_USER = 'GET_USER',
-    ASYNC_GET_USER = 'ASYNC_GET_USER',
-    GET_USER_ERROR = 'GET_USER_ERROR',
+    SET_USER = 'SET_USER',
+    ASYNC_SET_USER = 'ASYNC_SET_USER',
+    SET_USER_ERROR = 'SET_USER_ERROR',
 
-    GET_ALL_USERS = 'GET_ALL_USERS',
-    ASYNC_GET_ALL_USERS = 'ASYNC_GET_ALL_USERS',
-    GET_ALL_USERS_ERROR = 'GET_ALL_USERS_ERROR',
+    SET_ALL_USERS = 'SET_ALL_USERS',
+    ASYNC_SET_ALL_USERS = 'ASYNC_SET_ALL_USERS',
+    SET_ALL_USERS_ERROR = 'SET_ALL_USERS_ERROR',
 
     DELETE_USER = 'DELETE_USER',
     ASYNC_DELETE_USER = 'ASYNC_DELETE_USER',
@@ -36,37 +36,37 @@ export enum UserActionTypes
 
 interface IGetUserAction
 {
-    type: UserActionTypes.GET_USER;
+    type: UserActionTypes.SET_USER;
     payload: IUser
 }
 
 interface IAsyncGetUserAction
 {
-    type: UserActionTypes.ASYNC_GET_USER;
+    type: UserActionTypes.ASYNC_SET_USER;
     payload: IUser
 }
 
 interface IGetUserErrorAction
 {
-    type: UserActionTypes.GET_USER_ERROR;
+    type: UserActionTypes.SET_USER_ERROR;
     payload: string
 }
 
 interface IGetAllUsersAction
 {
-    type: UserActionTypes.GET_ALL_USERS;
+    type: UserActionTypes.SET_ALL_USERS;
     payload: IUser[]
 }
 
 interface IAsyncGetAllUsersAction
 {
-    type: UserActionTypes.ASYNC_GET_ALL_USERS;
+    type: UserActionTypes.ASYNC_SET_ALL_USERS;
     payload: IUser[];
 }
 
 interface IGetAllUsersErrorAction
 {
-    type: UserActionTypes.GET_ALL_USERS_ERROR;
+    type: UserActionTypes.SET_ALL_USERS_ERROR;
     payload: string
 }
 

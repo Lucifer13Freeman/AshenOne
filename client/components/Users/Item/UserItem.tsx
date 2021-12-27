@@ -4,7 +4,7 @@ import { IUser } from "../../../types/user";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import styles from "../../../styles/UserItem.module.scss";
-import { ROUTES, URL } from "../../../utils/constants";
+import { ROUTES, LINKS } from "../../../utils/constants";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { useActions } from "../../../hooks/useAction";
 import { useLazyQuery, useMutation } from "@apollo/client";
@@ -37,14 +37,25 @@ const UserItem: React.FC<UserItemProps> = ({ user }) =>
 
     //const [errors, set_errors] = useState(initial_error);
 
-    const [create_chat, { loading: chat_loading }] = useMutation(CREATE_CHAT, 
+    const { async_logout, async_set_chat } = useActions();
+
+    const [create_chat, {data: create_chat_data, loading: chat_loading }] = useMutation(CREATE_CHAT, 
     {
-        onCompleted: (data) => router.push(ROUTES.CHATS + data.create_chat.id),
+        onCompleted: (data) => 
+        {
+            async_set_chat(data.create_chat);
+            router.push(ROUTES.CHATS + data.create_chat.id)
+        },
         onError: (err) => 
         {
             console.log(err);
             //set_errors(err.graphQLErrors[0].extensions?.errors);
-            router.push(ROUTES.CHATS + err.graphQLErrors[0].extensions?.errors.chat_id);
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+            else router.push(ROUTES.CHATS/* + err.graphQLErrors[0].extensions?.errors.chat_id*/);
         }
     });
 
@@ -59,7 +70,7 @@ const UserItem: React.FC<UserItemProps> = ({ user }) =>
 
         <Card className={styles.user} raised>
             <IconButton onClick={() => router.push(ROUTES.PEOPLE + user.id)}>
-                <Avatar alt={user.username} src={`${URL.STATIC_FILES_LINK}${user.avatar}`}/>
+                <Avatar alt={user.username} src={`${LINKS.STATIC_FILES_LINK}${user.avatar}`}/>
             </IconButton>
             <CardActionArea style={{ borderRadius: 10, padding: 4 }}>
                 <Grid 

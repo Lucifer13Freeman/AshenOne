@@ -34,7 +34,7 @@ export const comment_reducer = (state = initial_state, action: CommentAction): I
                 error: action.payload
             }
         }
-        case CommentActionTypes.GET_COMMENT:
+        case CommentActionTypes.SET_COMMENT:
         {
             const update_comments = state.comments.map((comment: IComment) => 
             { 
@@ -49,14 +49,14 @@ export const comment_reducer = (state = initial_state, action: CommentAction): I
                 error: undefined
             }
         }
-        case CommentActionTypes.GET_COMMENT_ERROR:
+        case CommentActionTypes.SET_COMMENT_ERROR:
         {
             return {
                 ...state,
                 error: action.payload
             }
         }
-        case CommentActionTypes.GET_ALL_COMMENTS:
+        case CommentActionTypes.SET_ALL_COMMENTS:
         {
             return {
                 ...state, 
@@ -64,7 +64,7 @@ export const comment_reducer = (state = initial_state, action: CommentAction): I
                 error: undefined
             }
         }
-        case CommentActionTypes.GET_ALL_COMMENTS_ERROR:
+        case CommentActionTypes.SET_ALL_COMMENTS_ERROR:
         {
             return {
                 ...state, 

@@ -12,7 +12,7 @@ export const report_reducer = (state = initial_state, action: ReportAction): IRe
 {
     switch (action.type) 
     {
-        case ReportActionTypes.GET_STATISTICS_REPORT:
+        case ReportActionTypes.SET_STATISTICS_REPORT:
         {
             return {
                 ...state, 
@@ -20,7 +20,7 @@ export const report_reducer = (state = initial_state, action: ReportAction): IRe
                 error: undefined
             }
         }
-        case ReportActionTypes.GET_STATISTICS_REPORT_ERROR:
+        case ReportActionTypes.SET_STATISTICS_REPORT_ERROR:
         {
             return {
                 ...state,

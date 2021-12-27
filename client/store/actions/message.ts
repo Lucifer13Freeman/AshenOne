@@ -1,13 +1,13 @@
 import { IMessage, MessageActionTypes } from '../../types/message';
 
 
-export const get_all_messages = ({ payload }: any) =>
+export const set_all_messages = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: MessageActionTypes.GET_ALL_MESSAGES,
+            type: MessageActionTypes.SET_ALL_MESSAGES,
             payload
         });
     } 
@@ -15,25 +15,25 @@ export const get_all_messages = ({ payload }: any) =>
     {
         return (
         { 
-            type: MessageActionTypes.GET_ALL_MESSAGES_ERROR, 
+            type: MessageActionTypes.SET_ALL_MESSAGES_ERROR, 
             payload: 'Messages loading error!'
         });
     }
 }
 
-export const async_get_all_messages = (payload: IMessage[]) => (
+export const async_set_all_messages = (payload: IMessage[]) => (
 {
-    type: MessageActionTypes.ASYNC_GET_ALL_MESSAGES,
+    type: MessageActionTypes.ASYNC_SET_ALL_MESSAGES,
     payload
 });
 
-export const get_message = ({ payload }: any) =>
+export const set_message = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: MessageActionTypes.GET_MESSAGE,
+            type: MessageActionTypes.SET_MESSAGE,
             payload
         });
     } 
@@ -41,15 +41,15 @@ export const get_message = ({ payload }: any) =>
     {
         return (
         { 
-            type: MessageActionTypes.GET_MESSAGE_ERROR, 
+            type: MessageActionTypes.SET_MESSAGE_ERROR, 
             payload: 'Message loading error!'
         });
     }
 }
 
-export const async_get_message = (payload: IMessage | null) => (
+export const async_set_message = (payload: IMessage | null) => (
 {
-    type: MessageActionTypes.ASYNC_GET_MESSAGE,
+    type: MessageActionTypes.ASYNC_SET_MESSAGE,
     payload
 });
 
@@ -79,31 +79,31 @@ export const async_create_message = (payload: IMessage | null) => (
     payload
 });
 
-export const update_message = ({ payload }: any) =>
-{
-    try
-    { 
-        return (
-        {
-            type: MessageActionTypes.UPDATE_MESSAGE,
-            payload
-        });
-    } 
-    catch (err) 
-    {
-        return (
-        { 
-            type: MessageActionTypes.UPDATE_MESSAGE_ERROR, 
-            payload: 'Message loading error!'
-        });
-    }
-}
+// export const update_message = ({ payload }: any) =>
+// {
+//     try
+//     { 
+//         return (
+//         {
+//             type: MessageActionTypes.UPDATE_MESSAGE,
+//             payload
+//         });
+//     } 
+//     catch (err) 
+//     {
+//         return (
+//         { 
+//             type: MessageActionTypes.UPDATE_MESSAGE_ERROR, 
+//             payload: 'Message loading error!'
+//         });
+//     }
+// }
 
-export const async_update_message = (payload: IMessage | null) => (
-{
-    type: MessageActionTypes.ASYNC_UPDATE_MESSAGE,
-    payload
-});
+// export const async_update_message = (payload: IMessage | null) => (
+// {
+//     type: MessageActionTypes.ASYNC_UPDATE_MESSAGE,
+//     payload
+// });
 
 export const delete_message = ({ payload }: any) =>
 {

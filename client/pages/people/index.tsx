@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { wrapper } from "../../store";
 import UserList from '../../components/Users/List/UserList';
-import { async_get_all_users, get_all_users } from "../../store/actions/user";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { useActions } from "../../hooks/useAction";
 import { Component, useState } from "react";
@@ -30,7 +29,7 @@ const UsersPage: React.FC = () =>
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { users, error: users_error } = useTypedSelector(state => state.user);
 
-    const { async_get_all_users, async_logout } = useActions();
+    const { async_set_all_users, async_logout } = useActions();
 
     const input = {
         input: {
@@ -65,11 +64,11 @@ const UsersPage: React.FC = () =>
 
     const [search_users, { loading: search_user_loading, data: search_user_data }] = useLazyQuery(SEARCH_USERS,
     {
-        onCompleted: data => async_get_all_users(data.search_users),
+        onCompleted: data => async_set_all_users(data.search_users),
         onError: err => 
         {
             console.log(err);
-            async_get_all_users([]);
+            async_set_all_users([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -83,11 +82,11 @@ const UsersPage: React.FC = () =>
     const { loading: users_loading, data: users_data } = useQuery(GET_ALL_USERS,   
     {
         variables: input,
-        onCompleted: data => async_get_all_users(data.get_all_users),
+        onCompleted: data => async_set_all_users(data.get_all_users),
         onError: err => 
         {
             console.log(err);
-            async_get_all_users([]);
+            async_set_all_users([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -170,7 +169,7 @@ export default UsersPage;
 //     store => async () =>
 //     {
 //         const dispatch = store.dispatch;
-//         await dispatch(async_get_all_users());
+//         await dispatch(async_set_all_users());
 //         store.dispatch(END);
 //         await store.sagaTask.toPromise();
 

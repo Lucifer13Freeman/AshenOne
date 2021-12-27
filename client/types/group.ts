@@ -5,11 +5,14 @@ import { IUser } from "./user";
 export interface IGroup
 {
     id: string;
-    admin_id: string,
-    members: IUser[],
-    posts: IPost[],
-    is_private?: string,
-    is_secure?: string,
+    name: string;
+    avatar: string;
+    admin_id: string;
+    moderator_ids: string[];
+    members: IUser[];
+    posts: IPost[];
+    is_private?: string;
+    is_secure?: string;
     created_at: Date;
     updated_at?: Date;
 }
@@ -27,17 +30,25 @@ export enum GroupActionTypes
     ASYNC_CREATE_GROUP = 'ASYNC_CREATE_GROUP',
     CREATE_GROUP_ERROR = 'CREATE_GROUP_ERROR',
 
-    GET_GROUP = 'GET_GROUP',
-    ASYNC_GET_GROUP = 'ASYNC_GET_GROUP',
-    GET_GROUP_ERROR = 'GET_GROUP_ERROR',
+    SET_GROUP = 'SET_GROUP',
+    ASYNC_SET_GROUP = 'ASYNC_SET_GROUP',
+    SET_GROUP_ERROR = 'SET_GROUP_ERROR',
 
-    GET_ALL_GROUPS = 'GET_ALL_GROUPS',
-    ASYNC_GET_ALL_GROUPS = 'ASYNC_GET_ALL_GROUPS',
-    GET_ALL_GROUPS_ERROR = 'GET_ALL_GROUPS_ERROR',
+    SET_ALL_GROUPS = 'SET_ALL_GROUPS',
+    ASYNC_SET_ALL_GROUPS = 'ASYNC_SET_ALL_GROUPS',
+    SET_ALL_GROUPS_ERROR = 'SET_ALL_GROUPS_ERROR',
 
     SEARCH_GROUPS = 'SEARCH_GROUPS',
     ASYNC_SEARCH_GROUPS = 'ASYNC_SEARCH_GROUPS',
     SEARCH_GROUPS_ERROR = 'SEARCH_GROUPS_ERROR',
+
+    // SET_MY_GROUPS = 'SET_ALL_GROUPS',
+    // ASYNC_SET_MY_GROUPS = 'ASYNC_SET_ALL_GROUPS',
+    // SET_MY_GROUPS_ERROR = 'SET_ALL_GROUPS_ERROR',
+
+    // SEARCH_SET_MY_GROUPS = 'SEARCH_GROUPS',
+    // ASYNC_SET_MY_GROUPS = 'ASYNC_SEARCH_GROUPS',
+    // SET_MY_GROUPS_ERROR = 'SEARCH_GROUPS_ERROR',
 
     DELETE_GROUP = 'DELETE_GROUP',
     ASYNC_DELETE_GROUP = 'ASYNC_DELETE_GROUP',
@@ -49,7 +60,11 @@ export enum GroupActionTypes
 
     REMOVE_MEMBER = 'REMOVE_MEMBER',
     ASYNC_REMOVE_MEMBER = 'ASYNC_REMOVE_MEMBER',
-    REMOVE_MEMBER_ERROR = 'REMOVE_MEMBER_ERROR'
+    REMOVE_MEMBER_ERROR = 'REMOVE_MEMBER_ERROR',
+
+    LEAVE_GROUP = 'LEAVE_GROUP',
+    ASYNC_LEAVE_GROUP = 'ASYNC_LEAVE_GROUP',
+    LEAVE_GROUP_ERROR = 'LEAVE_GROUP_ERROR'
 }
 
 interface ICreateGroupAction
@@ -72,37 +87,37 @@ interface ICreateGroupErrorAction
 
 interface IGetGroupAction
 {
-    type: GroupActionTypes.GET_GROUP;
+    type: GroupActionTypes.SET_GROUP;
     payload: IGroup
 }
 
 interface IAsyncGetGroupAction
 {
-    type: GroupActionTypes.ASYNC_GET_GROUP;
+    type: GroupActionTypes.ASYNC_SET_GROUP;
     payload: IGroup
 }
 
 interface IGetGroupErrorAction
 {
-    type: GroupActionTypes.GET_GROUP_ERROR;
+    type: GroupActionTypes.SET_GROUP_ERROR;
     payload: string
 }
 
 interface IGetAllGroupsAction
 {
-    type: GroupActionTypes.GET_ALL_GROUPS;
+    type: GroupActionTypes.SET_ALL_GROUPS;
     payload: IGroup[]
 }
 
 interface IAsyncGetAllGroupsAction
 {
-    type: GroupActionTypes.ASYNC_GET_ALL_GROUPS;
+    type: GroupActionTypes.ASYNC_SET_ALL_GROUPS;
     payload: IGroup[];
 }
 
 interface IGetAllGroupsErrorAction
 {
-    type: GroupActionTypes.GET_ALL_GROUPS_ERROR;
+    type: GroupActionTypes.SET_ALL_GROUPS_ERROR;
     payload: string
 }
 
@@ -178,6 +193,24 @@ interface IRemoveMemberErrorAction
     payload: string
 }
 
+interface ILeaveGroupAction
+{
+    type: GroupActionTypes.LEAVE_GROUP;
+    payload: IGroup
+}
+
+interface IAsyncLeaveGroupAction
+{
+    type: GroupActionTypes.ASYNC_LEAVE_GROUP;
+    payload: IGroup
+}
+
+interface ILeaveGroupErrorAction
+{
+    type: GroupActionTypes.LEAVE_GROUP_ERROR;
+    payload: string
+}
+
 
 export type GroupAction = ICreateGroupAction 
                         | IAsyncCreateGroupAction
@@ -199,4 +232,7 @@ export type GroupAction = ICreateGroupAction
                         | IAddMemberErrorAction
                         | IRemoveMemberAction
                         | IAsyncRemoveMemberAction
-                        | IRemoveMemberErrorAction;
+                        | IRemoveMemberErrorAction
+                        | ILeaveGroupAction
+                        | IAsyncLeaveGroupAction
+                        | ILeaveGroupErrorAction;

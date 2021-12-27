@@ -29,7 +29,7 @@ export const chat_reducer = (state = initial_state, action: ChatAction): IChatSt
                 error: action.payload
             }
         }
-        case ChatActionTypes.GET_CHAT:
+        case ChatActionTypes.SET_CHAT:
         {
             // const new_chat = action.payload;
             // let update_chats = [...state.chats];
@@ -49,14 +49,14 @@ export const chat_reducer = (state = initial_state, action: ChatAction): IChatSt
                 error: undefined
             }
         }
-        case ChatActionTypes.GET_CHAT_ERROR:
+        case ChatActionTypes.SET_CHAT_ERROR:
         {
             return {
                 ...state,
                 error: action.payload
             }
         }
-        case ChatActionTypes.GET_ALL_CHATS:
+        case ChatActionTypes.SET_ALL_CHATS:
         {
             return {
                 ...state, 
@@ -64,7 +64,7 @@ export const chat_reducer = (state = initial_state, action: ChatAction): IChatSt
                 error: undefined
             }
         }
-        case ChatActionTypes.GET_ALL_CHATS_ERROR:
+        case ChatActionTypes.SET_ALL_CHATS_ERROR:
         {
             return {
                 ...state, 

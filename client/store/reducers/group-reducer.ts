@@ -1,4 +1,4 @@
-import { GroupAction, GroupActionTypes, IGroupState } from "../../types/groups"
+import { GroupAction, GroupActionTypes, IGroup, IGroupState } from "../../types/group"
 
 
 const initial_state: IGroupState = {
@@ -12,37 +12,45 @@ export const group_reducer = (state = initial_state, action: GroupAction): IGrou
 {
     switch (action.type) 
     {
-        // case GroupActionTypes.CREATE_GROUP:
-        // {
-        //     return {
-        //         ...state,
-        //         groups: [...groups, action.payload],
-        //         error: ''
-        //     }
-        // }
-        // case GroupActionTypes.CREATE_GROUP_ERROR:
-        // {
-        //     return {
-        //         ...state,
-        //         error: action.payload
-        //     }
-        // }
-        case GroupActionTypes.GET_GROUP:
+        case GroupActionTypes.CREATE_GROUP:
         {
             return {
-                ...state, 
+                ...state,
                 group: action.payload,
-                error: undefined
+                groups: [...state.groups, action.payload],
+                error: ''
             }
         }
-        case GroupActionTypes.GET_GROUP_ERROR:
+        case GroupActionTypes.CREATE_GROUP_ERROR:
         {
             return {
                 ...state,
                 error: action.payload
             }
         }
-        case GroupActionTypes.GET_ALL_GROUPS:
+        case GroupActionTypes.SET_GROUP:
+        {
+            const update_groups = state.groups.map((group: IGroup) => 
+            { 
+                if (group.id === action.payload.id) group = action.payload
+                return group 
+            });
+
+            return {
+                ...state, 
+                group: action.payload,
+                groups: update_groups,
+                error: undefined
+            }
+        }
+        case GroupActionTypes.SET_GROUP_ERROR:
+        {
+            return {
+                ...state,
+                error: action.payload
+            }
+        }
+        case GroupActionTypes.SET_ALL_GROUPS:
         {
             return {
                 ...state, 
@@ -50,10 +58,34 @@ export const group_reducer = (state = initial_state, action: GroupAction): IGrou
                 error: undefined
             }
         }
-        case GroupActionTypes.GET_ALL_GROUPS_ERROR:
+        case GroupActionTypes.SET_ALL_GROUPS_ERROR:
         {
             return {
                 ...state, 
+                error: action.payload
+            }
+        }
+        case GroupActionTypes.LEAVE_GROUP:
+        {
+            // const update_groups = state.groups.map((group: IGroup) => 
+            // { 
+            //     if (group.id === action.payload.id) group = action.payload
+            //     return group 
+            // });
+
+            const update_groups = state.groups.filter((group: IGroup) => group.id !== action.payload.id);
+
+            return {
+                ...state, 
+                group: null,
+                groups: update_groups,
+                error: undefined
+            }
+        }
+        case GroupActionTypes.LEAVE_GROUP_ERROR:
+        {
+            return {
+                ...state,
                 error: action.payload
             }
         }

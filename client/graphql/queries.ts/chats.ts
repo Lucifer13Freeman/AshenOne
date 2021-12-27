@@ -19,7 +19,7 @@ const GET_CHAT = gql`
                 created_at
                 updated_at
             }
-            is_open
+            is_private
             is_secure
             created_at 
             updated_at
@@ -45,7 +45,7 @@ const GET_ALL_CHATS = gql`
                 created_at
                 updated_at
             }
-            is_open
+            is_private
             is_secure
             created_at 
             updated_at
@@ -71,7 +71,7 @@ const SEARCH_CHATS = gql`
                 created_at
                 updated_at
             }
-            is_open
+            is_private
             is_secure
             created_at 
             updated_at

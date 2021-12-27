@@ -53,7 +53,7 @@ type ChatType {
   admin_id: ID!
   members: [UserType!]!
   messages: [MessageType!]
-  is_open: Boolean
+  is_private: Boolean
   is_secure: Boolean
   created_at: DateTime
   updated_at: DateTime
@@ -107,10 +107,12 @@ type PostType {
 type GroupType {
   id: ID!
   name: String!
-  user_id: ID!
+  avatar: String!
+  admin_id: ID!
+  moderator_ids: [ID!]
   members: [UserType!]!
   posts: [PostType!]
-  is_open: Boolean
+  is_private: Boolean
   is_secure: Boolean
   created_at: DateTime
   updated_at: DateTime
@@ -147,12 +149,16 @@ type Query {
   check_subscription(input: GetSubscriptionInput!): Boolean
   get_post(input: GetPostInput!): PostType
   get_all_posts(input: GetAllPostsInput!): [PostType!]
+  get_user_posts(input: GetAllPostsInput!): [PostType!]
+  get_group_posts(input: GetAllPostsInput!): [PostType!]
   search_posts(input: SearchPostInput!): [PostType!]
+  search_user_posts(input: SearchPostInput!): [PostType!]
+  search_group_posts(input: SearchPostInput!): [PostType!]
   get_comment(input: GetCommentInput!): CommentType
   get_all_comments(input: GetAllCommentsInput!): [CommentType!]
   search_comments(input: SearchCommentInput!): [CommentType!]
   get_group(input: GetGroupInput!): GroupType
-  get_all_groups: [GroupType!]
+  get_all_groups(input: GetAllGroupsInput!): [GroupType!]
   search_groups(input: SearchGroupInput!): [GroupType!]
 }
 
@@ -291,6 +297,15 @@ input GetGroupInput {
   is_secure: Boolean
 }
 
+input GetAllGroupsInput {
+  current_user_id: ID
+  is_my: Boolean
+  is_private: Boolean
+  is_secure: Boolean
+  limit: Int
+  offset: Int = 0
+}
+
 input SearchGroupInput {
   username: String
   post_text: String
@@ -307,8 +322,8 @@ type Mutation {
   create_chat(input: CreateChatInput!): ChatType!
   delete_chat(input: GetChatInput!): String!
   delete_all_messages_in_chat(input: GetChatInput!): ChatType!
-  add_member(input: GetMemberInput!): GroupType!
-  remove_member(input: GetMemberInput!): GroupType!
+  add_chat_member(input: GetChatMemberInput!): ChatType!
+  remove_chat_member(input: GetChatMemberInput!): ChatType!
   create_message(input: CreateMessageInput!): MessageType!
   update_message(input: UpdateMessageInput!): MessageType!
   create_reaction(input: CreateReactionInput!): ReactionType!
@@ -327,6 +342,8 @@ type Mutation {
   delete_comment(input: GetCommentInput!): String!
   create_group(input: CreateGroupInput!): GroupType!
   delete_group(input: GetGroupInput!): String!
+  add_group_member(input: GetGroupMemberInput!): GroupType!
+  remove_group_member(input: GetGroupMemberInput!): GroupType!
 }
 
 input LoginUserInput {
@@ -359,9 +376,9 @@ input CreateChatInput {
   members: [ID!]
 }
 
-input GetMemberInput {
+input GetChatMemberInput {
   user_id: ID!
-  group_id: ID!
+  chat_id: ID!
   current_user_id: ID
 }
 
@@ -448,6 +465,12 @@ input CreateGroupInput {
   avatar: String
   is_private: Boolean
   is_secure: Boolean
+}
+
+input GetGroupMemberInput {
+  user_id: ID!
+  group_id: ID!
+  current_user_id: ID
 }
 
 type Subscription {

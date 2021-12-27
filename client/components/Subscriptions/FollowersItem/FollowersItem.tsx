@@ -1,7 +1,7 @@
 import { Card, Grid, IconButton, Avatar, Typography, CardContent, CardActionArea } from "@mui/material";
 import { useRouter } from "next/router";
 import styles from "../../../styles/Item.module.scss";
-import { ROUTES, URL } from "../../../utils/constants";
+import { ROUTES, LINKS } from "../../../utils/constants";
 import React, { useEffect } from "react";
 import { ISubscription } from "../../../types/subscription";
 
@@ -25,7 +25,7 @@ const FollowersItem: React.FC<FollowersItemProps> = ({ subscription }) =>
                 <IconButton onClick={() => router.push(ROUTES.PEOPLE + subscription.follower.id)}>
                     <Avatar 
                         alt={subscription.follower.username} 
-                        src={URL.STATIC_FILES_LINK + subscription.follower.avatar}
+                        src={LINKS.STATIC_FILES_LINK + subscription.follower.avatar}
                     />
                 </IconButton>
                 <Typography 

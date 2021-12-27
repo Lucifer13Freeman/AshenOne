@@ -10,7 +10,8 @@ import { GroupType } from './dto/group.dto';
 import { CreateGroupInput } from './inputs/create-group.input';
 import { GetGroupInput } from './inputs/get-group.input';
 import { SearchGroupInput } from './inputs/search-group.input';
-import { GetMemberInput } from './inputs/get-member.input';
+import { GetGroupMemberInput } from './inputs/get-member.input';
+import { GetAllGroupsInput } from './inputs/get-all-groups.input';
 
 
 @UseGuards(GqlAuthGuard)
@@ -37,8 +38,8 @@ export class GroupResolver
 
 
     @Query(() => [GroupType], { nullable: true })
-    async get_all_groups(@GqlCurrentUser() user: GetUserInput
-                        /*@Args('input') input: GetAllGroupsInput*/) 
+    async get_all_groups(@GqlCurrentUser() user: GetUserInput,
+                        @Args('input') input: GetAllGroupsInput) 
     {
         try
         {
@@ -104,8 +105,8 @@ export class GroupResolver
 
 
     @Mutation(() => GroupType)
-    async add_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetMemberInput) 
+    async add_group_member(@GqlCurrentUser() user: GetUserInput,
+                    @Args('input') input: GetGroupMemberInput) 
     {
         try
         {
@@ -121,8 +122,8 @@ export class GroupResolver
 
 
     @Mutation(() => GroupType)
-    async remove_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetMemberInput) 
+    async remove_group_member(@GqlCurrentUser() user: GetUserInput,
+                    @Args('input') input: GetGroupMemberInput) 
     {
         try
         {

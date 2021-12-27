@@ -27,13 +27,13 @@ export enum ChatActionTypes
     ASYNC_CREATE_CHAT = 'ASYNC_CREATE_CHAT',
     CREATE_CHAT_ERROR = 'CREATE_CHAT_ERROR',
 
-    GET_CHAT = 'GET_CHAT',
-    ASYNC_GET_CHAT = 'ASYNC_GET_CHAT',
-    GET_CHAT_ERROR = 'GET_CHAT_ERROR',
+    SET_CHAT = 'SET_CHAT',
+    ASYNC_SET_CHAT = 'ASYNC_SET_CHAT',
+    SET_CHAT_ERROR = 'SET_CHAT_ERROR',
 
-    GET_ALL_CHATS = 'GET_ALL_CHATS',
-    ASYNC_GET_ALL_CHATS = 'ASYNC_GET_ALL_CHATS',
-    GET_ALL_CHATS_ERROR = 'GET_ALL_CHATS_ERROR',
+    SET_ALL_CHATS = 'SET_ALL_CHATS',
+    ASYNC_SET_ALL_CHATS = 'ASYNC_SET_ALL_CHATS',
+    SET_ALL_CHATS_ERROR = 'SET_ALL_CHATS_ERROR',
 
     SEARCH_CHATS = 'SEARCH_CHATS',
     ASYNC_SEARCH_CHATS = 'ASYNC_SEARCH_CHATS',
@@ -76,37 +76,37 @@ interface ICreateChatErrorAction
 
 interface IGetChatAction
 {
-    type: ChatActionTypes.GET_CHAT;
+    type: ChatActionTypes.SET_CHAT;
     payload: IChat
 }
 
 interface IAsyncGetChatAction
 {
-    type: ChatActionTypes.ASYNC_GET_CHAT;
+    type: ChatActionTypes.ASYNC_SET_CHAT;
     payload: IChat
 }
 
 interface IGetChatErrorAction
 {
-    type: ChatActionTypes.GET_CHAT_ERROR;
+    type: ChatActionTypes.SET_CHAT_ERROR;
     payload: string
 }
 
 interface IGetAllChatsAction
 {
-    type: ChatActionTypes.GET_ALL_CHATS;
+    type: ChatActionTypes.SET_ALL_CHATS;
     payload: IChat[]
 }
 
 interface IAsyncGetAllChatsAction
 {
-    type: ChatActionTypes.ASYNC_GET_ALL_CHATS;
+    type: ChatActionTypes.ASYNC_SET_ALL_CHATS;
     payload: IChat[];
 }
 
 interface IGetAllChatsErrorAction
 {
-    type: ChatActionTypes.GET_ALL_CHATS_ERROR;
+    type: ChatActionTypes.SET_ALL_CHATS_ERROR;
     payload: string
 }
 

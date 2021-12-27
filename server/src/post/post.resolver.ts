@@ -77,6 +77,42 @@ export class PostResolver
 
     @UseGuards(GqlAuthGuard)
     @Query(() => [PostType], { nullable: true })
+    async get_user_posts(@GqlCurrentUser() user: GetUserInput,
+                            @Args('input') input: GetAllPostsInput) 
+    {
+        try
+        {
+            return await this.post_service.get_user_posts({ ...input, 
+                                                        current_user_id: user.id });
+        } 
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => [PostType], { nullable: true })
+    async get_group_posts(@GqlCurrentUser() user: GetUserInput,
+                            @Args('input') input: GetAllPostsInput) 
+    {
+        try
+        {
+            return await this.post_service.get_group_posts({ ...input, 
+                                                        current_user_id: user.id });
+        } 
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => [PostType], { nullable: true })
     async search_posts(@GqlCurrentUser() user: GetUserInput,
                         @Args('input') input: SearchPostInput) 
     {
@@ -84,6 +120,42 @@ export class PostResolver
         {
             return await this.post_service.search({ ...input, 
                                                     current_user_id: user.id });
+        } 
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => [PostType], { nullable: true })
+    async search_user_posts(@GqlCurrentUser() user: GetUserInput,
+                        @Args('input') input: SearchPostInput) 
+    {
+        try
+        {
+            return await this.post_service.search_user_posts({ ...input, 
+                                                            current_user_id: user.id });
+        } 
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => [PostType], { nullable: true })
+    async search_group_posts(@GqlCurrentUser() user: GetUserInput,
+                        @Args('input') input: SearchPostInput) 
+    {
+        try
+        {
+            return await this.post_service.search_group_posts({ ...input, 
+                                                            current_user_id: user.id });
         } 
         catch (err) 
         {

@@ -17,8 +17,14 @@ export class GroupType
     @Field()
     readonly name: string;
 
+    @Field()
+    readonly avatar: string;
+
     @Field(() => ID)
-    readonly user_id: string;//ObjectId;
+    readonly admin_id: string;//ObjectId;
+
+    @Field(() => [ID], { nullable: true })
+    readonly moderator_ids: string;
 
     @Field(() => [UserType])
     readonly members: User[];//Document[];
@@ -27,7 +33,7 @@ export class GroupType
     readonly posts: Post[];//Document[];
 
     @Field({ nullable: true })
-    readonly is_open: boolean;
+    readonly is_private: boolean;
 
     @Field({ nullable: true })
     readonly is_secure: boolean;

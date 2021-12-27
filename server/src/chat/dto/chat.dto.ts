@@ -25,7 +25,7 @@ export class ChatType
     readonly messages: Message[];//Document[]; //IMessage[]; //ObjectId;
 
     @Field({ nullable: true })
-    readonly is_open: boolean;
+    readonly is_private: boolean;
 
     @Field({ nullable: true })
     readonly is_secure: boolean;

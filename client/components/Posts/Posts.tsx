@@ -13,15 +13,16 @@ import PostForm from "./PostForm";
 interface PostsProps
 {
     posts: IPost[];
+    is_for_group?: boolean;
     //chat_id?: string | string[];
 }
 
-const Posts: React.FC<PostsProps> = ({ posts }) =>
+const Posts: React.FC<PostsProps> = ({ posts, is_for_group = false }) =>
 {
     // const { auth, error: auth_error } = useTypedSelector(state => state.auth);
 
     const { posts: state_posts, error: posts_error } = useTypedSelector(state => state.post);
-    const { async_get_all_posts, async_create_post } = useActions();
+    const { async_set_all_posts, async_create_post } = useActions();
 
     const { data: post_data, error: post_error } = useSubscription(NEW_POST);
 
@@ -34,8 +35,8 @@ const Posts: React.FC<PostsProps> = ({ posts }) =>
     return (
         // <>
             <Grid>
-                { posts.length > 0 
-                    ? <PostList posts={posts}/>
+                { posts?.length > 0 
+                    ? <PostList posts={posts} is_for_group={is_for_group}/>
                     : <div className={styles.no_posts}>Send your first post...</div>
                 }
             </Grid>

@@ -1,13 +1,13 @@
 import { ILikePost, IPost, PostActionTypes } from '../../types/post';
 
 
-export const get_all_posts = ({ payload }: any) =>
+export const set_all_posts = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: PostActionTypes.GET_ALL_POSTS,
+            type: PostActionTypes.SET_ALL_POSTS,
             payload
         });
     } 
@@ -15,25 +15,25 @@ export const get_all_posts = ({ payload }: any) =>
     {
         return (
         { 
-            type: PostActionTypes.GET_ALL_POSTS_ERROR, 
+            type: PostActionTypes.SET_ALL_POSTS_ERROR, 
             payload: 'Posts loading error!'
         });
     }
 }
 
-export const async_get_all_posts = (payload: IPost[]) => (
+export const async_set_all_posts = (payload: IPost[]) => (
 {
-    type: PostActionTypes.ASYNC_GET_ALL_POSTS,
+    type: PostActionTypes.ASYNC_SET_ALL_POSTS,
     payload
 });
 
-export const get_post = ({ payload }: any) =>
+export const set_post = ({ payload }: any) =>
 {
     try
     { 
         return (
         {
-            type: PostActionTypes.GET_POST,
+            type: PostActionTypes.SET_POST,
             payload
         });
     } 
@@ -41,15 +41,15 @@ export const get_post = ({ payload }: any) =>
     {
         return (
         { 
-            type: PostActionTypes.GET_POST_ERROR, 
+            type: PostActionTypes.SET_POST_ERROR, 
             payload: 'Post loading error!'
         });
     }
 }
 
-export const async_get_post = (payload: IPost | null) => (
+export const async_set_post = (payload: IPost | null) => (
 {
-    type: PostActionTypes.ASYNC_GET_POST,
+    type: PostActionTypes.ASYNC_SET_POST,
     payload
 });
 
@@ -79,31 +79,31 @@ export const async_create_post = (payload: IPost | null) => (
     payload
 });
 
-export const update_post = ({ payload }: any) =>
-{
-    try
-    { 
-        return (
-        {
-            type: PostActionTypes.UPDATE_POST,
-            payload
-        });
-    } 
-    catch (err) 
-    {
-        return (
-        { 
-            type: PostActionTypes.UPDATE_POST_ERROR, 
-            payload: 'Post loading error!'
-        });
-    }
-}
+// export const update_post = ({ payload }: any) =>
+// {
+//     try
+//     { 
+//         return (
+//         {
+//             type: PostActionTypes.UPDATE_POST,
+//             payload
+//         });
+//     } 
+//     catch (err) 
+//     {
+//         return (
+//         { 
+//             type: PostActionTypes.UPDATE_POST_ERROR, 
+//             payload: 'Post loading error!'
+//         });
+//     }
+// }
 
-export const async_update_post = (payload: IPost | null) => (
-{
-    type: PostActionTypes.ASYNC_UPDATE_POST,
-    payload
-});
+// export const async_update_post = (payload: IPost | null) => (
+// {
+//     type: PostActionTypes.ASYNC_UPDATE_POST,
+//     payload
+// });
 
 export const like_post = ({ payload }: any) =>
 {

@@ -23,8 +23,8 @@ const FeedPage: React.FC = () =>
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { user, error: users_error } = useTypedSelector(state => state.user);
     const { posts, error: posts_error } = useTypedSelector(state => state.post);
-    const { async_get_user, async_logout, async_get_all_posts, async_get_all_comments,
-            async_get_subscription, async_get_all_subscriptions } = useActions();
+    const { async_set_user, async_logout, async_set_all_posts, async_set_all_comments,
+            async_set_subscription, async_set_all_subscriptions } = useActions();
    
     const [query, set_query] = useState<string>('');
     const [timer, set_timer]: any = useState(null);
@@ -48,11 +48,11 @@ const FeedPage: React.FC = () =>
         
     const [search_posts, { loading: search_post_loading, data: search_post_data }] = useLazyQuery(SEARCH_POSTS,
     {
-        onCompleted: data => async_get_all_posts(data.search_posts),
+        onCompleted: data => async_set_all_posts(data.search_posts),
         onError: err => 
         {
             console.log(err);
-            async_get_all_posts([]);
+            async_set_all_posts([]);
                     
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -70,18 +70,18 @@ const FeedPage: React.FC = () =>
         onCompleted: data => 
         {
             const posts = data.get_all_posts;
-            async_get_all_posts(posts);
+            async_set_all_posts(posts);
                 
             if (posts)
             {
                 const comments: IComment[] = [].concat(...posts.map((post: IPost) => post.comments));
-                async_get_all_comments(comments);
+                async_set_all_comments(comments);
             }
         },
         onError: err => 
         {
             console.log(err);
-            async_get_user(null);
+            async_set_user(null);
                     
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {

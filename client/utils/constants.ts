@@ -1,5 +1,5 @@
 
-export enum URL
+export enum LINKS
 {
     HTTP_BASE = 'http://localhost:5000',
     HTTP_LINK = 'http://localhost:5000/graphql',

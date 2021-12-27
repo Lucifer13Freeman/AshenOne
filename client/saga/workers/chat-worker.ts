@@ -1,16 +1,22 @@
 import { put } from 'redux-saga/effects';
-import { get_all_chats, get_chat, leave_chat } from '../../store/actions/chat';
+import { create_chat, set_all_chats, set_chat, 
+        leave_chat } from '../../store/actions/chat';
 import { IChat } from '../../types/chat';
 
 
-export function* get_all_chats_worker(payload: IChat[]): Generator<any>
+export function* set_all_chats_worker(payload: IChat[]): Generator<any>
 {
-    yield put(get_all_chats(payload));
+    yield put(set_all_chats(payload));
 }
 
-export function* get_chat_worker(payload: IChat): Generator<any>
+export function* set_chat_worker(payload: IChat): Generator<any>
 {
-    yield put(get_chat(payload));
+    yield put(set_chat(payload));
+}
+
+export function* create_chat_worker(payload: IChat): Generator<any>
+{
+    yield put(create_chat(payload));
 }
 
 export function* leave_chat_worker(payload: IChat): Generator<any>

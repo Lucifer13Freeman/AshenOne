@@ -34,7 +34,7 @@ const ChatsPage: React.FC = () =>
     const { chats, error: chats_error } = useTypedSelector(state => state.chat);
     const { messages, error: messages_error } = useTypedSelector(state => state.message);
 
-    const { async_get_all_chats, async_get_all_messages, async_logout } = useActions();
+    const { async_set_all_chats, async_set_all_messages, async_logout } = useActions();
 
 
     const input = {
@@ -47,13 +47,13 @@ const ChatsPage: React.FC = () =>
     
     const /*[get_chats,*/ { loading: chats_loading, data: chats_data } = useQuery(GET_ALL_CHATS,   
     {
-        //update: data => async_get_all_chats(data.get_all_chats),
+        //update: data => async_set_all_chats(data.get_all_chats),
         variables: input,
-        onCompleted: data => async_get_all_chats(data.get_all_chats),
+        onCompleted: data => async_set_all_chats(data.get_all_chats),
         onError: err => 
         {
             console.log(err);
-            async_get_all_chats([]);
+            async_set_all_chats([]);
 
             if (err.message === TOKEN.ERROR_MESSAGE)
             {
@@ -65,7 +65,7 @@ const ChatsPage: React.FC = () =>
         nextFetchPolicy: "cache-first"
     });
     
-    //useEffect(() => {async_get_all_chats(chats_data.get_all_chats)}, [messages, chats]);
+    //useEffect(() => {async_set_all_chats(chats_data.get_all_chats)}, [messages, chats]);
     
     // if (!auth.user || !auth.is_auth) 
     // {
@@ -86,7 +86,7 @@ const ChatsPage: React.FC = () =>
         if (message_error) console.log(message_error);
         if (message_data) 
         {
-            async_get_all_messages([...messages, message_data.new_message]);
+            async_set_all_messages([...messages, message_data.new_message]);
             //get_chats();
             
             //router.reload();
@@ -122,11 +122,11 @@ const ChatsPage: React.FC = () =>
     const [search_chats, { loading: search_chat_loading, 
                             data: search_chat_data }] = useLazyQuery(SEARCH_CHATS,
     {
-        onCompleted: data => async_get_all_chats(data.search_chats),
+        onCompleted: data => async_set_all_chats(data.search_chats),
         onError: err => 
         {
             console.log(err);
-            async_get_all_chats([]);
+            async_set_all_chats([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -161,8 +161,8 @@ const ChatsPage: React.FC = () =>
     //     console.log(updated_chat)
     //     console.log(updated_chats)
         
-    //     //async_get_chat(updated_chat);
-    //     //async_get_all_chats(updated_chats);
+    //     //async_set_chat(updated_chat);
+    //     //async_set_all_chats(updated_chats);
     // }
 
 

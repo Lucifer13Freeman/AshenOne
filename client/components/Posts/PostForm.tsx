@@ -23,10 +23,10 @@ import { useRouter } from "next/router";
 
 interface PostFormProps 
 {
-    // chat_id?: string | string[];
+    group_id?: string | string[];
 }
 
-const PostForm: React.FC<PostFormProps> = () => 
+const PostForm: React.FC<PostFormProps> = ({ group_id = null}) => 
 {
     const router = useRouter();
 
@@ -35,7 +35,7 @@ const PostForm: React.FC<PostFormProps> = () =>
     const handle_post_text = (event: React.ChangeEvent<HTMLInputElement>) => set_post_text(event.target.value);
 
     const { post, error: posts_error } = useTypedSelector(state => state.post);
-    const { async_logout, async_get_user, async_create_post } = useActions();
+    const { async_logout, async_set_user, async_create_post } = useActions();
 
     const [create_post, { loading: post_loading }] = useMutation(CREATE_POST, 
     {
@@ -58,6 +58,7 @@ const PostForm: React.FC<PostFormProps> = () =>
 
         const input = {
             input: {
+                group_id,
                 text: post_text
             }
         }

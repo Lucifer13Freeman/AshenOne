@@ -34,7 +34,7 @@ const GroupsPage: React.FC = () =>
     const { groups, error: groups_error } = useTypedSelector(state => state.group);
     const { messages, error: messages_error } = useTypedSelector(state => state.message);
 
-    const { async_get_all_groups, async_get_all_messages, async_logout } = useActions();
+    const { async_set_all_groups, async_set_all_messages, async_logout } = useActions();
 
 
     const input = {
@@ -45,16 +45,16 @@ const GroupsPage: React.FC = () =>
     }
 
 
-    const [get_groups, { loading: groups_loading, data: groups_data }] = useLazyQuery(GET_ALL_GROUPS,   
+    const { loading: groups_loading, data: groups_data } = useQuery(GET_ALL_GROUPS,   
     {
-        //update: data => async_get_all_groups(data.get_all_groups),
+        //update: data => async_set_all_groups(data.get_all_groups),
         variables: input,
-        onCompleted: data => async_get_all_groups(data.get_all_groups),
+        onCompleted: data => async_set_all_groups(data.get_all_groups),
         onError: err => 
         {
             console.log(err);
-            async_get_all_groups([]);
-
+            async_set_all_groups([]);
+            
             if (err.message === TOKEN.ERROR_MESSAGE)
             {
                 async_logout();
@@ -62,44 +62,8 @@ const GroupsPage: React.FC = () =>
             }
         },
         // fetchPolicy: "cache-and-network",
-        // nextFetchPolicy: "cache-first"
+        nextFetchPolicy: "cache-first"
     });
-
-    //useEffect(() => {async_get_all_groups(groups_data.get_all_groups)}, [messages, groups]);
-
-    // if (!auth.user || !auth.is_auth) 
-    // {
-    //     //router.push(ROUTES.LOGIN);
-    //     window.location.href = ROUTES.LOGIN;
-    //     return null;
-    // }
-
-    const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
-
-    useEffect(() => 
-    {
-        get_groups();
-    }, []);
-
-    useEffect(() => 
-    {
-        if (message_error) console.log(message_error);
-        if (message_data) 
-        {
-            async_get_all_messages([...messages, message_data.new_message]);
-            //get_groups();
-            
-            //router.reload();
-
-            //router.push(ROUTES.GROUPS);
-
-            // console.log(message_data.new_message)
-            // console.log(groups)
-            
-            //update_groups();
-        }
-    }, [message_data, message_error]);
-
 
     const [query, set_query] = useState<string>('');
     const [timer, set_timer]: any = useState(null);
@@ -122,11 +86,11 @@ const GroupsPage: React.FC = () =>
     const [search_groups, { loading: search_group_loading, 
                             data: search_group_data }] = useLazyQuery(SEARCH_GROUPS,
     {
-        onCompleted: data => async_get_all_groups(data.search_groups),
+        onCompleted: data => async_set_all_groups(data.search_groups),
         onError: err => 
         {
             console.log(err);
-            async_get_all_groups([]);
+            async_set_all_groups([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -138,47 +102,46 @@ const GroupsPage: React.FC = () =>
     });
 
     return (
-    
-    <MainLayout>
-        <Grid container justifyContent='center'>
-            <Card style={{width: 900}}>
-                <Box p={2}>
-                    <Grid container justifyContent='space-between'>
-                        <Typography 
-                            variant="h4"
-                            color="primary"
-                            className={styles.page_title}
-                            style={{ marginRight: 16, marginBottom: 6 }}
-                            noWrap
-                        >
-                            Groups
-                        </Typography>
-                        <TextField
-                            value={query}
-                            onChange={search}
-                            //label={'Search...'}
-                            variant="outlined"
-                            style={{ marginRight: 'auto' }}
-                            placeholder="Search…"
-                            InputProps={
-                            {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchOutlinedIcon color="primary"/>
-                                    </InputAdornment> )
-                            }}
-                        />
+        <MainLayout>
+            <Grid container justifyContent='center'>
+                <Card style={{width: 900}}>
+                    <Box p={2}>
+                        <Grid container justifyContent='space-between'>
+                            <Typography 
+                                variant="h4"
+                                color="primary"
+                                className={styles.page_title}
+                                style={{ marginRight: 16, marginBottom: 6 }}
+                                noWrap
+                            >
+                                Groups
+                            </Typography>
+                            <TextField
+                                value={query}
+                                onChange={search}
+                                //label={'Search...'}
+                                variant="outlined"
+                                style={{ marginRight: 'auto' }}
+                                placeholder="Search…"
+                                InputProps={
+                                {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchOutlinedIcon color="primary"/>
+                                        </InputAdornment> )
+                                }}
+                            />
+                        </Grid>
+                    </Box>
+                    <Grid>
+                        {groups 
+                            ? <GroupList groups={groups}/>
+                            : <div>Groups not found!</div>
+                        }
                     </Grid>
-                </Box>
-                <Grid>
-                    {groups 
-                        ? <GroupList groups={groups}/>
-                        : <div>Groups not found!</div>
-                    }
-                </Grid>
-            </Card>
-        </Grid>
-    </MainLayout>
+                </Card>
+            </Grid>
+        </MainLayout>
     )
 }
 
