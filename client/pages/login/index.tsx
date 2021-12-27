@@ -6,7 +6,8 @@ import { Button,
         Input, 
         InputLabel, 
         FormHelperText, 
-        IconButton } from '@mui/material';
+        IconButton, 
+        Card} from '@mui/material';
 import { useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { useRouter } from "next/router";
@@ -18,6 +19,7 @@ import { LOGIN_USER } from '../../graphql/mutations/users';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import styles from '../../styles/App.module.scss';
 
 
 interface ILogin 
@@ -31,6 +33,7 @@ interface IError
 {
     email: string | undefined;
     password: string | undefined;
+    is_banned: string | undefined;
 }
 
 const initial_state: ILogin = 
@@ -43,7 +46,8 @@ const initial_state: ILogin =
 const initial_error: IError =
 {
     email: undefined,
-    password: undefined
+    password: undefined,
+    is_banned: undefined
 }
 
 /*interface FunctionComponent<P = {}> 
@@ -109,12 +113,13 @@ const LoginPage: React.FC = () =>
                 direction="column" 
                 style={{ padding: 20 }}
             >
+                {/* <Card className={styles.card}> */}
                 <form onSubmit={submit_login_form}>
                     <FormGroup>
                         <h1>
                             Login
                         </h1>
-                        <FormControl>
+                        <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="email-input">
                                 { errors.email ?? 'Email address' }
                             </InputLabel>
@@ -129,7 +134,7 @@ const LoginPage: React.FC = () =>
                                 We'll never share your email.
                             </FormHelperText>
                         </FormControl>
-                        <FormControl>
+                        <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="password-input">
                                 { errors.password ?? 'Password' }
                             </InputLabel>
@@ -170,9 +175,11 @@ const LoginPage: React.FC = () =>
                             >
                                 { login_loading ? 'loading...' : 'Login' }
                             </Button>
+                            { errors.is_banned ?? '' }
                         </FormControl>
                     </FormGroup>
                 </form>
+                {/* </Card> */}
             </Grid>
         </MainLayout>
     )

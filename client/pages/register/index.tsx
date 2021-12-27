@@ -98,7 +98,7 @@ const RegisterPage: React.FC = () =>
                         <h1>
                             Register
                         </h1>
-                        <FormControl>
+                        <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="username-input">
                                 Username
                             </InputLabel>
@@ -108,7 +108,7 @@ const RegisterPage: React.FC = () =>
                                 onChange={ e => set_values({ ...values, username: e.target.value }) }
                             />
                         </FormControl>
-                        <FormControl>
+                        <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="email-input">
                                 { errors.email ?? 'Email address' }
                             </InputLabel>
@@ -123,7 +123,7 @@ const RegisterPage: React.FC = () =>
                                     We'll never share your email.
                             </FormHelperText>
                         </FormControl>
-                        <FormControl>
+                        <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="password-input">
                                 Password
                             </InputLabel>
@@ -150,7 +150,7 @@ const RegisterPage: React.FC = () =>
                                 </InputAdornment>}
                             />
                         </FormControl>
-                        <FormControl>
+                        <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="confirm-password-input">
                                 Confirm password
                             </InputLabel>
