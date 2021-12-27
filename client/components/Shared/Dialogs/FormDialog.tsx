@@ -9,8 +9,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import SendInput from '../Inputs/SendInput';
 import { useState } from 'react';
 import FormDialogTitle from './FormDialogTitle';
-import { Grid } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import EditIcon from '@mui/icons-material/Edit';
 
+
+enum BUTTON_TYPE
+{
+  SETTINGS = "setting",
+  EDIT = "edit",
+  DEFAULT = "default"
+}
 
 interface IFormContent
 {
@@ -32,11 +41,12 @@ interface FormDialogProps
   dialog_description?: string;
   // dialog_form?: Function;
   form_content: IFormContent;
+  button_type?: "setting" | "edit" | "default" | undefined;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({ children, button_title, button_variant,
                                                 dialog_title, dialog_description, 
-                                                /*dialog_form,*/ form_content }) =>
+                                                /*dialog_form,*/ form_content, button_type }) =>
 {
   const [open, set_open] = React.useState(false);
   const handle_click_open = () => set_open(true);
@@ -47,10 +57,19 @@ const FormDialog: React.FC<FormDialogProps> = ({ children, button_title, button_
   return (
     <div>
       <Grid container direction="column">
+        { button_type === BUTTON_TYPE.EDIT ? 
+        <IconButton onClick={handle_click_open}>
+          <EditIcon/>
+        </IconButton> :
+        button_type === BUTTON_TYPE.SETTINGS ?
+        <IconButton onClick={handle_click_open}>
+          <SettingsIcon/>
+        </IconButton> : 
         <Button variant={button_variant || 'text'} 
           onClick={handle_click_open}>
           {button_title || 'Edit'}
-        </Button>
+        </Button> 
+      }
       </Grid>
         <Dialog open={open} onClose={handle_close}>
         {/* <DialogTitle>{dialog_title || 'Edit'}</DialogTitle> */}

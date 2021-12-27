@@ -19,7 +19,7 @@ import { Print } from "@mui/icons-material";
 import PrinterForm from "../../Printer/PrinterForm";
 import Printer from "../../Printer/Printer";
 import {  Card, Grid, IconButton, Avatar, Typography, Button  } from "@mui/material";
-import AvatarDialog from "../../Shared/Dialogs/AvatarDialog";
+import ImageDialog from "../../Shared/Dialogs/ImageDialog";
 
 
 interface UserProfileProps 
@@ -169,7 +169,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
                         </IconButton>
                         {/* <UploadUserAvatar user_id={user.id}/> */}
                         {auth.user.id === user.id 
-                            && <AvatarDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>}
+                            && <ImageDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>}
                     </Grid> 
                     <Grid
                         //container

@@ -5,19 +5,21 @@ import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Print } from "@mui/icons-material";
 import {  Card, Grid, IconButton, Avatar, Typography, 
-            Button, RadioGroup, FormControlLabel, Radio  } from "@mui/material";
+            Button, RadioGroup, FormControlLabel, Radio, FormGroup  } from "@mui/material";
 import { useRouter } from 'next/router';
 import { IGroup } from '../../types/group';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useAction';
 import { LINKS, ROLES, ROUTES } from '../../utils/constants';
-import AvatarDialog from '../Shared/Dialogs/AvatarDialog';
+import ImageDialog from '../Shared/Dialogs/ImageDialog';
 import { date_format } from '../../utils/date-format';
 import MembersSelect from '../Shared/Selects/MembersSelect';
 import { ADD_GROUP_MEMBER, REMOVE_GROUP_MEMBER, UPDATE_GROUP } from '../../graphql/mutations/groups';
 import { TOKEN } from '../../utils/token';
 import { GET_GROUP } from '../../graphql/queries.ts/groups';
 import ItemsSelect from '../Shared/Selects/ItemsSelect';
+import EditIcon from '@mui/icons-material/Edit';
+import FormDialog from '../Shared/Dialogs/FormDialog';
 
 
 enum ACCESS
@@ -40,6 +42,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     const [is_followed, set_is_followed] = useState(false);
     const [followers_count, set_followers_count] = useState(0);
+    const [group_name, set_group_name] = useState(group.name);
 
     const [access, set_access] = useState('');
 
@@ -144,7 +147,18 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
         else become_member({ variables: input });
         // get_subscriptions();
     }
-    
+
+    const update_group_name = (e: any) => 
+    {
+        e.preventDefault();
+        const input = { input: { 
+            id: group.id,
+            name: group_name
+        }}
+        update_group({ variables: input });
+    }
+
+
     return (
         <>
         { group ? 
@@ -164,9 +178,53 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                             />
                         </IconButton>
                         {/* <UploadGroupAvatar group_id={group.id}/> */}
-                        {is_available 
-                            && <AvatarDialog group_id={group.id} 
-                            avatar={LINKS.STATIC_FILES_LINK + group.avatar}/>}
+                        <Grid container direction="row" >
+                        {is_available && 
+                            <Grid style={{paddingTop: 8}}>
+                                <ImageDialog group_id={group.id} 
+                                    avatar={LINKS.STATIC_FILES_LINK + group.avatar}/>
+                            </Grid>}
+                        {check_group_admin &&
+                                <form style={{paddingTop: 8}} 
+                                    onSubmit={update_group_name}>
+                                    <FormGroup>
+                                        <FormDialog 
+                                            button_title='Edit' 
+                                            dialog_title='Edit group name'
+                                            button_variant='text'
+                                            button_type='edit'
+                                            form_content={{
+                                                text: group_name,
+                                                set_text: set_group_name,
+                                                is_loading: update_group_loading,
+                                                is_with_button: false,
+                                                placeholder: 'Edit group name...'
+                                            }}
+                                        >
+                                            <Button onClick={update_group_name}>Save changes</Button>
+                                        </FormDialog>
+                                    </FormGroup>
+                                </form> }
+                                { check_group_admin && 
+                                <ItemsSelect title='Access'>
+                                    <RadioGroup
+                                        style={{padding: '4px 20px'}}
+                                        aria-label="quiz"
+                                        name="access"
+                                        value={access}
+                                        onChange={handle_access_radio_change}
+                                    >
+                                        <FormControlLabel style={{marginBottom: 10}}
+                                            value={ACCESS.PRIVATE} 
+                                            control={<Radio />} 
+                                            label="Private" />
+                                        <FormControlLabel 
+                                            value={ACCESS.PUBLIC} 
+                                            control={<Radio />} 
+                                            label="Public" />
+                                    </RadioGroup>
+                                </ItemsSelect> }
+                            </Grid>
                     </Grid> 
                     <Grid
                         //container
@@ -196,24 +254,6 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                                 { is_followed ? `Unfollow | ${followers_count}` 
                                                 : `Follow | ${followers_count}` }
                             </Button> : null } 
-                        { check_group_admin && <ItemsSelect title='Access'>
-                            <RadioGroup
-                                style={{padding: '4px 20px'}}
-                                aria-label="quiz"
-                                name="access"
-                                value={access}
-                                onChange={handle_access_radio_change}
-                            >
-                                <FormControlLabel style={{marginBottom: 10}}
-                                    value={ACCESS.PRIVATE} 
-                                    control={<Radio />} 
-                                    label="Private" />
-                                <FormControlLabel 
-                                    value={ACCESS.PUBLIC} 
-                                    control={<Radio />} 
-                                    label="Public" />
-                            </RadioGroup>
-                        </ItemsSelect> }
                     </Grid>
                 </Grid>
                 {/* <MembersList members={group.members}/> */}

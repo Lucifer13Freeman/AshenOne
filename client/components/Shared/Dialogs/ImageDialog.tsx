@@ -7,7 +7,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import SettingsIcon from '@mui/icons-material/Settings';
+// import SettingsIcon from '@mui/icons-material/Settings';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'; 
 import { useEffect, useState } from 'react';
 import { useActions } from '../../../hooks/useAction';
 import axios from 'axios';
@@ -30,9 +31,10 @@ interface AvatarDialogProps
     user_id?: string;
     avatar: string;
     group_id?: string;
+    title?: string;
 }
 
-const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }) => 
+const ImageDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar, title, children }) => 
 {
     const [open_avatar_dialog, set_open_avatar_dialog] = useState(false);
 
@@ -79,7 +81,7 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }
     return (
         <div>
             <IconButton onClick={handle_open_avatar_dialog}>
-                <SettingsIcon/>
+                { children || <AddPhotoAlternateIcon/> }
             </IconButton>
             <AvatarDialogStyle
                 onClose={handle_close_avatar_dialog}
@@ -87,7 +89,7 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }
                 open={open_avatar_dialog}
             >
                 <FormDialogTitle id="avatar_dialog_title" onClose={handle_close_avatar_dialog}>
-                    Edit avatar
+                    { title ? title : 'Edit avatar' }
                 </FormDialogTitle>
                 <DialogContent dividers style={{display: 'flex', justifyContent: 'center'}}>
                     {image_markup}
@@ -98,7 +100,7 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }
                         accept="image/*"
                         set_base64={set_image_base64}
                     >
-                        <Button autoFocus>Upload file</Button>
+                        <Button autoFocus>Upload image</Button>
                     </FileUpload>
                     <Button onClick={upload_avatar}>Save changes</Button>
                 </DialogActions>
@@ -107,4 +109,4 @@ const AvatarDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar }
     );
 }
 
-export default AvatarDialog;
+export default ImageDialog;

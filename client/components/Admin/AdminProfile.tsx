@@ -3,7 +3,7 @@ import {  Card, Grid, IconButton, Avatar, Typography, Button  } from "@mui/mater
 import { date_format } from "../../utils/date-format";
 import { LINKS } from "../../utils/constants";
 import { IUser } from "../../types/user";
-import AvatarDialog from "../Shared/Dialogs/AvatarDialog";
+import ImageDialog from "../Shared/Dialogs/ImageDialog";
 import styles from "../../styles/App.module.scss";
 
 
@@ -46,7 +46,7 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ user }) =>
                                 }}
                             />
                         </IconButton>
-                        <AvatarDialog user_id = {user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>
+                        <ImageDialog user_id = {user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>
                     </Grid> 
                     <Grid
                         //container
