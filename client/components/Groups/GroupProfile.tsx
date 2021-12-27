@@ -148,7 +148,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     return (
         <>
         { group ? 
-            <Card className={styles.card}>
+            <Card className={styles.card} style={{width: 480}}>
                 <Grid 
                     container 
                     //direction="column" 
