@@ -399,6 +399,9 @@ input UpdateMessageInput {
   image: String
   audio: String
   video: String
+  is_read: Boolean = false
+  is_edited: Boolean = false
+  is_forwarded: Boolean = false
 }
 
 input CreateReactionInput {

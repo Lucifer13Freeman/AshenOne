@@ -371,9 +371,13 @@ export class MessageService
                     text, 
                     image, 
                     audio, 
-                    video } = dto;
+                    video,
+                    is_edited,
+                    is_forwarded,
+                    is_read } = dto;
 
-            if ((!text || text.trim() === '') && !image && !audio && !video) 
+            if ((!text || text.trim() === '') && !image && !audio && !video
+                && !is_edited  && !is_forwarded  && !is_read) 
                 throw new UserInputError('Nothing to update!');
 
             //await this.user_service.get({ id: current_user_id });
@@ -393,7 +397,10 @@ export class MessageService
                 text: text ? text : undefined,
                 image: image ? image : undefined,
                 audio: audio ? audio : undefined,
-                video: video ? video : undefined
+                video: video ? video : undefined,
+                is_edited: is_edited ? is_edited : undefined,
+                is_forwarded: is_forwarded ? is_forwarded : undefined,
+                is_read: is_read ? is_read : undefined
             };
 
             // if (text) data.text = text;
