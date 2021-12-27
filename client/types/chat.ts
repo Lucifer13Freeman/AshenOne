@@ -8,8 +8,8 @@ export interface IChat
     admin_id: string,
     members: IUser[],
     messages: IMessage[],
-    is_private?: string,
-    is_secure?: string,
+    is_private?: boolean,
+    is_secure?: boolean,
     created_at: Date;
     updated_at?: Date;
 }

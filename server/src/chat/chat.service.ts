@@ -289,8 +289,12 @@ export class ChatService
                 return get_all_chats;
             });
 
-            chats = chats?.filter((chat: Chat) => 
-                chat.member_ids?.find((id) => id === current_user_id) !== undefined);
+
+            
+            // chats = chats?.filter((chat: Chat) => 
+            //     chat.member_ids?.find((id) => id === current_user_id) !== undefined);
+
+
 
             //console.log(chats)
 

@@ -18,12 +18,12 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 
-interface MembersListProps
+interface MembersSelectProps
 {
     members?: IUser[];
 }
 
-const MembersList: React.FC<MembersListProps> = ({ members }) =>
+const MembersSelect: React.FC<MembersSelectProps> = ({ members }) =>
 {
     const router = useRouter();
 
@@ -120,4 +120,4 @@ const MembersList: React.FC<MembersListProps> = ({ members }) =>
     );
 }
 
-export default MembersList;
+export default MembersSelect;

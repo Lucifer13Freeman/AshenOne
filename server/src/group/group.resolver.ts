@@ -12,6 +12,7 @@ import { GetGroupInput } from './inputs/get-group.input';
 import { SearchGroupInput } from './inputs/search-group.input';
 import { GetGroupMemberInput } from './inputs/get-member.input';
 import { GetAllGroupsInput } from './inputs/get-all-groups.input';
+import { UpdateGroupInput } from './inputs/update-group.input';
 
 
 @UseGuards(GqlAuthGuard)
@@ -77,6 +78,24 @@ export class GroupResolver
         try
         {
             return await this.group_service.create({ ...input,
+                                                    current_user_id: user.id });
+        }
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => GroupType)
+    async update_group(@GqlCurrentUser() user: GetUserInput,
+                        @Args('input') input: UpdateGroupInput) 
+    {
+        try
+        {
+            return await this.group_service.update({ ...input, 
                                                     current_user_id: user.id });
         }
         catch (err) 

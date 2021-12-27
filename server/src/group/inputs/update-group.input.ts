@@ -10,7 +10,7 @@ export class UpdateGroupInput
     @Field(() => ID, { nullable: true })
     readonly current_user_id?: string;
 
-    @Field()
+    @Field({ nullable: true })
     readonly name?: string;
 
     @Field({ nullable: true })

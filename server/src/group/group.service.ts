@@ -384,7 +384,7 @@ export class GroupService
     }
 
 
-    async update_group(dto: UpdateGroupInput): Promise<Group | null>
+    async update(dto: UpdateGroupInput): Promise<Group | null>
     {
         try 
         {
@@ -395,7 +395,6 @@ export class GroupService
 
             const is_admin = group.admin_id === current_user_id;
             const is_moderator = group.moderator_ids.find(id => id === current_user_id) !== undefined;
-            
 
             group = await this.prisma.$transaction(async (prisma) => 
             {
@@ -403,25 +402,29 @@ export class GroupService
                 
                 if (name || avatar || is_private !== undefined || is_secure != undefined) 
                 {
+
                     update_group = await prisma.group.update(
                     {
                         where: { id },
                         data: {
                             avatar: (is_moderator || is_admin) && avatar ? avatar : group.avatar,
                             name: is_admin && name ? name : group.name,
-                            is_private: is_admin && is_private !== undefined ? is_private : group.is_private,
-                            is_secure: is_admin && is_secure !== undefined ? is_secure : group.is_secure
-                        }
+                            is_private: is_admin && is_private !== undefined && is_private !== null ? is_private : group.is_private,
+                            is_secure: is_admin && is_secure !== undefined && is_secure !== null ? is_secure : group.is_secure
+                        },
+                        select: select_group
                     });
                 }
 
                 if (is_admin && add_moderator_id)
                 {
+                    const moderator_ids = [...group.moderator_ids, add_moderator_id];
+
                     update_group = await prisma.group.update(
                     {
                         where: { id },
                         data: {
-                            moderator_ids: { push: add_moderator_id }
+                            moderator_ids: { set: moderator_ids }
                         },
                         select: select_group
                     });

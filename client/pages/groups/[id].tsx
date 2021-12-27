@@ -13,7 +13,7 @@ import { GET_GROUP } from "../../graphql/queries.ts/groups";
 import { useActions } from "../../hooks/useAction";
 import { TOKEN } from "../../utils/token";
 import { ROUTES } from "../../utils/constants";
-import MembersList from "../../components/Shared/Lists/MembersList";
+import MembersSelect from "../../components/Shared/Selects/MembersSelect";
 import PostForm from "../../components/Posts/PostForm";
 import Posts from "../../components/Posts/Posts";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -22,6 +22,7 @@ import MainLayout from "../../layouts/MainLayout";
 import GroupProfile from "../../components/Groups/GroupProfile";
 import { IUser } from "../../types/user";
 import { SEARCH_GROUP_POSTS } from "../../graphql/queries.ts/posts";
+import ItemsSelect from "../../components/Shared/Selects/ItemsSelect";
 
 
 // interface GroupProps
@@ -110,7 +111,7 @@ const Group: React.FC = () =>
         <MainLayout>  
             <Grid container justifyContent='center'>
                 <GroupProfile group={group} />
-                {!group.is_private && 
+                {!group.is_private || check_member() ? 
                 <Card className={app_styles.card} style={{width: 480}}>
                     <Box p={2}>
                         <Grid container direction="row" >
@@ -137,7 +138,7 @@ const Group: React.FC = () =>
                                         </InputAdornment> )
                                 }}
                             />
-                            <MembersList members={group.members}/>
+                            <ItemsSelect users={group.members}/>
                         </Grid>
                     </Box>
                         {/* <Grid className={styles.posts_container}>
@@ -147,9 +148,9 @@ const Group: React.FC = () =>
                             }
                         </Grid> */}
                         
-                </Card>}
+                </Card> : null}
                 {check_member() && <PostForm group_id={group_id}/>}
-                {!group.is_private && <Posts posts={posts} is_for_group={true}/>}
+                {!group.is_private || check_member() ? <Posts posts={posts} is_for_group={true}/> : null}
             </Grid>
         </MainLayout>
     );

@@ -342,6 +342,7 @@ type Mutation {
   like_comment(input: LikeInput!): LikeType!
   delete_comment(input: GetCommentInput!): String!
   create_group(input: CreateGroupInput!): GroupType!
+  update_group(input: UpdateGroupInput!): GroupType!
   delete_group(input: GetGroupInput!): String!
   add_group_member(input: GetGroupMemberInput!): GroupType!
   remove_group_member(input: GetGroupMemberInput!): GroupType!
@@ -467,6 +468,17 @@ input CreateGroupInput {
   members: [ID!]
   name: String!
   avatar: String
+  is_private: Boolean
+  is_secure: Boolean
+}
+
+input UpdateGroupInput {
+  id: ID!
+  current_user_id: ID
+  name: String
+  avatar: String
+  add_moderator_id: String
+  remove_moderator_id: String
   is_private: Boolean
   is_secure: Boolean
 }

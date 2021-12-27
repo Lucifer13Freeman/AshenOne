@@ -11,8 +11,8 @@ export interface IGroup
     moderator_ids: string[];
     members: IUser[];
     posts: IPost[];
-    is_private?: string;
-    is_secure?: string;
+    is_private?: boolean;
+    is_secure?: boolean;
     created_at: Date;
     updated_at?: Date;
 }

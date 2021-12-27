@@ -4,7 +4,8 @@ import styles from "../../styles/App.module.scss";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Print } from "@mui/icons-material";
-import {  Card, Grid, IconButton, Avatar, Typography, Button  } from "@mui/material";
+import {  Card, Grid, IconButton, Avatar, Typography, 
+            Button, RadioGroup, FormControlLabel, Radio  } from "@mui/material";
 import { useRouter } from 'next/router';
 import { IGroup } from '../../types/group';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -12,11 +13,18 @@ import { useActions } from '../../hooks/useAction';
 import { LINKS, ROLES, ROUTES } from '../../utils/constants';
 import AvatarDialog from '../Shared/Dialogs/AvatarDialog';
 import { date_format } from '../../utils/date-format';
-import MembersList from '../Shared/Lists/MembersList';
-import { ADD_GROUP_MEMBER, REMOVE_GROUP_MEMBER } from '../../graphql/mutations/groups';
+import MembersSelect from '../Shared/Selects/MembersSelect';
+import { ADD_GROUP_MEMBER, REMOVE_GROUP_MEMBER, UPDATE_GROUP } from '../../graphql/mutations/groups';
 import { TOKEN } from '../../utils/token';
 import { GET_GROUP } from '../../graphql/queries.ts/groups';
+import ItemsSelect from '../Shared/Selects/ItemsSelect';
 
+
+enum ACCESS
+{
+    PRIVATE = "PRIVATE",
+    PUBLIC = "PUBLIC"
+}
 
 interface GroupProfileProps 
 {
@@ -32,6 +40,16 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     const [is_followed, set_is_followed] = useState(false);
     const [followers_count, set_followers_count] = useState(0);
+
+    const [access, set_access] = useState('');
+
+    const handle_access_radio_change = (event: React.ChangeEvent<HTMLInputElement>) => 
+    {
+        const is_private = (event.target as HTMLInputElement).value === ACCESS.PRIVATE;
+        set_access((event.target as HTMLInputElement).value);
+        update_group({ variables: { input: { id: group.id, is_private }}});
+    }
+
     
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { state_group, groups, error: groups_error } = useTypedSelector(state => state.group);
@@ -47,6 +65,9 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     const is_available = check_admin || check_group_admin || check_group_moderator;
 
     useEffect(() => {
+        group.is_private 
+            ? set_access(ACCESS.PRIVATE) 
+            : set_access(ACCESS.PUBLIC);
         set_is_followed(check_member());
         set_followers_count(group.members.length);
     }, []);
@@ -95,6 +116,26 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
         },
         nextFetchPolicy: "cache-first"
     });
+
+    const [update_group, { loading: update_group_loading, 
+            data: update_group_data }] = useMutation(UPDATE_GROUP,   
+    {
+        onCompleted: data => 
+        {
+            async_set_group(data.update_group)
+        },
+        onError: err => 
+        {
+            console.log(err);
+            
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_set_group(null);
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+        }
+    });
     
     const follow = () =>
     {
@@ -141,7 +182,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                         >
                             Registered at: { date_format(group.created_at) }
                         </div>
-                        { !group.is_private &&
+                        { !group.is_private || check_member() ?
                             <Button
                                 onClick={() => follow()}
                                 style={{marginTop: 40}}
@@ -154,8 +195,25 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                             >
                                 { is_followed ? `Unfollow | ${followers_count}` 
                                                 : `Follow | ${followers_count}` }
-                            </Button>
-                        } 
+                            </Button> : null } 
+                        { check_group_admin && <ItemsSelect title='Access'>
+                            <RadioGroup
+                                style={{padding: '4px 20px'}}
+                                aria-label="quiz"
+                                name="access"
+                                value={access}
+                                onChange={handle_access_radio_change}
+                            >
+                                <FormControlLabel style={{marginBottom: 10}}
+                                    value={ACCESS.PRIVATE} 
+                                    control={<Radio />} 
+                                    label="Private" />
+                                <FormControlLabel 
+                                    value={ACCESS.PUBLIC} 
+                                    control={<Radio />} 
+                                    label="Public" />
+                            </RadioGroup>
+                        </ItemsSelect> }
                     </Grid>
                 </Grid>
                 {/* <MembersList members={group.members}/> */}

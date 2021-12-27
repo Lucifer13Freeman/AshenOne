@@ -28,6 +28,33 @@ const CREATE_GROUP = gql`
     }
 `;
 
+const UPDATE_GROUP = gql`
+    mutation update_group( $input: UpdateGroupInput! ) {
+        update_group( input: $input ) {
+            id 
+            name
+            avatar
+            admin_id
+            moderator_ids
+            members { id username avatar role is_banned }
+            posts { 
+                id 
+                group_id 
+                text 
+                image
+                audio
+                video
+                created_at 
+                updated_at 
+            }
+            is_private
+            is_secure
+            created_at 
+            updated_at
+        }
+    }
+`;
+
 const DELETE_GROUP = gql`
     mutation delete_group( $input: GetGroupInput! ) {
         delete_group( input: $input )
@@ -91,6 +118,7 @@ const REMOVE_GROUP_MEMBER = gql`
 
 export {
     CREATE_GROUP,
+    UPDATE_GROUP,
     DELETE_GROUP,
     ADD_GROUP_MEMBER,
     REMOVE_GROUP_MEMBER

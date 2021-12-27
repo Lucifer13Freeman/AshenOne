@@ -19,7 +19,8 @@ import app_styles from '../../styles/App.module.scss';
 // import ChatMembers from './Members/ChatMembers';
 import MessageForm from '../Messages/MessageForm';
 import Messages from "../../components/Messages/Messages";
-import MembersList from "../Shared/Lists/MembersList";
+import MembersSelect from "../Shared/Selects/MembersSelect";
+import ItemsSelect from "../Shared/Selects/ItemsSelect";
 
 
 interface ChatProps
@@ -111,7 +112,7 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
                                 }}
                             />
                             {/* <ChatMembers /*members={chat.members}*//> */}
-                            <MembersList members={chat.members} />
+                            <ItemsSelect users={chat.members}/>
                         </Grid>
                     </Box>
                     {/* <Grid className={styles.messages_container}>
