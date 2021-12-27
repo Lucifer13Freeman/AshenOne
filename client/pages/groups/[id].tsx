@@ -111,9 +111,9 @@ const Group: React.FC = () =>
             <Grid container justifyContent='center'>
                 <GroupProfile group={group} />
                 {!group.is_private && 
-                <Card className={app_styles.card} /*style={{width: 900}}*/>
+                <Card className={app_styles.card} style={{width: 480}}>
                     <Box p={2}>
-                        <Grid container justifyContent='space-between'>
+                        <Grid container direction="row" >
                             <Typography 
                                 variant="h4"
                                 color="primary"
