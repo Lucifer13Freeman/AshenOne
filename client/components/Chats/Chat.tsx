@@ -9,7 +9,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { GET_CHAT } from "../../graphql/queries.ts/chats";
-import { NEW_MESSAGE } from "../../graphql/subscriptions/messages";
+import { NEW_MESSAGE, NEW_REACTION } from "../../graphql/subscriptions/messages";
 import { useActions } from "../../hooks/useAction";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { ROUTES } from "../../utils/constants";
@@ -39,7 +39,8 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
     const { messages, error: messages_error } = useTypedSelector(state => state.message);
 
     const { async_set_all_messages, async_set_chat, 
-            async_logout, async_create_message } = useActions();
+            async_logout, async_create_message,
+            async_set_reaction } = useActions();
 
 
     const { loading: chat_loading, data: chat_data } = useQuery(GET_CHAT,   
@@ -53,11 +54,10 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
         onError: err => 
         {
             console.log(err);
-            async_set_chat(null);
-            async_set_all_messages([]);
-
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
+                async_set_chat(null);
+                async_set_all_messages([]);
                 async_logout();
                 router.push(ROUTES.LOGIN);
             }
@@ -65,13 +65,21 @@ const Chat: React.FC<ChatProps> = ({ chat_id }) =>
         nextFetchPolicy: "cache-first"
     });
 
-    const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
+    // const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
+    // const { data: reaction_data, error: reaction_error } = useSubscription(NEW_REACTION);
 
-    useEffect(() => 
-    {
-        if (message_error) console.log(message_error);
-        if (message_data) async_create_message(message_data.new_message);
-    }, [message_data, message_error]);
+    // useEffect(() => 
+    // {
+    //     if (message_error) console.log(message_error);
+    //     if (message_data) async_create_message(message_data.new_message);
+    // }, [message_data, message_error]);
+
+    // useEffect(() => 
+    // {
+    //     console.log(reaction_data)
+    //     if (reaction_error) console.log(reaction_error);
+    //     // if (reaction_data) async_set_reaction({...reaction_data.new_reaction});
+    // }, [reaction_data, reaction_error]);
 
 
     return (

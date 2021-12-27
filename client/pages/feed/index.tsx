@@ -66,6 +66,7 @@ const FeedPage: React.FC = () =>
     const { loading: posts_loading, data: posts_data } = useQuery(GET_ALL_POSTS,   
     {
         variables: { input: { is_for_followers: true, 
+                            is_for_group_members: true,
                             is_order_by_desc: true } },
         onCompleted: data => 
         {

@@ -3,6 +3,7 @@ import { Card, CardContent, Grid, IconButton, Avatar,
 import { useRouter } from "next/router";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import styles from "../../../styles/MessageItem.module.scss";
+import reaction_styles from "../../../styles/Reactions.module.scss";
 import { ROUTES, LINKS } from "../../../utils/constants";
 import { IChat } from "../../../types/chat";
 import { IMessage } from "../../../types/message";
@@ -16,7 +17,9 @@ import { useActions } from "../../../hooks/useAction";
 import { useMutation } from "@apollo/client";
 import { DELETE_MESSAGE, UPDATE_MESSAGE } from "../../../graphql/mutations/messages";
 import { TOKEN } from "../../../utils/token";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ReactionPopper from "../../Reactions/ReactionPopper";
+import { IReaction } from "../../../types/reaction";
 
 
 interface MessageItemProps 
@@ -30,7 +33,14 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
 
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { message: state_message, error: messages_error } = useTypedSelector(state => state.message);
-    const { async_delete_message, async_set_message, async_logout } = useActions();
+    const { async_delete_message, async_set_message, 
+            async_set_reaction, async_logout } = useActions();
+
+    const reaction_icons = [...new Set(message.reactions?.map((r: IReaction) => r.content))];
+
+    // useEffect(() => {
+    //     reaction_icons = [...new Set(message.reactions?.map((r: IReaction) => r.content))];
+    // }, [message])
 
     const check_sender = () =>
     {
@@ -62,7 +72,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
     
     const [message_text, set_message_text] = useState(message.text);
     
-    const [gql_update_message, { loading: update_message_loading }] = useMutation(UPDATE_MESSAGE, 
+    const [gql_update_message, 
+        { loading: update_message_loading }] = useMutation(UPDATE_MESSAGE, 
     {
         onCompleted: (data) => async_set_message(data.update_message),
         onError: (err) => 
@@ -86,6 +97,24 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         }}
         gql_update_message({ variables: input });
     }
+
+    const reactions = (
+        message.reactions.length > 0 && (
+            <div 
+                className={reaction_styles.reactions_box }
+                style={ check_sender() 
+                        ? {marginRight: 'auto'} 
+                        : {marginLeft: 'auto'} }
+            >
+                {/* <div className={ check_sender() 
+                    ? reaction_styles.sent 
+                    : reaction_styles.received } > */}
+                    {reaction_icons} {message.reactions.length}
+                {/* </div> */}
+            </div>
+        )
+    );
+    
     
     return (
 
@@ -124,6 +153,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                         </IconButton>
                     </Grid>
                 }
+                { check_sender() && <ReactionPopper message_id={message.id}/> }
                 <Grid 
                     container 
                     direction="column" 
@@ -152,11 +182,13 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                         <Typography className={styles.message_date} variant="body2" component="p">
                             {date_format(message?.created_at)}
                         </Typography>
+                        {reactions}
                         {/* </div> */}
                         {/* </CardContent></CardActionArea> */}
                         {/* </Card> */}
                     </div>
                 </Grid>
+                { !check_sender() && <ReactionPopper message_id={message.id}/> }
                 { check_sender() && 
                 <>
                     <Grid className={styles.avatar}>

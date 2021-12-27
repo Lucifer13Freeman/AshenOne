@@ -29,7 +29,7 @@ import styles from '../../styles/Messages.module.scss';
 import app_styles from '../../styles/App.module.scss';
 import { useInput } from "../../hooks/useInput";
 import { useEffect, useState } from "react";
-import { DELETED_MESSAGE, NEW_MESSAGE } from "../../graphql/subscriptions/messages";
+import { DELETED_MESSAGE, NEW_MESSAGE, NEW_REACTION } from "../../graphql/subscriptions/messages";
 import { GET_CHAT } from "../../graphql/queries.ts/chats";
 import ChatMembers from '../../components/Chats/Members/ChatMembers';
 import MessageForm from '../../components/Messages/MessageForm';
@@ -60,7 +60,8 @@ const ChatPage: React.FC = () =>
 
     const { async_set_all_messages, async_set_chat, 
         async_create_message, async_set_message,
-        async_delete_message, async_logout } = useActions();
+        async_delete_message, async_set_reaction,
+        async_logout } = useActions();
 
 
     const /*[get_current_chat, */{ loading: chat_loading, data: chat_data } = useQuery(GET_CHAT,   
@@ -91,6 +92,7 @@ const ChatPage: React.FC = () =>
 
     const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
     const { data: deleted_message_data, error: deleted_message_error } = useSubscription(DELETED_MESSAGE);
+    const { data: reaction_data, error: reaction_error } = useSubscription(NEW_REACTION);
 
     useEffect(() => 
     {
@@ -115,6 +117,12 @@ const ChatPage: React.FC = () =>
         if (deleted_message_data) async_delete_message(deleted_message_data.deleted_message);
     }, [deleted_message_data, deleted_message_error]);
 
+    useEffect(() => 
+    {
+        console.log(reaction_data)
+        if (reaction_error) console.log(reaction_error);
+        if (reaction_data) async_set_reaction(reaction_data.new_reaction);
+    }, [reaction_data, reaction_error]);
 
 
     const [query, set_query] = useState<string>('');

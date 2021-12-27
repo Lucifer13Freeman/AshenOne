@@ -37,7 +37,7 @@ const Posts: React.FC<PostsProps> = ({ posts, is_for_group = false }) =>
             <Grid>
                 { posts?.length > 0 
                     ? <PostList posts={posts} is_for_group={is_for_group}/>
-                    : <div className={styles.no_posts}>Send your first post...</div>
+                    : <div className={styles.no_posts}>Posts not found...</div>
                 }
             </Grid>
         // </>

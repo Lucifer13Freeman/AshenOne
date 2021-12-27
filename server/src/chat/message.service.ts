@@ -625,7 +625,7 @@ export class MessageService
                 {
                     current_reaction = await prisma.reaction.update(
                     {
-                        where: { ...current_reaction },
+                        where: { id: current_reaction.id },
                         data: { content },
                         select: select_reaction
                     });

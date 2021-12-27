@@ -19,15 +19,16 @@ const AdminPage: React.FC = () =>
 
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { statistics_report, error: report_error } = useTypedSelector(state => state.report);
-    const { async_get_user, async_get_statistics_report, async_logout } = useActions();
+    const { async_set_user, async_set_statistics_report, async_logout } = useActions();
     
-    const { loading: statistics_report_loading, data: statistics_report_data } = useQuery(GET_STATISTICS_REPORT,   
+    const { loading: statistics_report_loading, 
+            data: statistics_report_data } = useQuery(GET_STATISTICS_REPORT,   
     {
-        onCompleted: data => async_get_statistics_report({ ...data.get_statistics_report }),
+        onCompleted: data => async_set_statistics_report({ ...data.get_statistics_report }),
         onError: err => 
         {
             console.log(err);
-            async_get_user(null);
+            async_set_user(null);
                 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {

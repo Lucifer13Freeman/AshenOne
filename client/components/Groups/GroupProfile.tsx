@@ -42,11 +42,12 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     const check_group_admin = check_auth && group.admin_id === auth.user.id;
     const check_group_moderator = check_auth 
         && group.moderator_ids.find(id => id === auth.user.id) !== undefined;
+    const check_member = () => group.members.find(mem => mem.id === auth.user.id) !== undefined;
 
     const is_available = check_admin || check_group_admin || check_group_moderator;
 
     useEffect(() => {
-        set_is_followed(group.members.find(mem => mem.id === auth.user.id) !== undefined);
+        set_is_followed(check_member());
         set_followers_count(group.members.length);
     }, []);
 
@@ -157,8 +158,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                         } 
                     </Grid>
                 </Grid>
-
-                <MembersList members={group.members}/>
+                {/* <MembersList members={group.members}/> */}
             </Card>
             : <div>Group not found!</div> }
         </>

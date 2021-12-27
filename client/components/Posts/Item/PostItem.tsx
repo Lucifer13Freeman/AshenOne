@@ -199,12 +199,12 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
                 avatar={
                     <IconButton onClick={() => router.push(ROUTES.PEOPLE + (is_for_group 
                                                                             ? group?.id 
-                                                                            : post.user.id))}>
+                                                                            : post.user?.id))}>
                         <Avatar 
-                            alt={is_for_group ? group?.name : post.user.username} 
+                            alt={is_for_group ? group?.name : post.user?.username} 
                             src={LINKS.STATIC_FILES_LINK + (is_for_group 
                                                             ? group?.avatar 
-                                                            : post.user.avatar)}
+                                                            : post.user?.avatar)}
                         />
                     </IconButton>
                 }

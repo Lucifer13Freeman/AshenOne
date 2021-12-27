@@ -21,7 +21,7 @@ export interface IMessage
     image?: string;
     audio?: string;
     video?: string;
-    reactions?: IReaction[];
+    reactions: IReaction[];
     created_at: Date;
     updated_at?: Date;
 }

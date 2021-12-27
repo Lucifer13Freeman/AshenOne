@@ -1,4 +1,5 @@
 import { IMessage, MessageActionTypes } from '../../types/message';
+import { IReaction, ReactionActionTypes } from '../../types/reaction';
 
 
 export const set_all_messages = ({ payload }: any) =>
@@ -128,5 +129,31 @@ export const delete_message = ({ payload }: any) =>
 export const async_delete_message = (payload: IMessage | null) => (
 {
     type: MessageActionTypes.ASYNC_DELETE_MESSAGE,
+    payload
+});
+
+export const set_reaction = ({ payload }: any) =>
+{
+    try
+    { 
+        return (
+        {
+            type: ReactionActionTypes.SET_REACTION,
+            payload
+        });
+    } 
+    catch (err) 
+    {
+        return (
+        { 
+            type: ReactionActionTypes.SET_REACTION_ERROR, 
+            payload: 'Reaction loading error!'
+        });
+    }
+}
+
+export const async_set_reaction = (payload: IReaction | null) => (
+{
+    type: ReactionActionTypes.ASYNC_SET_REACTION,
     payload
 });

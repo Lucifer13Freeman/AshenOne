@@ -5,9 +5,9 @@ import { Box,
     Typography,
     InputAdornment, 
     NoSsr } from "@mui/material";
-import { useQuery, useSubscription } from "@apollo/client";
+import { useLazyQuery, useQuery, useSubscription } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { GET_GROUP } from "../../graphql/queries.ts/groups";
 import { useActions } from "../../hooks/useAction";
@@ -20,6 +20,8 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import app_styles from '../../styles/App.module.scss';
 import MainLayout from "../../layouts/MainLayout";
 import GroupProfile from "../../components/Groups/GroupProfile";
+import { IUser } from "../../types/user";
+import { SEARCH_GROUP_POSTS } from "../../graphql/queries.ts/posts";
 
 
 // interface GroupProps
@@ -40,6 +42,7 @@ const Group: React.FC = () =>
 
     const { async_set_all_posts, async_set_group, async_logout } = useActions();
 
+    const check_member = () => group.members.find((mem: IUser) => mem.id === auth.user.id) !== undefined;
 
     const { loading: group_loading, data: group_data } = useQuery(GET_GROUP,   
     {
@@ -52,11 +55,11 @@ const Group: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            // async_set_group(null);
-            // async_set_all_posts([]);
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
+                async_set_group(null);
+                async_set_all_posts([]);
                 async_logout();
                 router.push(ROUTES.LOGIN);
             }
@@ -64,10 +67,50 @@ const Group: React.FC = () =>
         nextFetchPolicy: "cache-first"
     });
 
+    const [query, set_query] = useState<string>('');
+    const [timer, set_timer]: any = useState(null);
+
+    const search = async (e: React.ChangeEvent<HTMLInputElement>) =>
+    {
+        set_query(e.target.value);
+
+        if (timer) clearTimeout(timer);
+
+        set_timer(
+            setTimeout(
+                async () => 
+                {
+                    await search_group_posts({ variables: { 
+                                                input: { group_id: group.id, 
+                                                text: e.target.value }}});
+                }, 500)
+        );
+    }
+
+    const [search_group_posts, { loading: search_message_loading, 
+                            data: search_message_data }] = useLazyQuery(SEARCH_GROUP_POSTS,
+    {
+        onCompleted: data => async_set_all_posts(data.search_group_posts),
+        onError: err => 
+        {
+            console.log(err);
+            
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_set_all_posts([]);
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+        },
+        nextFetchPolicy: "cache-first"
+    });
+
+    
     return (
         <MainLayout>  
             <Grid container justifyContent='center'>
                 <GroupProfile group={group} />
+                {!group.is_private && 
                 <Card className={app_styles.card} /*style={{width: 900}}*/>
                     <Box p={2}>
                         <Grid container justifyContent='space-between'>
@@ -80,9 +123,9 @@ const Group: React.FC = () =>
                                 Group Posts
                             </Typography>
                             <TextField
-                                //value={query}
-                                //onChange={search}
-                                //label={'Search...'}
+                                value={query}
+                                onChange={search}
+                                label={'Search...'}
                                 variant="outlined"
                                 style={{ marginRight: 'auto' }}
                                 placeholder="Search…"
@@ -94,7 +137,7 @@ const Group: React.FC = () =>
                                         </InputAdornment> )
                                 }}
                             />
-                            {/* <MembersList members={group.members}/> */}
+                            <MembersList members={group.members}/>
                         </Grid>
                     </Box>
                         {/* <Grid className={styles.posts_container}>
@@ -104,9 +147,9 @@ const Group: React.FC = () =>
                             }
                         </Grid> */}
                         
-                </Card>
-                <PostForm group_id={group_id}/>
-                <Posts posts={posts} is_for_group={true}/>
+                </Card>}
+                {check_member() && <PostForm group_id={group_id}/>}
+                {!group.is_private && <Posts posts={posts} is_for_group={true}/>}
             </Grid>
         </MainLayout>
     );

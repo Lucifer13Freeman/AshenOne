@@ -22,14 +22,11 @@ const NEW_REACTION = gql`
   subscription new_reaction {
     new_reaction {
       id
+      user_id
+      message_id
       content
       created_at
       updated_at
-      message {
-        id
-        from 
-        to
-      }
     }
   }
 `;

@@ -6,7 +6,7 @@ export interface IReaction
     id: string;
     user_id: string;
     message_id: string;
-    content?: '❤️' | '😆' | '😯' | '😢' | '😡' | '👍' | '👎',
+    content: '❤️' | '😆' | '😯' | '😢' | '😡' | '👍' | '👎',
     created_at?: Date;
     updated_at?: Date;
 }
@@ -16,6 +16,10 @@ export enum ReactionActionTypes
     CREATE_REACTION = 'CREATE_REACTION',
     ASYNC_CREATE_REACTION = 'ASYNC_CREATE_REACTION',
     CREATE_REACTION_ERROR = 'CREATE_REACTION_ERROR',
+
+    SET_REACTION = 'SET_REACTION',
+    ASYNC_SET_REACTION = 'ASYNC_SET_REACTION',
+    SET_REACTION_ERROR = 'SET_REACTION_ERROR',
 
     DELETE_REACTION = 'DELETE_REACTION',
     ASYNC_DELETE_REACTION = 'ASYNC_DELETE_REACTION',
@@ -40,6 +44,24 @@ interface ICreateReactionErrorAction
     payload: string;
 }
 
+interface SetReactionAction
+{
+    type: ReactionActionTypes.SET_REACTION;
+    payload: IReaction
+}
+
+interface IAsyncSetReactionAction
+{
+    type: ReactionActionTypes.ASYNC_SET_REACTION;
+    payload: IReaction
+}
+
+interface ISetReactionErrorAction
+{
+    type: ReactionActionTypes.SET_REACTION_ERROR;
+    payload: string
+}
+
 interface IDeleteReactionAction
 {
     type: ReactionActionTypes.DELETE_REACTION;
@@ -62,6 +84,9 @@ interface IDeleteReactionErrorAction
 export type ReactionAction = ICreateReactionAction 
                             | IAsyncCreateReactionAction
                             | ICreateReactionErrorAction 
+                            | SetReactionAction
+                            | IAsyncSetReactionAction
+                            | ISetReactionErrorAction
                             | IDeleteReactionAction
                             | IAsyncDeleteReactionAction
                             | IDeleteReactionErrorAction;
