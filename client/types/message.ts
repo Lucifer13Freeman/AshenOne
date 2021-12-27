@@ -21,6 +21,9 @@ export interface IMessage
     image?: string;
     audio?: string;
     video?: string;
+    is_read?: boolean;
+    is_edited?: boolean;
+    is_forwarded?: boolean;
     reactions: IReaction[];
     created_at: Date;
     updated_at?: Date;

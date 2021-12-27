@@ -35,6 +35,9 @@ export class MessageType
     readonly video: string;
 
     @Field({ nullable: true, defaultValue: false })
+    readonly is_read: boolean;
+
+    @Field({ nullable: true, defaultValue: false })
     readonly is_edited: boolean;
 
     @Field({ nullable: true, defaultValue: false })

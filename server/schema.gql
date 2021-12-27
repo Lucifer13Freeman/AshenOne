@@ -41,6 +41,7 @@ type MessageType {
   image: String
   audio: String
   video: String
+  is_read: Boolean
   is_edited: Boolean
   is_forwarded: Boolean
   reactions: [ReactionType!]

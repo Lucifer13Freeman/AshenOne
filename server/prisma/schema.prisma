@@ -71,6 +71,7 @@ model Message {
   image             String?
   audio             String?
   video             String?
+  is_read           Boolean         @default(false)
   is_edited         Boolean         @default(false)
   is_forwarded      Boolean         @default(false)
   created_at        DateTime        @default(now())
