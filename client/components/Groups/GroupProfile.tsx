@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { IGroup } from '../../types/group';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useAction';
-import { LINKS, ROLES, ROUTES } from '../../utils/constants';
+import { ACCESS, LINKS, ROLES, ROUTES } from '../../utils/constants';
 import ImageDialog from '../Shared/Dialogs/ImageDialog';
 import { date_format } from '../../utils/date-format';
 import MembersSelect from '../Shared/Selects/MembersSelect';
@@ -22,11 +22,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import FormDialog from '../Shared/Dialogs/FormDialog';
 
 
-enum ACCESS
-{
-    PRIVATE = "PRIVATE",
-    PUBLIC = "PUBLIC"
-}
+// enum ACCESS
+// {
+//     PRIVATE = "PRIVATE",
+//     PUBLIC = "PUBLIC"
+// }
 
 interface GroupProfileProps 
 {
@@ -42,7 +42,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     const [is_followed, set_is_followed] = useState(false);
     const [followers_count, set_followers_count] = useState(0);
-    const [group_name, set_group_name] = useState(group.name);
+    const [group_name, set_group_name] = useState(group?.name);
 
     const [access, set_access] = useState('');
 
@@ -60,14 +60,15 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     const check_auth = auth.is_auth && auth.user;
     const check_admin = check_auth && auth.user.role === ROLES.ADMIN;
-    const check_group_admin = check_auth && group.admin_id === auth.user.id;
+    const check_group_admin = check_auth && group?.admin_id === auth.user.id;
     const check_group_moderator = check_auth 
-        && group.moderator_ids.find(id => id === auth.user.id) !== undefined;
-    const check_member = () => group.members.find(mem => mem.id === auth.user.id) !== undefined;
+        && group?.moderator_ids.find(id => id === auth.user.id) !== undefined;
+    const check_member = () => group?.members.find(mem => mem.id === auth.user.id) !== undefined;
 
-    const is_available = check_admin || check_group_admin || check_group_moderator;
+    const is_available = check_group_admin || check_group_moderator;
 
     useEffect(() => {
+        if (group)
         group.is_private 
             ? set_access(ACCESS.PRIVATE) 
             : set_access(ACCESS.PUBLIC);
@@ -101,7 +102,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     const { loading: group_loading, data: group_data } = useQuery(GET_GROUP,   
     {
-        variables: { input: { id: group.id }},
+        variables: { input: { id: group?.id }},
         onCompleted: data => 
         {
             async_set_group(data.get_group)
@@ -142,7 +143,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     
     const follow = () =>
     {
-        const input = { input: { group_id: group.id } }
+        const input = { input: { group_id: group?.id } }
         if (is_followed) leave_group({ variables: input });
         else become_member({ variables: input });
         // get_subscriptions();
@@ -152,7 +153,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     {
         e.preventDefault();
         const input = { input: { 
-            id: group.id,
+            id: group?.id,
             name: group_name
         }}
         update_group({ variables: input });
@@ -184,7 +185,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                                 <ImageDialog group_id={group.id} 
                                     avatar={LINKS.STATIC_FILES_LINK + group.avatar}/>
                             </Grid>}
-                        {check_group_admin &&
+                        { check_group_admin &&
                                 <form style={{paddingTop: 8}} 
                                     onSubmit={update_group_name}>
                                     <FormGroup>

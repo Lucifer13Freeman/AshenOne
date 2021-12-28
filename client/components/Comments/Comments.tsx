@@ -43,7 +43,7 @@ const Comments: React.FC<CommentsProps> = ({ comments, post_id }) =>
     // }, [post_data, post_error]);
     
     return (
-        <Grid>
+        <Grid container direction='column'>
             { comments.length > 0 
                 ? <CommentList comments={/*comment_data.new_comment 
                                         ? [...comments, comment_data.new_comment] 

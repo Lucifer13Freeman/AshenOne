@@ -7,24 +7,35 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
+import SlideTransitionUp from '../Transitions/SlideTransitionUp';
+import { IconButton } from '@mui/material';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children: React.ReactElement<any, any>; },
-    ref: React.Ref<unknown>,
-) { return <Slide direction="up" ref={ref} {...props} />; });
+// const Transition = React.forwardRef(function Transition(
+//     props: TransitionProps & { children: React.ReactElement<any, any>; },
+//     ref: React.Ref<unknown>,
+// ) { return <Slide direction="up" ref={ref} {...props} />; });
 
+enum BUTTON_TYPE
+{
+  LEAVE = "leave",
+  DELETE = "delete",
+  DEFAULT = "default"
+}
 
 interface ConfirmDialogProps
 {
+    button_type?: "leave" | "delete" | "default";
     button_title?: string;
-    button_variant?: "text" | "contained" | "outlined" | undefined;
+    button_variant?: "text" | "contained" | "outlined";
     dialog_title?: string;
     dialog_description?: string;
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ children, button_title, button_variant,
-                                                    dialog_title, dialog_description }) => 
+                                                    dialog_title, dialog_description, button_type }) => 
 {
     const [open, set_open] = React.useState(false);
     const handle_click_open = () => set_open(true);
@@ -32,13 +43,22 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ children, button_title, b
 
     return (
         <div>
-            <Button variant={button_variant || 'contained'}
-                onClick={handle_click_open}>
-                { button_title || 'Delete' }
-            </Button>
+            { button_type === BUTTON_TYPE.LEAVE ?
+                <IconButton onClick={handle_click_open}>
+                    <MeetingRoomIcon/>
+                </IconButton> :
+                button_type === BUTTON_TYPE.DELETE ?
+                <IconButton onClick={handle_click_open}>
+                    <DeleteForeverRoundedIcon/>
+                </IconButton> :
+                <Button variant={button_variant || 'contained'}
+                    onClick={handle_click_open}>
+                    { button_title || 'Delete' }
+                </Button> 
+            }
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
+                TransitionComponent={SlideTransitionUp}
                 keepMounted
                 onClose={handle_close}
                 aria-describedby="confirm_dialog_description"

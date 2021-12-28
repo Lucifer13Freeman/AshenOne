@@ -13,6 +13,7 @@ import Navbar from '../layouts/Navbar/Navbar';
 import Footer from '../layouts/Footer/Footer';
 import { NoSsr } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ScrollUpButton from '../components/Shared/Buttons/ScrollUpButton/ScrollUpButton';
 //import store from '../store';
 
 
@@ -83,6 +84,7 @@ function WrappedApp({Component, pageProps}: AppProps)//: React.FC<AppProps>
         <ThemeProvider theme={theme}>
           <ApolloProvider>
             <Component {...pageProps}/>
+            <ScrollUpButton/>
           </ApolloProvider>
         </ThemeProvider>
       </PersistGate>

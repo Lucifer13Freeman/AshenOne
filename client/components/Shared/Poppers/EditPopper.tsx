@@ -45,7 +45,7 @@ const EditPopper: React.FC<EditPopperProps> = ({ children, place = 'bottom-end',
                     <Fade {...TransitionProps} timeout={350}>
                         <Paper style={{padding: 10}}>
                             <Grid container direction="column" 
-                                onClick={handle_click_close}>
+                                /*onClick={handle_click_close}*/>
                                 {children}
                             </Grid>
                         </Paper>

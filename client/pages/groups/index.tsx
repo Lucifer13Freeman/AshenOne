@@ -4,7 +4,8 @@ import { Box,
     Grid, 
     TextField, 
     InputAdornment, 
-    Typography } from "@mui/material";
+    Typography, 
+    IconButton} from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -24,6 +25,8 @@ import GroupList from '../../components/Groups/List/GroupList';
 import styles from '../../styles/App.module.scss';
 import { NEW_MESSAGE } from "../../graphql/subscriptions/messages";
 import { IGroup } from "../../types/group";
+import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
+import CreateGroupDialog from "../../components/Groups/CreateGroupDialog";
 
 
 const GroupsPage: React.FC = () =>
@@ -131,6 +134,21 @@ const GroupsPage: React.FC = () =>
                                         </InputAdornment> )
                                 }}
                             />
+                            <CreateGroupDialog />
+                            {/* <IconButton> */}
+                                {/* <Button>
+                                    <Typography 
+                                        variant="h6"
+                                        color="primary"
+                                        className={styles.page_title}
+                                        // style={{ marginRight: 16, marginBottom: 6 }}
+                                        noWrap
+                                    >
+                                        Create
+                                    </Typography>
+                                    <AddBoxRoundedIcon/>
+                                </Button> */}
+                            {/* </IconButton> */}
                         </Grid>
                     </Box>
                     <Grid>

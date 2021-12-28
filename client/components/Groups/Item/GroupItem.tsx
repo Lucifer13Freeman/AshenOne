@@ -1,4 +1,4 @@
-import { Card, Grid, IconButton, Avatar, Typography, CardContent, CardActionArea } from "@mui/material";
+import { Card, Grid, IconButton, Avatar, Typography, CardContent, CardActionArea, Button } from "@mui/material";
 import { useRouter } from "next/router";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import styles from "../../../styles/Item.module.scss";
@@ -15,7 +15,10 @@ import { GET_ALL_POSTS } from "../../../graphql/queries.ts/posts";
 import React, { useEffect } from "react";
 import { GET_GROUP } from "../../../graphql/queries.ts/groups";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { REMOVE_GROUP_MEMBER } from "../../../graphql/mutations/groups";
+import { DELETE_GROUP, REMOVE_GROUP_MEMBER } from "../../../graphql/mutations/groups";
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
 
 
 interface GroupItemProps 
@@ -27,7 +30,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
 {
     const router = useRouter();
 
-    const { async_logout, async_leave_group } = useActions();
+    const { async_logout, async_leave_group, async_delete_group } = useActions();
 
     // const { group, error: group_error } = useTypedSelector(state => state.group);
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
@@ -54,6 +57,21 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
         }
     });
 
+    const [gql_delete_group, { loading: delete_group_loading }] = useMutation(DELETE_GROUP, 
+    {
+        onCompleted: (data) => async_delete_group(data.delete_group),
+        onError: (err) => 
+        {
+            console.log(err);
+                
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+         }
+    });
+
     const leave_group = (e: any) =>
     {
         e.stopPropagation();
@@ -62,6 +80,12 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
             user_id: auth.user.id
         }}
         gql_leave_group({ variables: input });
+    }
+
+    const delete_group = (e: any) =>
+    {
+        e.stopPropagation();
+        gql_delete_group({ variables: { input: { id: group.id }}});
     }
 
 
@@ -115,12 +139,41 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
                     </IconButton> */}
                 </Grid>
             </CardActionArea>
-            <IconButton 
+            {/* <IconButton 
                 onClick={leave_group} 
                 style={{marginLeft: 'auto'}}
             >
-                <DeleteIcon/>
-            </IconButton>
+                <MeetingRoomIcon/>
+            </IconButton> */}
+            <Grid style={{marginLeft: 'auto'}}>
+                <ConfirmDialog 
+                    button_title='Leave' 
+                    dialog_title='Leave group'
+                    button_variant='contained'
+                    button_type="leave"
+                >
+                    <Button onClick={leave_group}>Leave</Button>
+                    <Button>Cancel</Button>
+                </ConfirmDialog>
+            </Grid>
+            { auth.user.id === group?.admin_id && 
+            <Grid style={{marginLeft: 'auto'}}>
+                <ConfirmDialog 
+                    button_title='Delete' 
+                    dialog_title='Delete group'
+                    button_variant='contained'
+                    button_type="delete"
+                >
+                    <Button onClick={delete_group}>Delete</Button>
+                    <Button>Cancel</Button>
+                </ConfirmDialog>
+           </Grid> }
+            {/* <IconButton 
+                onClick={delete_group} 
+                style={{marginLeft: 'auto'}}
+            >
+                <DeleteForeverRoundedIcon/>
+            </IconButton> */}
         </Card>
     );
 }

@@ -104,3 +104,29 @@ export const async_leave_group = (payload: IGroup | null) => (
     type: GroupActionTypes.ASYNC_LEAVE_GROUP,
     payload
 });
+
+export const delete_group = ({ payload }: any) =>
+{
+    try
+    { 
+        return (
+        {
+            type: GroupActionTypes.DELETE_GROUP,
+            payload
+        });
+    } 
+    catch (err) 
+    {
+        return (
+        { 
+            type: GroupActionTypes.DELETE_GROUP_ERROR, 
+            payload: 'Group loading error!'
+        });
+    }
+}
+
+export const async_delete_group = (payload: string | null) => (
+{
+    type: GroupActionTypes.ASYNC_DELETE_GROUP,
+    payload
+});

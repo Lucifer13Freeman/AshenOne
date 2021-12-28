@@ -219,6 +219,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
                                         button_title='Edit' 
                                         dialog_title='Edit post'
                                         button_variant='text'
+                                        is_default_input={false}
                                         form_content={{
                                             text: post_text,
                                             set_text: set_post_text,

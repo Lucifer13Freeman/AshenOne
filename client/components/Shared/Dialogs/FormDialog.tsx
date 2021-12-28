@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import SendInput from '../Inputs/SendInput';
 import { useState } from 'react';
 import FormDialogTitle from './FormDialogTitle';
-import { Grid, IconButton } from '@mui/material';
+import { FormControl, Grid, IconButton, Input, InputLabel } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -42,10 +42,11 @@ interface FormDialogProps
   // dialog_form?: Function;
   form_content: IFormContent;
   button_type?: "setting" | "edit" | "default" | undefined;
+  is_default_input?: boolean;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({ children, button_title, button_variant,
-                                                dialog_title, dialog_description, 
+                                                dialog_title, dialog_description, is_default_input = true,
                                                 /*dialog_form,*/ form_content, button_type }) =>
 {
   const [open, set_open] = React.useState(false);
@@ -76,19 +77,43 @@ const FormDialog: React.FC<FormDialogProps> = ({ children, button_title, button_
           <FormDialogTitle id="dialog_title" onClose={handle_close}>
             {dialog_title || 'Edit'}
           </FormDialogTitle>
-            <DialogContent style={{padding: 10, width: 400}}>
+            <DialogContent style={{padding: 10, width: 340}}>
               <DialogContentText>
                 {dialog_description || ''}
               </DialogContentText>
-              <SendInput 
-                // placeholder="What's up?"
-                loading_placeholder={() => "Editing..."}
-                is_loading={form_content.is_loading} 
-                value={form_content.text} 
-                set_value={form_content.set_text} 
-                is_with_button={form_content.is_with_button} 
-                placeholder={form_content.placeholder}
-              />
+              { !is_default_input ?
+                <SendInput 
+                  // placeholder="What's up?"
+                  loading_placeholder={() => "Editing..."}
+                  is_loading={form_content.is_loading} 
+                  value={form_content.text} 
+                  set_value={form_content.set_text} 
+                  is_with_button={form_content.is_with_button} 
+                  placeholder={form_content.placeholder}
+                /> :
+                // <Grid container direction="column" justifyContent="center">
+                <FormControl style={{width: 300}}>
+                  <InputLabel htmlFor="edit_input">
+                      {form_content.placeholder}
+                  </InputLabel>
+                  <Input 
+                    id="edit_input"
+                    value={form_content.text}
+                    fullWidth
+                    onChange={ e => form_content.set_text(e.target.value) }
+                  />
+                </FormControl>
+                // </Grid>
+                // <TextField
+                //   variant="outlined"
+                //   fullWidth
+                //   //style={{ outline: 'none' }}
+                //   label={form_content.placeholder ? form_content.placeholder : 'Enter message...'}
+                //   value={form_content.text}
+                //   onChange={(e) => form_content.set_text(e.target.value)}
+                //   //onChange={handle_change}
+                // /> 
+                }
             </DialogContent>
           <DialogActions onClick={handle_close}>
             {children}

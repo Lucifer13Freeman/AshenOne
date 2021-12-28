@@ -30,7 +30,7 @@ export class GroupService
         {
             let errors: any = {
                 //user_id: undefined,
-                group: undefined,
+                name: undefined,
                 group_id: undefined
             };
 
@@ -42,6 +42,13 @@ export class GroupService
                 || members.length === 0 
                 || members.includes(current_user_id )) member_ids = [current_user_id];
             else member_ids = [current_user_id, ...members];
+
+            if (name.trim() === '') errors.name = 'Name must not be empty!';
+
+            for (let value of Object.values(errors)) 
+                if (value !== undefined) 
+                    throw new UserInputError('Bad input', { errors });
+
 
             const group = await this.prisma.$transaction(async (prisma) => 
             {

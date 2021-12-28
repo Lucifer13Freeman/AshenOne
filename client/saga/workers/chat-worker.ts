@@ -1,6 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { create_chat, set_all_chats, set_chat, 
-        leave_chat } from '../../store/actions/chat';
+        leave_chat, 
+        delete_chat} from '../../store/actions/chat';
 import { IChat } from '../../types/chat';
 
 
@@ -22,4 +23,9 @@ export function* create_chat_worker(payload: IChat): Generator<any>
 export function* leave_chat_worker(payload: IChat): Generator<any>
 {
     yield put(leave_chat(payload));
+}
+
+export function* delete_chat_worker(payload: string): Generator<any>
+{
+    yield put(delete_chat(payload));
 }

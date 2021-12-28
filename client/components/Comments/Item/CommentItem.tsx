@@ -193,6 +193,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
                                         button_title='Edit' 
                                         dialog_title='Edit comment'
                                         button_variant='text'
+                                        is_default_input={false}
                                         form_content={{
                                             text: comment_text,
                                             set_text: set_comment_text,

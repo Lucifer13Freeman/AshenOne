@@ -1,6 +1,6 @@
 import { put } from 'redux-saga/effects';
 import { create_group, set_all_groups, 
-    set_group, leave_group } from '../../store/actions/group';
+    set_group, leave_group, delete_group } from '../../store/actions/group';
 import { IGroup } from '../../types/group';
 
 
@@ -22,4 +22,9 @@ export function* create_group_worker(payload: IGroup): Generator<any>
 export function* leave_group_worker(payload: IGroup): Generator<any>
 {
     yield put(leave_group(payload));
+}
+
+export function* delete_group_worker(payload: string): Generator<any>
+{
+    yield put(delete_group(payload));
 }

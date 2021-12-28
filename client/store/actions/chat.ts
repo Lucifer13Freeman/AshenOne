@@ -104,3 +104,29 @@ export const async_leave_chat = (payload: IChat | null) => (
     type: ChatActionTypes.ASYNC_LEAVE_CHAT,
     payload
 });
+
+export const delete_chat = ({ payload }: any) =>
+{
+    try
+    { 
+        return (
+        {
+            type: ChatActionTypes.DELETE_CHAT,
+            payload
+        });
+    } 
+    catch (err) 
+    {
+        return (
+        { 
+            type: ChatActionTypes.DELETE_CHAT_ERROR, 
+            payload: 'Chat loading error!'
+        });
+    }
+}
+
+export const async_delete_chat = (payload: string | null) => (
+{
+    type: ChatActionTypes.ASYNC_DELETE_CHAT,
+    payload
+});

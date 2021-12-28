@@ -95,6 +95,24 @@ export const chat_reducer = (state = initial_state, action: ChatAction): IChatSt
                 error: action.payload
             }
         }
+        case ChatActionTypes.DELETE_CHAT:
+        {
+            const update_chats = state.chats.filter((chat: IChat) => chat.id !== action.payload);
+    
+            return {
+                ...state, 
+                chat: null,
+                chats: update_chats,
+                error: undefined
+            }
+        }
+        case ChatActionTypes.DELETE_CHAT_ERROR:
+        {
+            return {
+                ...state,
+                error: action.payload
+            }
+        }
         default:
         {
             return state;

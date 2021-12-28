@@ -12,7 +12,7 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { GET_GROUP } from "../../graphql/queries.ts/groups";
 import { useActions } from "../../hooks/useAction";
 import { TOKEN } from "../../utils/token";
-import { ROUTES } from "../../utils/constants";
+import { ACCESS, ROUTES } from "../../utils/constants";
 import MembersSelect from "../../components/Shared/Selects/MembersSelect";
 import PostForm from "../../components/Posts/PostForm";
 import Posts from "../../components/Posts/Posts";
@@ -30,6 +30,7 @@ import ItemsSelect from "../../components/Shared/Selects/ItemsSelect";
 //     group_id?: string | string[];
 // }
 
+
 const Group: React.FC = () => 
 {
     const router = useRouter();
@@ -43,7 +44,7 @@ const Group: React.FC = () =>
 
     const { async_set_all_posts, async_set_group, async_logout } = useActions();
 
-    const check_member = () => group.members.find((mem: IUser) => mem.id === auth.user.id) !== undefined;
+    const check_member = () => group?.members?.find((mem: IUser) => mem.id === auth.user.id) !== undefined;
 
     const { loading: group_loading, data: group_data } = useQuery(GET_GROUP,   
     {
@@ -111,7 +112,7 @@ const Group: React.FC = () =>
         <MainLayout>  
             <Grid container justifyContent='center'>
                 <GroupProfile group={group} />
-                {!group.is_private || check_member() ? 
+                {!group?.is_private || check_member() ? 
                 <Card className={app_styles.card} style={{width: 400}}>
                     <Box p={2}>
                         <Grid container direction="row" >
@@ -126,7 +127,7 @@ const Group: React.FC = () =>
                             <TextField
                                 value={query}
                                 onChange={search}
-                                label={'Search...'}
+                                // label={'Search...'}
                                 variant="outlined"
                                 style={{ marginRight: 'auto' }}
                                 placeholder="Search…"
@@ -138,7 +139,7 @@ const Group: React.FC = () =>
                                         </InputAdornment> )
                                 }}
                             />
-                            <ItemsSelect users={group.members}/>
+                            <ItemsSelect users={group?.members}/>
                         </Grid>
                     </Box>
                         {/* <Grid className={styles.posts_container}>
@@ -150,7 +151,7 @@ const Group: React.FC = () =>
                         
                 </Card> : null}
                 {check_member() && <PostForm group_id={group_id}/>}
-                {!group.is_private || check_member() ? <Posts posts={posts} is_for_group={true}/> : null}
+                {!group?.is_private || check_member() ? <Posts posts={posts} is_for_group={true}/> : null}
             </Grid>
         </MainLayout>
     );

@@ -1,4 +1,4 @@
-import { Card, Grid, IconButton, Avatar, Typography, CardContent, CardActionArea } from "@mui/material";
+import { Card, Grid, IconButton, Avatar, Typography, CardContent, CardActionArea, Button } from "@mui/material";
 import { useRouter } from "next/router";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import styles from "../../../styles/Item.module.scss";
@@ -15,7 +15,8 @@ import { GET_ALL_MESSAGES } from "../../../graphql/queries.ts/messages";
 import React, { useEffect } from "react";
 import { GET_CHAT } from "../../../graphql/queries.ts/chats";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { REMOVE_CHAT_MEMBER } from "../../../graphql/mutations/chats";
+import { DELETE_CHAT, REMOVE_CHAT_MEMBER } from "../../../graphql/mutations/chats";
+import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
 
 
 interface ChatItemProps 
@@ -27,7 +28,8 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
 {
     const router = useRouter();
 
-    const { async_logout, async_leave_chat } = useActions();
+    const { async_logout, async_leave_chat, 
+            async_delete_chat } = useActions();
 
     // const { chat, error: chat_error } = useTypedSelector(state => state.chat);
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
@@ -119,6 +121,21 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
         }
     });
 
+    const [gql_delete_chat, { loading: delete_chat_loading }] = useMutation(DELETE_CHAT, 
+    {
+        onCompleted: (data) => async_delete_chat(data.delete_chat),
+        onError: (err) => 
+        {
+            console.log(err);
+                    
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+        }
+    });
+
     const leave_chat = (e: any) =>
     {
         e.stopPropagation();
@@ -127,6 +144,13 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
             user_id: auth.user.id
         }}
         gql_leave_chat({ variables: input });
+    }
+
+    const delete_chat = (e: any) =>
+    {
+        e.stopPropagation();
+        const input = { input: { id: chat.id }}
+        gql_delete_chat({ variables: input });
     }
 
 
@@ -187,12 +211,35 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
                     </IconButton> */}
                 </Grid>
             </CardActionArea>
-            <IconButton 
+            <Grid style={{marginLeft: 'auto'}}>
+                <ConfirmDialog 
+                    button_title='Leave' 
+                    dialog_title='Leave chat'
+                    button_variant='contained'
+                    button_type="leave"
+                >
+                    <Button onClick={leave_chat}>Leave</Button>
+                    <Button>Cancel</Button>
+                </ConfirmDialog>
+            </Grid>
+            { auth.user.id === chat?.admin_id && 
+            <Grid style={{marginLeft: 'auto'}}>
+                <ConfirmDialog 
+                    button_title='Delete' 
+                    dialog_title='Delete chat'
+                    button_variant='contained'
+                    button_type="delete"
+                >
+                    <Button onClick={delete_chat}>Delete</Button>
+                    <Button>Cancel</Button>
+                </ConfirmDialog>
+           </Grid> }
+            {/* <IconButton 
                 onClick={leave_chat}
                 style={{marginLeft: 'auto'}}
             >
                 <DeleteIcon />
-            </IconButton>
+            </IconButton> */}
         </Card>
     );
 }

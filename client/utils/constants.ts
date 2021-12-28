@@ -1,6 +1,7 @@
 
 export enum LINKS
 {
+    BASE = 'http://localhost:3000',
     HTTP_BASE = 'http://localhost:5000',
     HTTP_LINK = 'http://localhost:5000/graphql',
     WS_LINK = 'ws://localhost:5000/graphql',
@@ -49,3 +50,9 @@ export enum ROLES
 }
 
 export const REACTIONS = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎'];
+
+export enum ACCESS
+{
+    PRIVATE = "PRIVATE",
+    PUBLIC = "PUBLIC"
+}

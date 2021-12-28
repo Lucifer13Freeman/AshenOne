@@ -34,12 +34,12 @@ const Posts: React.FC<PostsProps> = ({ posts, is_for_group = false }) =>
     
     return (
         // <>
-            <Grid>
-                { posts?.length > 0 
-                    ? <PostList posts={posts} is_for_group={is_for_group}/>
-                    : <div className={styles.no_posts}>Posts not found...</div>
-                }
-            </Grid>
+        <Grid container direction='column'>
+            { posts?.length > 0 
+                ? <PostList posts={posts} is_for_group={is_for_group}/>
+                : <div className={styles.no_posts}>Posts not found...</div>
+            }
+        </Grid>
         // </>
     );
 }

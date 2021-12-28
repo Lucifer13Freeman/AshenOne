@@ -89,6 +89,24 @@ export const group_reducer = (state = initial_state, action: GroupAction): IGrou
                 error: action.payload
             }
         }
+        case GroupActionTypes.DELETE_GROUP:
+        {
+            const update_groups = state.groups.filter((group: IGroup) => group.id !== action.payload);
+    
+            return {
+                ...state, 
+                group: null,
+                groups: update_groups,
+                error: undefined
+            }
+        }
+        case GroupActionTypes.DELETE_GROUP_ERROR:
+        {
+            return {
+                ...state,
+                error: action.payload
+            }
+        }
         default:
         {
             return state;
