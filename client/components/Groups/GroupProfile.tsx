@@ -192,6 +192,10 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                                     </FormGroup>
                                 </form> 
                             </Grid> }
+                            { is_available &&      
+                                <Grid>
+                                    <InviteUsers group_id={group.id}/>
+                                </Grid> }
                             { check_group_admin &&
                                 <Grid style={{marginRight: 10}}>
                                     <ItemsSelect title='Access' icon='private'>
@@ -219,10 +223,6 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                                         </RadioGroup>
                                     </ItemsSelect> 
                                 </Grid> }  
-                                { is_available &&      
-                                <Grid>
-                                    <InviteUsers group_id={group.id}/>
-                                </Grid>}
                             </Grid>
                         </Grid> 
                     <Grid

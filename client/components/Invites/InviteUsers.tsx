@@ -110,7 +110,8 @@ const InviteUsers: React.FC<InviteUsersProps> = ({ chat_id, group_id}) =>
                 button_title='Invite' 
                 transition='up'
                 dialog_title='Invite'
-                button_variant='outlined'
+                // button_variant='outlined'
+                button_type='invite_user'
                 // button_type='default'
                 // form_content={{
                 //     // value: post_text,

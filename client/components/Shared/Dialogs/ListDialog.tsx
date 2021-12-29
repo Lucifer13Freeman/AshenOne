@@ -18,6 +18,7 @@ import { IUser } from '../../../types/user';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import SlideTransitionRight from '../Transitions/SlideTransitionRight';
 import SlideTransitionUp from '../Transitions/SlideTransitionUp';
+import PersonAddAlt1RoundedIcon from '@mui/icons-material/PersonAddAlt1Rounded';
 
 
 enum BUTTON_TYPE
@@ -25,6 +26,7 @@ enum BUTTON_TYPE
   SETTINGS = "setting",
   EDIT = "edit",
   INVITE = "invite",
+  INVITE_USER = "invite_user",
   DEFAULT = "default"
 }
 
@@ -47,7 +49,7 @@ interface ListDialogProps
   dialog_description?: string;
   // dialog_form?: Function;
   form_content?: IListContent;
-  button_type?: "invite" | "setting" | "edit" | "default" | undefined;
+  button_type?: "invite" | "invite_user" | "setting" | "edit" | "default" | undefined;
   is_default_input?: boolean;
   transition?: "up" | "right";
 }
@@ -72,6 +74,12 @@ const ListDialog: React.FC<ListDialogProps> = ({ children, button_title, button_
             </ListItemIcon>
             <ListItemText primary={button_title || 'Invites'}/>
         </ListItem> :
+        button_type === BUTTON_TYPE.INVITE_USER ? 
+        <Button variant={button_variant || 'text'}  
+                onClick={handle_click_open} 
+                startIcon={<PersonAddAlt1RoundedIcon/>}>
+            {button_title || 'Invites'}
+        </Button> :
         button_type === BUTTON_TYPE.EDIT ? 
         <IconButton onClick={handle_click_open}>
           <EditIcon/>
