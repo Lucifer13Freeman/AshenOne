@@ -7,7 +7,7 @@ const initial_state: IAuthState = {
         is_auth: false,
         user: null
     },
-    error: undefined//''
+    error: undefined
 }
 
 
@@ -15,8 +15,7 @@ export const auth_reducer = (state = initial_state, action: AuthAction): IAuthSt
 {
     switch (action.type) 
     {
-        //case AuthActionTypes.REGISTER:
-        case AuthActionTypes.LOGIN:// || AuthActionTypes.REGISTER:
+        case AuthActionTypes.LOGIN:
         {
             return {
                 ...state,
@@ -25,7 +24,6 @@ export const auth_reducer = (state = initial_state, action: AuthAction): IAuthSt
             }
         }
         case AuthActionTypes.LOGIN_ERROR:
-        //case AuthActionTypes.REGISTER_ERROR:
         {
             return {
                 ...state, 
@@ -47,23 +45,6 @@ export const auth_reducer = (state = initial_state, action: AuthAction): IAuthSt
                 error: action.payload
             }
         }
-        // case AuthActionTypes.SET_CURRENT_USER:
-        // {
-        //     return {
-        //         auth: { 
-        //             user: action.payload,
-        //             is_auth: true
-        //         },
-        //         error: undefined
-        //     }
-        // }
-        // case AuthActionTypes.SET_CURRENT_USER_ERROR:
-        // {
-        //     return {
-        //         ...state,
-        //         error: action.payload
-        //     }
-        // }
         default:
         {
             return state;

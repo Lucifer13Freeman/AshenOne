@@ -74,31 +74,31 @@ const ChatsPage: React.FC = () =>
     //     return null;
     // }
 
-    const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
+    // const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
+
+    // // useEffect(() => 
+    // // {
+    // //     get_chats();
+    // // }, []);
 
     // useEffect(() => 
     // {
-    //     get_chats();
-    // }, []);
-
-    useEffect(() => 
-    {
-        if (message_error) console.log(message_error);
-        if (message_data) 
-        {
-            async_set_all_messages([...messages, message_data.new_message]);
-            //get_chats();
+    //     if (message_error) console.log(message_error);
+    //     if (message_data) 
+    //     {
+    //         async_set_all_messages([...messages, message_data.new_message]);
+    //         //get_chats();
             
-            //router.reload();
+    //         //router.reload();
 
-            //router.push(ROUTES.CHATS);
+    //         //router.push(ROUTES.CHATS);
 
-            // console.log(message_data.new_message)
-            // console.log(chats)
+    //         // console.log(message_data.new_message)
+    //         // console.log(chats)
             
-            //update_chats();
-        }
-    }, [message_data, message_error]);
+    //         //update_chats();
+    //     }
+    // }, [message_data, message_error]);
 
 
     const [query, set_query] = useState<string>('');

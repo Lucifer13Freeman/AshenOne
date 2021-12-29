@@ -9,7 +9,7 @@ const initial_state: ICommentState = {
 
     comment: null,
     comments: [],
-    error: undefined//''
+    error: undefined
 }
 
 export const comment_reducer = (state = initial_state, action: CommentAction): ICommentState =>
@@ -18,8 +18,6 @@ export const comment_reducer = (state = initial_state, action: CommentAction): I
     {
         case CommentActionTypes.CREATE_COMMENT:
         {
-            //const comments_copy = [...state.comments];
-
             return {
                 ...state, 
                 comment: action.payload,
@@ -71,43 +69,14 @@ export const comment_reducer = (state = initial_state, action: CommentAction): I
                 error: action.payload
             }
         }
-        // case CommentActionTypes.UPDATE_COMMENT:
-        // {
-        //     const updated_comments = state.comments.map((comment: IComment) => 
-        //     { 
-        //         if (comment.id === action.payload.id) comment = action.payload
-        //         return comment 
-        //     });
-
-        //     return {
-        //         ...state, 
-        //         comment: action.payload,
-        //         comments: updated_comments,
-        //         error: undefined
-        //     }
-        // }
-        // case CommentActionTypes.UPDATE_COMMENT_ERROR:
-        // {
-        //     return {
-        //         ...state,
-        //         error: action.payload
-        //     }
-        // }
         case CommentActionTypes.LIKE_COMMENT:
         {
             const new_like = action.payload;
 
-            // console.log(new_like)
-
             let update_comments = [...state.comments];
             let comment_index = update_comments.findIndex((comment: IComment) => comment.id === new_like.comment_id);
             
-            // console.log(update_comments)
-
-            // let update_comment = {...update_comments[comment_index]}
-
             let likes = [...update_comments[comment_index].likes];
-            // let likes = update_comment.likes;
 
             const is_exists = likes?.find((like: ILikeComment) => like.id === new_like.id);
 

@@ -4,7 +4,7 @@ import { GroupAction, GroupActionTypes, IGroup, IGroupState } from "../../types/
 const initial_state: IGroupState = {
     group: null,
     groups: [],
-    error: undefined//''
+    error: undefined
 }
 
 

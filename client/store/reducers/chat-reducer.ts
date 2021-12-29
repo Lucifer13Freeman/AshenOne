@@ -5,7 +5,7 @@ const initial_state: IChatState = {
 
     chat: null,
     chats: [],
-    error: undefined//''
+    error: undefined
 }
 
 

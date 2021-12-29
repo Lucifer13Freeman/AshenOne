@@ -8,7 +8,7 @@ const initial_state: IInviteState = {
 
     invite: null,
     invites: [],
-    error: undefined//''
+    error: undefined
 }
 
 export const invite_reducer = (state = initial_state, action: InviteAction): IInviteState =>

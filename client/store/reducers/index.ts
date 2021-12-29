@@ -51,5 +51,3 @@ export const root_reducer = (state: any, action: AnyAction) =>
 }
 
 export type RootState = ReturnType<typeof root_reducer>;
-
-//export type RootState = ReturnType<typeof root_reducer>;

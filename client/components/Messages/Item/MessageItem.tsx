@@ -99,7 +99,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
     }
 
     const reactions = (
-        message.reactions.length > 0 && (
+        message.reactions?.length > 0 && (
             <div 
                 className={reaction_styles.reactions_box }
                 style={ check_sender() 
@@ -109,7 +109,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                 {/* <div className={ check_sender() 
                     ? reaction_styles.sent 
                     : reaction_styles.received } > */}
-                    {reaction_icons} {message.reactions.length}
+                    {reaction_icons} {message.reactions?.length}
                 {/* </div> */}
             </div>
         )

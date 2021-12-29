@@ -133,7 +133,7 @@ export class MessageResolver
         try
         {
             const message = await this.message_service.update({ ...input, current_user_id: user.id });
-            this.pubsub.publish(EVENTS.NEW_MESSAGE_EVENT, { new_message: message, is_update: true });
+            this.pubsub.publish(EVENTS.UPDATE_MESSAGE_EVENT, { updated_message: message });
             return message;
         }
         catch (err) 
@@ -251,23 +251,19 @@ export class MessageResolver
         return this.pubsub.asyncIterator(EVENTS.NEW_MESSAGE_EVENT);
     }
 
-    @Subscription(() => String, 
+    @Subscription(() => MessageType)
+    async updated_message(/*@CurrentUser() user: GetUserInput*/) 
     {
-        /*filter: (payload, variables) =>
-        payload.new_message.user_id.id === variables.user.id 
-        || payload.chat_members.find((u: User) => u.email === variables.user.email)*/
-    })
+        return this.pubsub.asyncIterator(EVENTS.UPDATE_MESSAGE_EVENT);
+    }
+
+    @Subscription(() => String)
     async deleted_message(/*@CurrentUser() user: GetUserInput*/) 
     {
         return this.pubsub.asyncIterator(EVENTS.DELETE_MESSAGE_EVENT);
     }
 
-    @Subscription(() => ReactionType, 
-    {
-        /*filter: (payload, variables) =>
-        payload.new_reaction.user_id.id === variables.user.id 
-        || payload.chat_members.find((u: User) => u.email === variables.user.email)*/
-    })
+    @Subscription(() => ReactionType)
     async new_reaction(/*@CurrentUser() user: GetUserInput*/) 
     {
         return this.pubsub.asyncIterator(EVENTS.NEW_REACTION_EVENT);

@@ -6,7 +6,7 @@ const initial_state: IMessageState = {
 
     message: null,
     messages: [],
-    error: undefined//''
+    error: undefined
 }
 
 
@@ -16,8 +16,6 @@ export const message_reducer = (state = initial_state, action: MessageAction | R
     {
         case MessageActionTypes.CREATE_MESSAGE:
         {
-            //const messages_copy = [...state.messages];
-
             return {
                 ...state, 
                 message: action.payload,
@@ -62,35 +60,6 @@ export const message_reducer = (state = initial_state, action: MessageAction | R
                 error: undefined
             }
         }
-        // case MessageActionTypes.SET_ALL_MESSAGES_ERROR:
-        // {
-        //     return {
-        //         ...state, 
-        //         error: action.payload
-        //     }
-        // }
-        // case MessageActionTypes.UPDATE_MESSAGE:
-        // {
-        //     const update_messages = state.messages.map((message: IMessage) => 
-        //     { 
-        //         if (message.id === action.payload.id) message = action.payload
-        //         return message 
-        //     });
-
-        //     return {
-        //         ...state, 
-        //         message: action.payload,
-        //         messages: update_messages,
-        //         error: undefined
-        //     }
-        // }
-        // case MessageActionTypes.UPDATE_MESSAGE_ERROR:
-        // {
-        //     return {
-        //         ...state,
-        //         error: action.payload
-        //     }
-        // }
         case MessageActionTypes.DELETE_MESSAGE:
         {
             const update_messages = state.messages.filter((message: IMessage) => message.id !== action.payload);
@@ -111,7 +80,6 @@ export const message_reducer = (state = initial_state, action: MessageAction | R
         }
         case ReactionActionTypes.SET_REACTION:
         {
-            console.log(action.payload)
             const reaction = action.payload;
             let update_message: IMessage | null = state.message;
             let update_messages = [...state.messages];
@@ -126,8 +94,8 @@ export const message_reducer = (state = initial_state, action: MessageAction | R
 
                 const reaction_index: number = update_reactions.findIndex((r: IReaction) => r.id === reaction.id);
                 
-                if (reaction_index > -1) {update_reactions[reaction_index] = reaction; console.log('update')}
-                else {update_reactions = [...update_reactions, reaction]; console.log('create')}
+                if (reaction_index > -1) update_reactions[reaction_index] = reaction;
+                else update_reactions = [...update_reactions, reaction];
 
                 update_message = { 
                     ...update_message, 

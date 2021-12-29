@@ -552,6 +552,7 @@ input GetGroupMemberInput {
 type Subscription {
   new_invite: InviteType!
   new_message: MessageType!
+  updated_message: MessageType!
   deleted_message: String!
   new_reaction: ReactionType!
   new_post: PostType!

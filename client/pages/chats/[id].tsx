@@ -29,7 +29,7 @@ import styles from '../../styles/Messages.module.scss';
 import app_styles from '../../styles/App.module.scss';
 import { useInput } from "../../hooks/useInput";
 import { useEffect, useState } from "react";
-import { DELETED_MESSAGE, NEW_MESSAGE, NEW_REACTION } from "../../graphql/subscriptions/messages";
+import { DELETED_MESSAGE, NEW_MESSAGE, NEW_REACTION, UPDATED_MESSAGE } from "../../graphql/subscriptions/messages";
 import { GET_CHAT } from "../../graphql/queries.ts/chats";
 import ChatMembers from '../../components/Chats/Members/ChatMembers';
 import MessageForm from '../../components/Messages/MessageForm';
@@ -57,8 +57,11 @@ const ChatPage: React.FC = () =>
 {
     const router = useRouter();
 
-    const chat_id = router.query.id;
+    const chat_id = router?.query?.id;
     const input = { input: { id: chat_id } }
+
+    const [query, set_query] = useState<string>('');
+    const [timer, set_timer]: any = useState(null);
     
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     const { chat, chats, error: chat_error } = useTypedSelector(state => state.chat);
@@ -82,11 +85,11 @@ const ChatPage: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            async_set_chat(null);
-            async_set_all_messages([]);
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
-            {
+            { 
+                async_set_chat(null);
+                async_set_all_messages([]);
                 async_logout();
                 router.push(ROUTES.LOGIN);
             }
@@ -95,44 +98,67 @@ const ChatPage: React.FC = () =>
         nextFetchPolicy: "cache-first"
     });
 
+    
+
+    const [search_messages, { loading: search_message_loading, 
+        data: search_message_data }] = useLazyQuery(SEARCH_MESSAGES,
+    {
+        onCompleted: data => async_set_all_messages(data.search_messages),
+        onError: err => 
+        {
+            console.log(err);
+            
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_set_all_messages([]);
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+        },
+        nextFetchPolicy: "cache-first"
+    });
+
 
     const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
+    const { data: updated_message_data, error: updated_message_error } = useSubscription(UPDATED_MESSAGE);
     const { data: deleted_message_data, error: deleted_message_error } = useSubscription(DELETED_MESSAGE);
     const { data: reaction_data, error: reaction_error } = useSubscription(NEW_REACTION);
 
+    // useEffect(() => 
+    // {
+    //     if (message_error) console.log(message_error);
+    //     if (message_data) async_create_message(message_data.new_message);
+    // }, [message_data, message_error]);
+
     useEffect(() => 
     {
-        if (message_error) console.log(message_error);
-        if (message_data) 
-        { 
-            if (message_data.is_create)
-                async_set_all_messages([...messages, message_data.new_message]);
-            else if (message_data.is_update)
-                async_set_message(message_data.new_message);
-            // else if (message_data.is_delete)
-            //     async_delete_message(message_data.new_message);
-            // async_create_message(message_data.new_message);
-            //get_current_chat();
-            //update_chats();
-        }
+        console.log(message_data)
+        if (message_error) console.error(message_error);
+        if (message_data) async_set_all_messages([...messages, message_data.new_message]); 
+        // { 
+        //     //async_create_message(message_data.new_message);//
+        //     /*if (message_data.is_create)*/ async_set_all_messages([...messages, message_data.new_message]); //async_create_message(message_data.new_message); //async_set_all_messages([...messages, message_data.new_message]);
+
+        // }
     }, [message_data, message_error]);
 
     useEffect(() => 
     {
-        if (deleted_message_error) console.log(deleted_message_error);
+        if (updated_message_error) console.error(updated_message_error);
+        if (updated_message_data) async_set_message(updated_message_data.updated_message);
+    }, [updated_message_data, updated_message_error]);
+
+    useEffect(() => 
+    {
+        if (deleted_message_error) console.error(deleted_message_error);
         if (deleted_message_data) async_delete_message(deleted_message_data.deleted_message);
     }, [deleted_message_data, deleted_message_error]);
 
     useEffect(() => 
     {
-        console.log(reaction_data)
-        if (reaction_error) console.log(reaction_error);
+        if (reaction_error) console.error(reaction_error);
         if (reaction_data) async_set_reaction(reaction_data.new_reaction);
     }, [reaction_data, reaction_error]);
-
-
-    const [query, set_query] = useState<string>('');
-    const [timer, set_timer]: any = useState(null);
 
     const search = async (e: React.ChangeEvent<HTMLInputElement>) =>
     {
@@ -148,24 +174,6 @@ const ChatPage: React.FC = () =>
                 }, 500)
         );
     }
-
-    const [search_messages, { loading: search_message_loading, 
-                            data: search_message_data }] = useLazyQuery(SEARCH_MESSAGES,
-    {
-        onCompleted: data => async_set_all_messages(data.search_messages),
-        onError: err => 
-        {
-            console.log(err);
-            async_set_all_messages([]);
-            
-            if (err.message === TOKEN.ERROR_MESSAGE) 
-            {
-                async_logout();
-                router.push(ROUTES.LOGIN);
-            }
-        },
-        nextFetchPolicy: "cache-first"
-    });
 
     // const [gql_remove_chat_member, { loading: remove_chat_member_loading }] = useMutation(REMOVE_CHAT_MEMBER, 
     // {
@@ -254,7 +262,7 @@ const ChatPage: React.FC = () =>
                             />
                             <Grid container direction="row">
                                 <ChatMembers /*chat={chat}*//>
-                                <InviteUsers chat_id={chat.id}/>
+                                <InviteUsers chat_id={chat?.id}/>
                             </Grid>
                             {/* <ItemsSelect>
                             { chat?.members && chat?.members.map(({ id, username, avatar }: any) => (
@@ -312,7 +320,6 @@ const ChatPage: React.FC = () =>
         </MainLayout>
     )
 }
-
 
 export default ChatPage;
 
