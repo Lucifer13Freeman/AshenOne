@@ -1,5 +1,6 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { FileService } from "src/file/file.service";
+import { InviteModule } from "src/invite/invite.module";
 import { PubSubModule } from "src/pubsub/pubsub.module";
 import { UserModule } from "src/user/user.module";
 import { GroupController } from "./group.controller";
@@ -11,6 +12,8 @@ import { GroupService } from "./group.service";
 {
     imports: [
         UserModule,
+        forwardRef(() => InviteModule),
+        // InviteModule,
         PubSubModule
     ],
     controllers: [GroupController],

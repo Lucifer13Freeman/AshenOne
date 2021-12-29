@@ -7,6 +7,7 @@ import * as FollowersActionCreators from './subscription';
 import * as PostActionCreators from './post';
 import * as CommentActionCreators from './comment';
 import * as GroupActionCreators from './group';
+import * as InviteActionCreators from './invite';
 import * as ReportActionCreators from './report';
 
 
@@ -21,5 +22,6 @@ export default
     ...PostActionCreators,
     ...CommentActionCreators,
     ...GroupActionCreators,
+    ...InviteActionCreators,
     ...ReportActionCreators
 }

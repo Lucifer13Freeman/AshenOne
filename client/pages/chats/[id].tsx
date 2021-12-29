@@ -20,7 +20,7 @@ import { useLazyQuery, useMutation, useQuery, useSubscription } from "@apollo/cl
 import { useActions } from "../../hooks/useAction";
 import MainLayout from "../../layouts/MainLayout";
 import { useRouter } from "next/router";
-import { ROUTES } from "../../utils/constants";
+import { LINKS, ROUTES } from "../../utils/constants";
 import { TOKEN } from "../../utils/token";
 import MessageList from '../../components/Messages/List/MessageList';
 import { GET_ALL_MESSAGES, SEARCH_MESSAGES } from "../../graphql/queries.ts/messages";
@@ -37,6 +37,12 @@ import Messages from "../../components/Messages/Messages";
 //import Chat from '../../components/Chats/Chat';
 import { IChat } from "../../types/chat";
 import { makeStyles, createStyles } from "@mui/styles";
+import ItemsSelect from "../../components/Shared/Selects/ItemsSelect";
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
+import ConfirmDialog from "../../components/Shared/Dialogs/ConfirmDialog";
+import { REMOVE_CHAT_MEMBER } from "../../graphql/mutations/chats";
+import { IUser } from "../../types/user";
+import InviteUsers from "../../components/Invites/InviteUsers";
 
 
 const useStyles = makeStyles(() => 
@@ -61,7 +67,7 @@ const ChatPage: React.FC = () =>
     const { async_set_all_messages, async_set_chat, 
         async_create_message, async_set_message,
         async_delete_message, async_set_reaction,
-        async_logout } = useActions();
+        async_logout, async_leave_chat } = useActions();
 
 
     const /*[get_current_chat, */{ loading: chat_loading, data: chat_data } = useQuery(GET_CHAT,   
@@ -161,6 +167,36 @@ const ChatPage: React.FC = () =>
         nextFetchPolicy: "cache-first"
     });
 
+    // const [gql_remove_chat_member, { loading: remove_chat_member_loading }] = useMutation(REMOVE_CHAT_MEMBER, 
+    // {
+    //     onCompleted: (data) => 
+    //     {
+    //         const is_leave = data.remove_chat_member.members.find((mem: IUser) => mem.id === auth.user.id);
+    //         if (is_leave === undefined) async_leave_chat(data.remove_chat_member);
+    //         else async_set_chat(data.remove_chat_member);
+    //     },
+    //     onError: (err) => 
+    //     {
+    //         console.log(err);
+                
+    //         if (err.message === TOKEN.ERROR_MESSAGE) 
+    //         {
+    //             async_logout();
+    //             router.push(ROUTES.LOGIN);
+    //         }
+    //     }
+    // });
+    
+    // const remove_chat_member = (id: string) =>
+    // {
+    //     // e.stopPropagation();
+    //     const input = { input: { 
+    //         chat_id: chat.id,
+    //         user_id: id
+    //     }}
+    //     gql_remove_chat_member({ variables: input });
+    // }
+
     // const update_chats = () =>
     // {
     //     // let updated_chat: IChat = {...chat};
@@ -216,7 +252,56 @@ const ChatPage: React.FC = () =>
                                         </InputAdornment> )
                                 }}
                             />
-                            <ChatMembers chat_id={chat_id}/>
+                            <Grid container direction="row">
+                                <ChatMembers /*chat={chat}*//>
+                                <InviteUsers chat_id={chat.id}/>
+                            </Grid>
+                            {/* <ItemsSelect>
+                            { chat?.members && chat?.members.map(({ id, username, avatar }: any) => (
+                                <ListItem
+                                    button
+                                    key={id}
+                                >
+                                    <ListItemIcon onClick={() => router.push(ROUTES.PEOPLE + id)}>
+                                        <Avatar
+                                            alt={username}
+                                            src={LINKS.STATIC_FILES_LINK + avatar}
+                                            style={{ width: 30, height: 30 }}
+                                            onClick={() => router.push(ROUTES.PEOPLE + id)}
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText primary={username} onClick={() => router.push(ROUTES.PEOPLE + id)}/>
+                                    { id !== auth.user.id && auth.user.id === chat?.admin_id &&
+                                        <Grid style={{ marginLeft: 10 }}>
+                                            <ConfirmDialog 
+                                                button_title='Remove' 
+                                                dialog_title='Remove member'
+                                                button_variant='contained'
+                                                button_type="remove"
+                                            >
+                                                <Button onClick={() => remove_chat_member(id)}>Remove</Button>
+                                                <Button>Cancel</Button>
+                                            </ConfirmDialog>
+                                        </Grid>
+                                        // <IconButton style={{ marginLeft: 10 }}>
+                                        //     <HighlightOffRoundedIcon/>
+                                        // </IconButton> 
+                                        }
+                                    { id == auth.user.id && 
+                                        <Grid style={{ marginLeft: 10 }}>
+                                            <ConfirmDialog 
+                                                button_title='Leave' 
+                                                dialog_title='Leave chat'
+                                                button_variant='contained'
+                                                button_type="leave"
+                                            >
+                                                <Button onClick={() => remove_chat_member(id)}>Leave</Button>
+                                                <Button>Cancel</Button>
+                                            </ConfirmDialog>
+                                        </Grid>
+                                    }
+                                </ListItem> )) }
+                            </ItemsSelect> */}
                         </Grid>
                     </Box>
                     <Messages messages={messages}/>

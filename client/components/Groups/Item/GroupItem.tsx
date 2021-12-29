@@ -91,7 +91,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
 
     return (
 
-        <Card className={styles.item} raised>
+        <Card className={styles.item} style={{ padding: '0 10px' }} raised>
             <IconButton onClick={() => router.push(ROUTES.GROUPS + group.id)}>
                 <Avatar 
                     alt={group.name} 

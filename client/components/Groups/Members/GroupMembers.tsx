@@ -11,119 +11,125 @@ import { Button,
         ListItem, 
         ListItemIcon, 
         ListItemText, 
-        Paper } from "@mui/material";
+        Paper, 
+        Grid} from "@mui/material";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { IGroup } from "../../../types/group";
+import { useMutation } from "@apollo/client";
+import { REMOVE_GROUP_MEMBER } from "../../../graphql/mutations/groups";
+import { TOKEN } from "../../../utils/token";
+import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
+import ItemsSelect from "../../Shared/Selects/ItemsSelect";
+import { useActions } from "../../../hooks/useAction";
 
 
 interface GroupMembersProps
 {
     //members?: IUser[];
-    group_id?: string | string[];
+    group: IGroup;
 }
 
-const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group_id }) =>
+const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group }) =>
 {
     const router = useRouter();
 
-    const { group, error: group_error } = useTypedSelector(state => state.group);
+    // const { group, error: group_error } = useTypedSelector(state => state.group);
+
+    const { auth, error: auth_error } = useTypedSelector(state => state.auth);
+
+    const { async_set_group, async_logout, async_leave_group } = useActions();
     
-    const [open_members, set_open_members] = useState(false);
-    const anchor_ref = useRef<HTMLButtonElement>(null);
-    const prev_open = useRef(open_members);
-
-    const handle_toggle = () => set_open_members((prev_open) => !prev_open);
-
-    const handle_close = (e: React.MouseEvent<EventTarget>) => 
+    const [gql_remove_group_member, { loading: remove_group_member_loading }] = useMutation(REMOVE_GROUP_MEMBER, 
     {
-        if (anchor_ref.current && anchor_ref.current.contains(e.target as HTMLElement)) return;
-
-        set_open_members(false);
-    };
-
-    const handle_list_key_down = (e: React.KeyboardEvent) => 
-    {
-        if (e.key === 'Tab') 
+        onCompleted: (data) => async_set_group(data.remove_group_member),
+        onError: (err) => 
         {
-            e.preventDefault();
-            set_open_members(false);
+            console.log(err);
+                        
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+        }
+    });
+            
+    const remove_group_member = (id: string) =>
+    {
+        // e.stopPropagation();
+        const input = { input: { 
+            group_id: group?.id,
+            user_id: id
+        }}
+        gql_remove_group_member({ variables: input });
+    
+        if (id === auth.user.id && group)
+        {
+            async_leave_group(group);
+            router.push(ROUTES.GROUPS);
         }
     }
-
-    useEffect(() => 
-    {
-        if (prev_open.current === true && open_members === false) anchor_ref.current!.focus();
-
-        prev_open.current = open_members;
-    }, [open_members]);
-
+    
 
     return (
-
-        <>
-            <Button
-                ref={anchor_ref}
-                aria-controls={open_members ? "members" : undefined}
-                aria-haspopup="true"
-                onClick={handle_toggle}
-                style={{ textTransform: "none", marginTop: 6 }}
-            >
-                <ListItemIcon>
-                    <PeopleAltIcon />
-                </ListItemIcon>
-                <ListItemText primary="Members" />
-                {open_members ? <ExpandLess /> : <ExpandMore />}
-            </Button>
-            <Popper
-                open={open_members}
-                anchorEl={anchor_ref.current}
-                role={undefined}
-                transition
-                disablePortal
-                style={{ zIndex: 999, opacity: 0.9 }}
-            >
-                {({ TransitionProps, placement }) => (
-                    <Grow
-                        {...TransitionProps}
-                        style={{
-                            transformOrigin:
-                            placement === "bottom" ? "center top" : "center bottom",
-                        }}
+        <ItemsSelect>
+        {group && group.members &&
+          group.members.map(({ id, username, avatar }: any) => (
+            <ListItem button key={id}>
+              <ListItemIcon onClick={() => router.push(ROUTES.PEOPLE + id)}>
+                <Avatar
+                  alt={username}
+                  src={LINKS.STATIC_FILES_LINK + avatar}
+                  style={{ width: 30, height: 30 }}
+                  onClick={() => router.push(ROUTES.PEOPLE + id)}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={username}
+                onClick={() => router.push(ROUTES.PEOPLE + id)}
+              />
+              {
+                id !== auth.user.id && auth.user.id === group.admin_id && (
+                  <Grid style={{ marginLeft: 10 }}>
+                    <ConfirmDialog
+                      button_title="Remove"
+                      dialog_title="Remove member"
+                      button_variant="contained"
+                      button_type="remove"
                     >
-                        <Paper>
-                            <ClickAwayListener onClickAway={() => handle_close}>
-                                <MenuList
-                                    autoFocusItem={open_members}
-                                    id="members"
-                                    onKeyDown={handle_list_key_down}
-                                >
-                                    {group.members.map(({ id, username, avatar }: any) => (
-                                        <ListItem
-                                            button
-                                            key={id}
-                                            onClick={() => router.push(ROUTES.PEOPLE + id)}
-                                        >
-                                            <ListItemIcon>
-                                                <Avatar
-                                                    alt={username}
-                                                    src={LINKS.STATIC_FILES_LINK + avatar}
-                                                    style={{ width: 30, height: 30 }}
-                                                />
-                                            </ListItemIcon>
-                                            <ListItemText primary={username}/>
-                                        </ListItem>
-                                    ))}
-                                </MenuList>
-                            </ClickAwayListener>
-                        </Paper>
-                    </Grow>
-                )}
-            </Popper>
-        </>
+                      <Button onClick={() => remove_group_member(id)}>
+                        Remove
+                      </Button>
+                      <Button>Cancel</Button>
+                    </ConfirmDialog>
+                  </Grid>
+                )
+                // <IconButton style={{ marginLeft: 10 }}>
+                //     <HighlightOffRoundedIcon/>
+                // </IconButton>
+              }
+              {id == auth.user.id && (
+                <Grid style={{ marginLeft: 10 }}>
+                  <ConfirmDialog
+                    button_title="Leave"
+                    dialog_title="Leave group"
+                    button_variant="contained"
+                    button_type="leave"
+                  >
+                    <Button onClick={() => remove_group_member(id)}>
+                      Leave
+                    </Button>
+                    <Button>Cancel</Button>
+                  </ConfirmDialog>
+                </Grid>
+              )}
+            </ListItem>
+          ))}
+      </ItemsSelect>
     );
 }
-
 
 export default GroupMembers;

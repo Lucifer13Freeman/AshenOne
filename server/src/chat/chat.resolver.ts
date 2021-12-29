@@ -142,6 +142,23 @@ export class ChatResolver
 
 
     @Mutation(() => ChatType)
+    async add_chat_invited_member(@GqlCurrentUser() user: GetUserInput,
+                                @Args('input') input: GetChatMemberInput) 
+    {
+        try
+        {
+            return await this.chat_service.add_invited_member({ ...input,
+                                                                current_user_id: user.id });
+        }
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
+    @Mutation(() => ChatType)
     async remove_chat_member(@GqlCurrentUser() user: GetUserInput,
                     @Args('input') input: GetChatMemberInput) 
     {

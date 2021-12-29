@@ -15,8 +15,9 @@ import { GET_ALL_MESSAGES } from "../../../graphql/queries.ts/messages";
 import React, { useEffect } from "react";
 import { GET_CHAT } from "../../../graphql/queries.ts/chats";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DELETE_CHAT, REMOVE_CHAT_MEMBER } from "../../../graphql/mutations/chats";
+import { DELETE_CHAT, REMOVE_CHAT_MEMBER} from "../../../graphql/mutations/chats";
 import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 
 interface ChatItemProps 
@@ -156,7 +157,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
 
     return (
 
-        <Card className={styles.item} raised>
+        <Card className={styles.item} style={{ padding: '0 10px' }} raised>
             <IconButton onClick={() => router.push(ROUTES.PEOPLE + from?.id)}>
                 <Avatar 
                     alt={from?.username} 

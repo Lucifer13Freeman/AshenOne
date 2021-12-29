@@ -54,16 +54,16 @@ export enum GroupActionTypes
     ASYNC_DELETE_GROUP = 'ASYNC_DELETE_GROUP',
     DELETE_GROUP_ERROR = 'DELETE_GROUP_ERROR',
 
-    ADD_MEMBER = 'ADD_MEMBER',
-    ASYNC_ADD_MEMBER = 'ASYNC_ADD_MEMBER',
-    ADD_MEMBER_ERROR = 'ADD_MEMBER_ERROR',
+    // ADD_GROUP_MEMBER = 'ADD_GROUP_MEMBER',
+    // ASYNC_ADD_GROUP_MEMBER = 'ASYNC_ADD_GROUP_MEMBER',
+    // ADD_GROUP_MEMBER_ERROR = 'ADD_GROUP_MEMBER_ERROR',
 
-    REMOVE_MEMBER = 'REMOVE_MEMBER',
-    ASYNC_REMOVE_MEMBER = 'ASYNC_REMOVE_MEMBER',
-    REMOVE_MEMBER_ERROR = 'REMOVE_MEMBER_ERROR',
+    // REMOVE_GROUP_MEMBER = 'REMOVE_GROUP_MEMBER',
+    // ASYNC_REMOVE_GROUP_MEMBER = 'ASYNC_REMOVE_GROUP_MEMBER',
+    // REMOVE_GROUP_MEMBER_ERROR = 'REMOVE_GROUP_MEMBER_ERROR',
 
-    LEAVE_GROUP = 'LEAVE_GROUP',
-    ASYNC_LEAVE_GROUP = 'ASYNC_LEAVE_GROUP',
+    LEAVE_GROUP= 'LEAVE_GROUP',
+    ASYNC_LEAVE_GROUP= 'ASYNC_LEAVE_GROUP',
     LEAVE_GROUP_ERROR = 'LEAVE_GROUP_ERROR'
 }
 
@@ -157,41 +157,41 @@ interface IDeleteGroupErrorAction
     payload: string
 }
 
-interface IAddMemberAction
-{
-    type: GroupActionTypes.ADD_MEMBER;
-    payload: IGroup
-}
+// interface IAddGroupMemberAction
+// {
+//     type: GroupActionTypes.ADD_GROUP_MEMBER;
+//     payload: IGroup
+// }
 
-interface IAsyncAddMemberAction
-{
-    type: GroupActionTypes.ASYNC_ADD_MEMBER;
-    payload: IGroup
-}
+// interface IAsyncAddGroupMemberAction
+// {
+//     type: GroupActionTypes.ASYNC_ADD_GROUP_MEMBER;
+//     payload: IGroup
+// }
 
-interface IAddMemberErrorAction
-{
-    type: GroupActionTypes.ADD_MEMBER_ERROR;
-    payload: string
-}
+// interface IAddGroupMemberErrorAction
+// {
+//     type: GroupActionTypes.ADD_GROUP_MEMBER_ERROR;
+//     payload: string
+// }
 
-interface IRemoveMemberAction
-{
-    type: GroupActionTypes.REMOVE_MEMBER;
-    payload: IGroup
-}
+// interface IRemoveGroupMemberAction
+// {
+//     type: GroupActionTypes.REMOVE_GROUP_MEMBER;
+//     payload: IGroup
+// }
 
-interface IAsyncRemoveMemberAction
-{
-    type: GroupActionTypes.ASYNC_REMOVE_MEMBER;
-    payload: IGroup
-}
+// interface IAsyncRemoveGroupMemberAction
+// {
+//     type: GroupActionTypes.ASYNC_REMOVE_GROUP_MEMBER;
+//     payload: IGroup
+// }
 
-interface IRemoveMemberErrorAction
-{
-    type: GroupActionTypes.REMOVE_MEMBER_ERROR;
-    payload: string
-}
+// interface IRemoveGroupMemberErrorAction
+// {
+//     type: GroupActionTypes.REMOVE_GROUP_MEMBER_ERROR;
+//     payload: string
+// }
 
 interface ILeaveGroupAction
 {
@@ -227,12 +227,12 @@ export type GroupAction = ICreateGroupAction
                         | IDeleteGroupAction
                         | IAsyncDeleteGroupAction
                         | IDeleteGroupErrorAction
-                        | IAddMemberAction
-                        | IAsyncAddMemberAction
-                        | IAddMemberErrorAction
-                        | IRemoveMemberAction
-                        | IAsyncRemoveMemberAction
-                        | IRemoveMemberErrorAction
+                        // | IAddGroupMemberAction
+                        // | IAsyncAddGroupMemberAction
+                        // | IAddGroupMemberErrorAction
+                        // | IRemoveGroupMemberAction
+                        // | IAsyncRemoveGroupMemberAction
+                        // | IRemoveGroupMemberErrorAction
                         | ILeaveGroupAction
                         | IAsyncLeaveGroupAction
                         | ILeaveGroupErrorAction;

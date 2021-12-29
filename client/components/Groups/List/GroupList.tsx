@@ -11,6 +11,8 @@ interface GroupListProps
 
 const GroupList: React.FC<GroupListProps > = ({ groups }) =>
 {
+    
+
     return (
         <Grid container direction="column">
             <Box p={2}>

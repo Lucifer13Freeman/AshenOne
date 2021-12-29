@@ -26,7 +26,7 @@ const AvatarDialogStyle = styled(Dialog)(({ theme }) => (
     '& .MuiDialogActions-root': { padding: theme.spacing(1) },
 }));
 
-interface AvatarDialogProps
+interface ImageDialogProps
 {
     user_id?: string;
     avatar: string;
@@ -34,7 +34,7 @@ interface AvatarDialogProps
     title?: string;
 }
 
-const ImageDialog: React.FC<AvatarDialogProps> = ({ user_id, group_id, avatar, title, children }) => 
+const ImageDialog: React.FC<ImageDialogProps> = ({ user_id, group_id, avatar, title, children }) => 
 {
     const [open_avatar_dialog, set_open_avatar_dialog] = useState(false);
 

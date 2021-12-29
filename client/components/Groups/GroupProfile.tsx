@@ -20,6 +20,11 @@ import { GET_GROUP } from '../../graphql/queries.ts/groups';
 import ItemsSelect from '../Shared/Selects/ItemsSelect';
 import EditIcon from '@mui/icons-material/Edit';
 import FormDialog from '../Shared/Dialogs/FormDialog';
+import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
+import { IUser } from '../../types/user';
+import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
+import InviteUsers from '../Invites/InviteUsers';
 
 
 // enum ACCESS
@@ -39,6 +44,10 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     const router = useRouter();
 
     //const input = { input: { id: group_id } }
+    
+    const { auth, error: auth_error } = useTypedSelector(state => state.auth);
+    // const { group, groups, error: groups_error } = useTypedSelector(state => state.group);
+    const { async_set_group, async_logout } = useActions();
 
     const [is_followed, set_is_followed] = useState(false);
     const [followers_count, set_followers_count] = useState(0);
@@ -50,20 +59,15 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     {
         const is_private = (event.target as HTMLInputElement).value === ACCESS.PRIVATE;
         set_access((event.target as HTMLInputElement).value);
-        update_group({ variables: { input: { id: group.id, is_private }}});
+        update_group({ variables: { input: { id: group?.id, is_private }}});
     }
-
-    
-    const { auth, error: auth_error } = useTypedSelector(state => state.auth);
-    const { state_group, groups, error: groups_error } = useTypedSelector(state => state.group);
-    const { async_set_group, async_logout } = useActions();
 
     const check_auth = auth.is_auth && auth.user;
     const check_admin = check_auth && auth.user.role === ROLES.ADMIN;
     const check_group_admin = check_auth && group?.admin_id === auth.user.id;
     const check_group_moderator = check_auth 
-        && group?.moderator_ids.find(id => id === auth.user.id) !== undefined;
-    const check_member = () => group?.members.find(mem => mem.id === auth.user.id) !== undefined;
+        && group?.moderator_ids.find((id: string) => id === auth.user.id) !== undefined;
+    const check_member = () => group?.members.find((mem: IUser) => mem.id === auth.user.id) !== undefined;
 
     const is_available = check_group_admin || check_group_moderator;
 
@@ -98,27 +102,6 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
             set_followers_count(followers_count - 1);
         },
         onError: (err) => console.log(err)
-    });
-
-    const { loading: group_loading, data: group_data } = useQuery(GET_GROUP,   
-    {
-        variables: { input: { id: group?.id }},
-        onCompleted: data => 
-        {
-            async_set_group(data.get_group)
-        },
-        onError: err => 
-        {
-            console.log(err);
-            // async_set_group(null);
-            
-            if (err.message === TOKEN.ERROR_MESSAGE) 
-            {
-                async_logout();
-                router.push(ROUTES.LOGIN);
-            }
-        },
-        nextFetchPolicy: "cache-first"
     });
 
     const [update_group, { loading: update_group_loading, 
@@ -161,31 +144,33 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
 
     return (
-        <>
+        <Grid>
         { group ? 
-            <Card className={styles.card} style={{width: 400}}>
+            <Card className={styles.card} style={{width: 400}} raised>
                 <Grid 
                     container 
                     //direction="column" 
                     style={{ margin: 20 }}
                 >
                     <Grid>
-                        <IconButton>
+                    { is_available ? 
+                        <ImageDialog group_id={group.id} avatar={LINKS.STATIC_FILES_LINK + group.avatar}>
                             <Avatar 
                                 variant="square" 
                                 alt={group.name} 
                                 src={LINKS.STATIC_FILES_LINK + group.avatar}
                                 style={{ height: 150, width: 150 }}
                             />
-                        </IconButton>
-                        {/* <UploadGroupAvatar group_id={group.id}/> */}
-                        <Grid container direction="row" >
-                        {is_available && 
-                            <Grid style={{paddingTop: 8}}>
-                                <ImageDialog group_id={group.id} 
-                                    avatar={LINKS.STATIC_FILES_LINK + group.avatar}/>
-                            </Grid>}
+                        </ImageDialog> :
+                        <Avatar 
+                            variant="square" 
+                            alt={group.name} 
+                            src={LINKS.STATIC_FILES_LINK + group.avatar}
+                            style={{ height: 150, width: 150 }}
+                        /> }
+                        <Grid container direction="row">
                         { check_group_admin &&
+                            <Grid>
                                 <form style={{paddingTop: 8}} 
                                     onSubmit={update_group_name}>
                                     <FormGroup>
@@ -205,28 +190,41 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                                             <Button onClick={update_group_name}>Save changes</Button>
                                         </FormDialog>
                                     </FormGroup>
-                                </form> }
-                                { check_group_admin && 
-                                <ItemsSelect title='Access'>
-                                    <RadioGroup
-                                        style={{padding: '4px 20px'}}
-                                        aria-label="quiz"
-                                        name="access"
-                                        value={access}
-                                        onChange={handle_access_radio_change}
-                                    >
-                                        <FormControlLabel style={{marginBottom: 10}}
-                                            value={ACCESS.PRIVATE} 
-                                            control={<Radio />} 
-                                            label="Private" />
-                                        <FormControlLabel 
-                                            value={ACCESS.PUBLIC} 
-                                            control={<Radio />} 
-                                            label="Public" />
-                                    </RadioGroup>
-                                </ItemsSelect> }
+                                </form> 
+                            </Grid> }
+                            { check_group_admin &&
+                                <Grid style={{marginRight: 10}}>
+                                    <ItemsSelect title='Access' icon='private'>
+                                        <RadioGroup
+                                            style={{padding: '4px 20px'}}
+                                            aria-label="quiz"
+                                            name="access"
+                                            value={access}
+                                            onChange={handle_access_radio_change}
+                                        >
+                                            <Grid container>
+                                                <FormControlLabel style={{marginBottom: 10}}
+                                                    value={ACCESS.PRIVATE} 
+                                                    control={<Radio />} 
+                                                    label="Private" />
+                                                <LockRoundedIcon style={{ marginLeft: 'auto', marginTop: 10}}/>
+                                            </Grid>
+                                            <Grid container>
+                                            <FormControlLabel 
+                                                value={ACCESS.PUBLIC} 
+                                                control={<Radio />} 
+                                                label="Public" />
+                                                <LockOpenRoundedIcon style={{ marginLeft: 'auto', marginTop: 10}}/>
+                                            </Grid>
+                                        </RadioGroup>
+                                    </ItemsSelect> 
+                                </Grid> }  
+                                { is_available &&      
+                                <Grid>
+                                    <InviteUsers group_id={group.id}/>
+                                </Grid>}
                             </Grid>
-                    </Grid> 
+                        </Grid> 
                     <Grid
                         //container
                         //direction="column" 
@@ -260,7 +258,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                 {/* <MembersList members={group.members}/> */}
             </Card>
             : <div>Group not found!</div> }
-        </>
+        </Grid>
     );
 }
 

@@ -2,13 +2,13 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import * as path from 'path';
 import * as fs from 'fs';
 import * as uuid from 'uuid';
-import { DEFAULT_IMAGES, FileType, REGEXP } from "src/config/configs/consts.config";
+import { DEFAULT_IMAGES, FILE_TYPE, REGEXP } from "src/config/configs/consts.config";
 
 
 @Injectable()
 export class FileService 
 {
-    create_file(type: FileType, file): string
+    create_file(type: FILE_TYPE, file): string
     {
         try 
         {

@@ -1,7 +1,7 @@
 import { Controller, Param, Post, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { HttpAuthGuard } from "src/auth/http-auth.guard";
-import { FileType } from "src/config/configs/consts.config";
+import { FILE_TYPE } from "src/config/configs/consts.config";
 import { HttpCurrentUser } from "src/decorators/http-current-user.decorator";
 import { GetUserInput } from "src/user/inputs/get-user.input";
 import { GroupService } from "./group.service";
@@ -15,7 +15,7 @@ export class GroupController
 
     @Post(':id/avatar')
     @UseInterceptors(FileFieldsInterceptor([
-        { name: FileType.IMAGE, maxCount: 1 }
+        { name: FILE_TYPE.IMAGE, maxCount: 1 }
         // { name: 'audio', maxCount: 1 },
     ]))
     update_avatar(@HttpCurrentUser() user: GetUserInput,

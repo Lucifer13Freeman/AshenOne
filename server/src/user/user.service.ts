@@ -13,7 +13,7 @@ import { SearchUserInput } from './inputs/search-user.input';
 import { CreateUserInput } from './inputs/create-user.input';
 // import { IUser } from './interfaces/user.interface';
 //import { User } from './entity/user.entity';
-import { FileType, PROVIDERS, REGEXP, ROLES } from 'src/config/configs/consts.config';
+import { FILE_TYPE, PROVIDERS, REGEXP, ROLES } from 'src/config/configs/consts.config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, PrismaPromise, Role, User } from '.prisma/client';
 import { select_user } from './selects/user.select';
@@ -492,7 +492,7 @@ export class UserService
             let user = await this.get({ id, current_user_id });
 
             this.file_service.remove_file(user.avatar);
-            const imagepath = this.file_service.create_file(FileType.IMAGE, image);
+            const imagepath = this.file_service.create_file(FILE_TYPE.IMAGE, image);
 
             user = await this.prisma.$transaction(async (prisma) => 
             {

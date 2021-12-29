@@ -11,118 +11,133 @@ import { Button,
         ListItem, 
         ListItemIcon, 
         ListItemText, 
-        Paper } from "@mui/material";
+        Paper, 
+        Grid} from "@mui/material";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import ItemsSelect from "../../Shared/Selects/ItemsSelect";
+import { IChat } from "../../../types/chat";
+import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
+import { useMutation } from "@apollo/client";
+import { TOKEN } from "../../../utils/token";
+import { REMOVE_CHAT_MEMBER } from "../../../graphql/mutations/chats";
+import { useActions } from "../../../hooks/useAction";
 
 
 interface ChatMembersProps
 {
-    //members?: IUser[];
-    chat_id?: string | string[];
+    // members?: IUser[];
+    chat?: IChat;
 }
 
-const ChatMembers: React.FC<ChatMembersProps> = ({ /*members,*/ chat_id }) =>
+const ChatMembers: React.FC<ChatMembersProps> = ({ /*chat*/ }) =>
 {
     const router = useRouter();
 
     const { chat, error: chat_error } = useTypedSelector(state => state.chat);
-    
-    const [open_members, set_open_members] = useState(false);
-    const anchor_ref = useRef<HTMLButtonElement>(null);
-    const prev_open = useRef(open_members);
+    const { auth, error: auth_error } = useTypedSelector(state => state.auth);
 
-    const handle_toggle = () => set_open_members((prev_open) => !prev_open);
+    const { async_set_chat, async_logout, async_leave_chat } = useActions();
 
-    const handle_close = (e: React.MouseEvent<EventTarget>) => 
+    const [gql_remove_chat_member, { loading: remove_chat_member_loading }] = useMutation(REMOVE_CHAT_MEMBER, 
     {
-        if (anchor_ref.current && anchor_ref.current.contains(e.target as HTMLElement)) return;
-
-        set_open_members(false);
-    };
-
-    const handle_list_key_down = (e: React.KeyboardEvent) => 
-    {
-        if (e.key === 'Tab') 
+        onCompleted: (data) => 
         {
-            e.preventDefault();
-            set_open_members(false);
+            // const is_leave = data.remove_chat_member.members.find((mem: IUser) => mem.id === auth.user.id);
+            // if (is_leave === undefined) 
+            // {
+            //     async_leave_chat(data.remove_chat_member);
+            //     router.push(ROUTES.CHATS)
+            // } else
+           async_set_chat(data.remove_chat_member);
+        },
+        onError: (err) => 
+        {
+            console.log(err);
+                    
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                async_logout();
+                router.push(ROUTES.LOGIN);
+            }
+        }
+    });
+        
+    const remove_chat_member = (id: string) =>
+    {
+        // e.stopPropagation();
+        const input = { input: { 
+            chat_id: chat.id,
+            user_id: id
+        }}
+        gql_remove_chat_member({ variables: input });
+
+        if (id === auth.user.id)
+        {
+            async_leave_chat(chat);
+            router.push(ROUTES.CHATS);
         }
     }
-
-    useEffect(() => 
-    {
-        if (prev_open.current === true && open_members === false) anchor_ref.current!.focus();
-        prev_open.current = open_members;
-    }, [open_members]);
-
+    
 
     return (
-
-        <>
-            <Button
-                ref={anchor_ref}
-                aria-controls={open_members ? "members" : undefined}
-                aria-haspopup="true"
-                onClick={handle_toggle}
-                style={{ textTransform: "none", marginTop: 6 }}
-            >
-                <ListItemIcon>
-                    <PeopleAltIcon />
-                </ListItemIcon>
-                <ListItemText primary="Members" />
-                {open_members ? <ExpandLess /> : <ExpandMore />}
-            </Button>
-            <Popper
-                open={open_members}
-                anchorEl={anchor_ref.current}
-                role={undefined}
-                transition
-                disablePortal
-                style={{ zIndex: 999, opacity: 0.9 }}
-            >
-                {({ TransitionProps, placement }) => (
-                    <Grow
-                        {...TransitionProps}
-                        style={{
-                            transformOrigin:
-                            placement === "bottom" ? "center top" : "center bottom",
-                        }}
+      <ItemsSelect>
+        {chat?.members &&
+          chat?.members.map(({ id, username, avatar }: any) => (
+            <ListItem button key={id}>
+              <ListItemIcon onClick={() => router.push(ROUTES.PEOPLE + id)}>
+                <Avatar
+                  alt={username}
+                  src={LINKS.STATIC_FILES_LINK + avatar}
+                  style={{ width: 30, height: 30 }}
+                  onClick={() => router.push(ROUTES.PEOPLE + id)}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={username}
+                onClick={() => router.push(ROUTES.PEOPLE + id)}
+              />
+              {
+                id !== auth.user.id && auth.user.id === chat?.admin_id && (
+                  <Grid style={{ marginLeft: 10 }}>
+                    <ConfirmDialog
+                      button_title="Remove"
+                      dialog_title="Remove member"
+                      button_variant="contained"
+                      button_type="remove"
                     >
-                        <Paper>
-                            <ClickAwayListener onClickAway={() => handle_close}>
-                                <MenuList
-                                    autoFocusItem={open_members}
-                                    id="members"
-                                    onKeyDown={handle_list_key_down}
-                                >
-                                    {chat.members.map(({ id, username, avatar }: any) => (
-                                        <ListItem
-                                            button
-                                            key={id}
-                                            onClick={() => router.push(ROUTES.PEOPLE + id)}
-                                        >
-                                            <ListItemIcon>
-                                                <Avatar
-                                                    alt={username}
-                                                    src={LINKS.STATIC_FILES_LINK + avatar}
-                                                    style={{ width: 30, height: 30 }}
-                                                />
-                                            </ListItemIcon>
-                                            <ListItemText primary={username}/>
-                                        </ListItem>
-                                    ))}
-                                </MenuList>
-                            </ClickAwayListener>
-                        </Paper>
-                    </Grow>
-                )}
-            </Popper>
-        </>
+                      <Button onClick={() => remove_chat_member(id)}>
+                        Remove
+                      </Button>
+                      <Button>Cancel</Button>
+                    </ConfirmDialog>
+                  </Grid>
+                )
+                // <IconButton style={{ marginLeft: 10 }}>
+                //     <HighlightOffRoundedIcon/>
+                // </IconButton>
+              }
+              {id == auth.user.id && (
+                <Grid style={{ marginLeft: 10 }}>
+                  <ConfirmDialog
+                    button_title="Leave"
+                    dialog_title="Leave chat"
+                    button_variant="contained"
+                    button_type="leave"
+                  >
+                    <Button onClick={() => remove_chat_member(id)}>
+                      Leave
+                    </Button>
+                    <Button>Cancel</Button>
+                  </ConfirmDialog>
+                </Grid>
+              )}
+            </ListItem>
+          ))}
+      </ItemsSelect>
     );
 }
-
 
 export default ChatMembers;

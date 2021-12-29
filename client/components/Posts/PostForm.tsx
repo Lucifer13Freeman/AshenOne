@@ -87,5 +87,4 @@ const PostForm: React.FC<PostFormProps> = ({ group_id = null}) =>
     );
 }
 
-
 export default PostForm;

@@ -95,6 +95,54 @@ export const chat_reducer = (state = initial_state, action: ChatAction): IChatSt
                 error: action.payload
             }
         }
+        // case ChatActionTypes.ADD_CHAT_MEMBER:
+        // {
+        //     // const update_chats = state.chats.map((chat: IChat) => 
+        //     // { 
+        //     //     if (chat.id === action.payload.id) chat = action.payload
+        //     //     return chat 
+        //     // });
+
+        //     const update_chats = state.chats.filter((chat: IChat) => chat.id !== action.payload.id);
+
+        //     return {
+        //         ...state, 
+        //         chat: null,
+        //         chats: update_chats,
+        //         error: undefined
+        //     }
+        // }
+        // case ChatActionTypes.ADD_CHAT_MEMBER_ERROR:
+        // {
+        //     return {
+        //         ...state,
+        //         error: action.payload
+        //     }
+        // }
+        // case ChatActionTypes.REMOVE_CHAT_MEMBER:
+        // {
+        //     // const update_chats = state.chats.map((chat: IChat) => 
+        //     // { 
+        //     //     if (chat.id === action.payload.id) chat = action.payload
+        //     //     return chat 
+        //     // });
+
+        //     const update_chats = state.chats.filter((chat: IChat) => chat.id !== action.payload.id);
+
+        //     return {
+        //         ...state, 
+        //         chat: null,
+        //         chats: update_chats,
+        //         error: undefined
+        //     }
+        // }
+        // case ChatActionTypes.REMOVE_CHAT_MEMBER_ERROR:
+        // {
+        //     return {
+        //         ...state,
+        //         error: action.payload
+        //     }
+        // }
         case ChatActionTypes.DELETE_CHAT:
         {
             const update_chats = state.chats.filter((chat: IChat) => chat.id !== action.payload);

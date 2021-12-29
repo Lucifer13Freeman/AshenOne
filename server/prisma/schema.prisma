@@ -16,6 +16,12 @@ enum Role {
   ADMIN
 }
 
+enum InviteStatus {
+  ACCEPTED
+  REJECTED
+  WAIT
+}
+
 model User {
   id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
   username          String
@@ -26,6 +32,7 @@ model User {
   is_banned         Boolean         @default(false)
   created_at        DateTime        @default(now())
   updated_at        DateTime        @default(now())
+
   chat_admin        Chat[]          @relation("ChatAdmin")
   chat_ids          String[]        @db.Array(ObjectId)
   chat_member       Chat[]          @relation("ChatMembers", fields: [chat_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -42,6 +49,8 @@ model User {
   group_moderator   Group[]         @relation("GroupModerators", fields: [group_moder_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
   group_ids         String[]        @db.Array(ObjectId)
   group_member      Group[]         @relation("GroupMembers", fields: [group_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_invite       Invite[]        @relation("UserInvite")
+  sender_invite     Invite[]        @relation("SenderInvite")
 
   @@index([username])
   @@index([role])
@@ -90,6 +99,23 @@ model Chat {
   messages          Message[]       @relation("ChatMessage")//, fields: [message_ids], references: [id])
   is_private        Boolean         @default(false)
   is_secure         Boolean         @default(false)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+  
+  chat_invite       Invite[]        @relation("ChatInvite")
+}
+
+model Invite {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  sender_id         String          @db.ObjectId
+  sender            User            @relation("SenderInvite", fields: [sender_id], references: [id])
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserInvite", fields: [user_id], references: [id])
+  chat_id           String?         @db.ObjectId
+  chat              Chat?           @relation("ChatInvite", fields: [chat_id], references: [id])
+  group_id          String?         @db.ObjectId
+  group             Group?          @relation("GroupInvite", fields: [group_id], references: [id])
+  status            InviteStatus    @default(WAIT)
   created_at        DateTime        @default(now())
   updated_at        DateTime        @default(now())
 }
@@ -175,4 +201,6 @@ model Group {
   is_secure         Boolean         @default(false)
   created_at        DateTime        @default(now())
   updated_at        DateTime        @default(now())
+
+  group             Invite[]        @relation("GroupInvite")
 }

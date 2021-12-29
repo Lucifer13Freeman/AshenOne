@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { Group } from "@prisma/client";
 import { UserInputError } from "apollo-server-express";
-import { FileType } from "src/config/configs/consts.config";
+import { FILE_TYPE, INVITE_STATUS } from "src/config/configs/consts.config";
 import { FileService } from "src/file/file.service";
+import { InviteService } from "src/invite/invite.service";
 import { GetPostInput } from "src/post/inputs/post/get-post.input";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UserService } from "src/user/user.service";
@@ -20,6 +21,8 @@ import { select_group } from "./selects/group.select";
 export class GroupService 
 {
     constructor(private prisma: PrismaService,
+                @Inject(forwardRef(() => InviteService))
+                private invite_service: InviteService,
                 private user_service: UserService,
                 private file_service: FileService) {}
 
@@ -290,6 +293,57 @@ export class GroupService
     }
 
 
+    async add_invited_member(dto: GetGroupMemberInput): Promise<Group | null>
+    {
+        try 
+        {
+            let errors: any = {
+                user_id: undefined
+            };
+
+            const { user_id, group_id, current_user_id } = dto;
+
+            const user = await this.user_service.get({ id: user_id ? user_id : current_user_id });
+            const invite = await this.invite_service.get({ user_id: user.id, group_id });
+
+            let group = await this.get({ id: group_id });
+
+            const is_member = group.member_ids.find((id: string) => id === user.id);
+
+            if (invite && is_member === undefined)
+            {
+                group.member_ids.push(user_id);
+
+                group = await this.prisma.$transaction(async (prisma) => 
+                {
+                    const update_chat = await prisma.group.update(
+                    {
+                        where: { id: group_id },
+                        data: { member_ids: { set: group.member_ids } },
+                        select: select_group
+                    });
+
+                    return update_chat;
+                });
+
+                await this.invite_service.update_and_delete({ id: invite.id, status: INVITE_STATUS.ACCEPTED });
+
+                return group;
+            }
+            else
+            {
+                errors.user_id = 'You are member of this group already!';
+                throw new UserInputError('You are member of this group already!', { errors });
+            }
+        } 
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
     async add_member(dto: GetGroupMemberInput): Promise<Group>
     {
         try 
@@ -315,6 +369,9 @@ export class GroupService
 
             if (is_member === undefined)
             {
+                const invite = await this.invite_service.get({ user_id: user.id, group_id });
+                if (invite) await this.invite_service.delete({ id: invite.id, current_user_id });
+                
                 group.member_ids.push(user.id);
                 
                 group = await this.prisma.$transaction(async (prisma) => 
@@ -460,6 +517,7 @@ export class GroupService
         }
     }
 
+
     async update_avatar(dto: UpdateGroupInput, image): Promise<Group>
     {
         let errors = { user_id: undefined }
@@ -476,7 +534,7 @@ export class GroupService
             if (is_admin || is_moderator)
             {
                 this.file_service.remove_file(group.avatar);
-                const imagepath = this.file_service.create_file(FileType.IMAGE, image);
+                const imagepath = this.file_service.create_file(FILE_TYPE.IMAGE, image);
 
                 group = await this.prisma.$transaction(async (prisma) => 
                 {

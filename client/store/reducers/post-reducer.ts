@@ -72,33 +72,33 @@ export const post_reducer = (state = initial_state, action: PostAction): IPostSt
                 error: action.payload
             }
         }
-        case PostActionTypes.UPDATE_POST:
-        {
-            const update_posts = state.posts.map((post: IPost) => 
-            { 
-                if (post.id === action.payload.id) post = action.payload
-                return post 
-            });
+        // case PostActionTypes.UPDATE_POST:
+        // {
+        //     const update_posts = state.posts.map((post: IPost) => 
+        //     { 
+        //         if (post.id === action.payload.id) post = action.payload
+        //         return post 
+        //     });
 
-            // const new_post = action.payload;
-            // let update_posts = [...state.posts];
-            // const post_index = update_posts.findIndex((post: IPost) => post.id === new_post.id);
-            // update_posts[post_index] = new_post;
+        //     // const new_post = action.payload;
+        //     // let update_posts = [...state.posts];
+        //     // const post_index = update_posts.findIndex((post: IPost) => post.id === new_post.id);
+        //     // update_posts[post_index] = new_post;
 
-            return {
-                ...state, 
-                post: action.payload,
-                posts: update_posts,
-                error: undefined
-            }
-        }
-        case PostActionTypes.UPDATE_POST_ERROR:
-        {
-            return {
-                ...state,
-                error: action.payload
-            }
-        }
+        //     return {
+        //         ...state, 
+        //         post: action.payload,
+        //         posts: update_posts,
+        //         error: undefined
+        //     }
+        // }
+        // case PostActionTypes.UPDATE_POST_ERROR:
+        // {
+        //     return {
+        //         ...state,
+        //         error: action.payload
+        //     }
+        // }
         case PostActionTypes.LIKE_POST:
         {
             const new_like = action.payload;

@@ -13,4 +13,7 @@ export class GetChatMemberInput
 
     @Field(() => ID, { nullable: true })
     readonly current_user_id?: string;//ObjectId;
+    
+    // @Field({ nullable: true, defaultValue: false })
+    // readonly is_for_invited?: boolean;
 }

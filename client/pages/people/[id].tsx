@@ -182,27 +182,28 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
     return (
 
         <MainLayout>
-            <Grid container justifyContent='center'>
-            { /*user &&*/ <UserProfile user={user} /*user_id={user_id}*//>}
-            {/* {user
-                ? <UserProfile user={user} />
-                : <div>User not found!</div>
-            } */}
-            </Grid>
-            {/* <Grid container justifyContent='center'> */}
-                {/* <Followers subscriptions={subscriptions} /*user_id={user.id}/> */}
-            {/* </Grid> */}
-            { auth.user.id === user?.id && 
-            <Grid container justifyContent='center'>
-                <PostForm />
-            </Grid> }
-            <Grid container justifyContent='center'>
-                <Posts posts={posts}/>
+            <Grid container direction="column" justifyContent='center'>
+                <Grid container justifyContent='center'>
+                { /*user &&*/ <UserProfile user={user} /*user_id={user_id}*//>}
+                {/* {user
+                    ? <UserProfile user={user} />
+                    : <div>User not found!</div>
+                } */}
+                </Grid>
+                {/* <Grid container justifyContent='center'> */}
+                    {/* <Followers subscriptions={subscriptions} /*user_id={user.id}/> */}
+                {/* </Grid> */}
+                { auth.user.id === user?.id && 
+                <Grid container justifyContent='center'>
+                    <PostForm />
+                </Grid> }
+                <Grid container justifyContent='center'>
+                    <Posts posts={posts}/>
+                </Grid>
             </Grid>
         </MainLayout>
     )
 }
-
 
 export default UserPage;
 

@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 // import { MongooseModule } from "@nestjs/mongoose";
 import { FileService } from "src/file/file.service";
 import { UserModule } from "src/user/user.module";
@@ -12,6 +12,7 @@ import { MessageResolver } from "./message.resolver";
 import { PubSub } from "graphql-subscriptions";
 import { PubSubModule } from "src/pubsub/pubsub.module";
 import { PrismaModule } from "src/prisma/prisma.module";
+import { InviteModule } from "src/invite/invite.module";
 // import { RedisPubSub } from 'graphql-redis-subscriptions';
 // import * as Redis from 'ioredis';
 
@@ -21,6 +22,8 @@ import { PrismaModule } from "src/prisma/prisma.module";
     imports: [
         //PrismaModule,
         UserModule,
+        forwardRef(() => InviteModule),
+        // InviteModule,
         PubSubModule//,
         // MongooseModule.forFeature([{ name: Chat.name, 
         //                             schema: ChatSchema }]),

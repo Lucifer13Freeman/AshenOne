@@ -27,7 +27,8 @@ export enum NAV_MENU
     CHATS = 'Chats',
     PEOPLE = 'People',
     GROUPS = 'Groups',
-    FEED = 'Feed'
+    FEED = 'Feed',
+    INVITES = 'Invites'
 }
 
 export enum ROUTES
@@ -40,7 +41,8 @@ export enum ROUTES
     CHATS = '/chats/',
     PEOPLE = '/people/',
     GROUPS = '/groups/',
-    FEED = '/feed/'
+    FEED = '/feed/',
+    INVITES = '/invites/'
 }
 
 export enum ROLES

@@ -20,83 +20,84 @@ import { ROUTES } from "../../utils/constants";
 import { GET_ALL_USERS, SEARCH_USERS } from "../../graphql/queries.ts/users";
 import { TOKEN } from "../../utils/token";
 import styles from '../../styles/App.module.scss';
+import Users from "../../components/Users/Users";
 
 
 const UsersPage: React.FC = () =>
 {
-    const router = useRouter();
+    // const router = useRouter();
     
-    const { auth, error: auth_error } = useTypedSelector(state => state.auth);
-    const { users, error: users_error } = useTypedSelector(state => state.user);
+    // const { auth, error: auth_error } = useTypedSelector(state => state.auth);
+    // const { users, error: users_error } = useTypedSelector(state => state.user);
 
-    const { async_set_all_users, async_logout } = useActions();
+    // const { async_set_all_users, async_logout } = useActions();
 
-    const input = {
-        input: {
-            // limit: 300,
-            // offset: 0
-        }
-    }
-
-    // const search_input = {
+    // const input = {
     //     input: {
-    //         username: ''
+    //         // limit: 300,
+    //         // offset: 0
     //     }
     // }
 
-    const [query, set_query] = useState<string>('');
-    const [timer, set_timer]: any = useState(null);
+    // // const search_input = {
+    // //     input: {
+    // //         username: ''
+    // //     }
+    // // }
 
-    const search = async (e: React.ChangeEvent<HTMLInputElement>) =>
-    {
-        set_query(e.target.value);
+    // const [query, set_query] = useState<string>('');
+    // const [timer, set_timer]: any = useState(null);
 
-        if (timer) clearTimeout(timer);
+    // const search = async (e: React.ChangeEvent<HTMLInputElement>) =>
+    // {
+    //     set_query(e.target.value);
 
-        set_timer(
-            setTimeout(
-                async () => 
-                {
-                    await search_users({ variables: { input: { username: e.target.value }}});
-                }, 500)
-        );
-    }
+    //     if (timer) clearTimeout(timer);
 
-    const [search_users, { loading: search_user_loading, data: search_user_data }] = useLazyQuery(SEARCH_USERS,
-    {
-        onCompleted: data => async_set_all_users(data.search_users),
-        onError: err => 
-        {
-            console.log(err);
-            async_set_all_users([]);
+    //     set_timer(
+    //         setTimeout(
+    //             async () => 
+    //             {
+    //                 await search_users({ variables: { input: { username: e.target.value }}});
+    //             }, 500)
+    //     );
+    // }
+
+    // const [search_users, { loading: search_user_loading, data: search_user_data }] = useLazyQuery(SEARCH_USERS,
+    // {
+    //     onCompleted: data => async_set_all_users(data.search_users),
+    //     onError: err => 
+    //     {
+    //         console.log(err);
+    //         async_set_all_users([]);
             
-            if (err.message === TOKEN.ERROR_MESSAGE) 
-            {
-                async_logout();
-                router.push(ROUTES.LOGIN);
-            }
-        },
-        nextFetchPolicy: "cache-first"
-    });
+    //         if (err.message === TOKEN.ERROR_MESSAGE) 
+    //         {
+    //             async_logout();
+    //             router.push(ROUTES.LOGIN);
+    //         }
+    //     },
+    //     nextFetchPolicy: "cache-first"
+    // });
 
-    const { loading: users_loading, data: users_data } = useQuery(GET_ALL_USERS,   
-    {
-        variables: input,
-        onCompleted: data => async_set_all_users(data.get_all_users),
-        onError: err => 
-        {
-            console.log(err);
-            async_set_all_users([]);
+    // const { loading: users_loading, data: users_data } = useQuery(GET_ALL_USERS,   
+    // {
+    //     variables: input,
+    //     onCompleted: data => async_set_all_users(data.get_all_users),
+    //     onError: err => 
+    //     {
+    //         console.log(err);
+    //         async_set_all_users([]);
             
-            if (err.message === TOKEN.ERROR_MESSAGE) 
-            {
-                async_logout();
-                router.push(ROUTES.LOGIN);
-            }
-        },
-        // fetchPolicy: "cache-and-network",
-        nextFetchPolicy: "cache-first"
-    });
+    //         if (err.message === TOKEN.ERROR_MESSAGE) 
+    //         {
+    //             async_logout();
+    //             router.push(ROUTES.LOGIN);
+    //         }
+    //     },
+    //     // fetchPolicy: "cache-and-network",
+    //     nextFetchPolicy: "cache-first"
+    // });
     
     
     // if (!auth.user || !auth.is_auth) 
@@ -110,8 +111,8 @@ const UsersPage: React.FC = () =>
     return (
         
         <MainLayout>
-            <Grid container justifyContent='center'>
-                <Card style={{width: 900/*'80vw'*/}}>
+            {/* <Grid container justifyContent='center'>
+                <Card style={{width: 900 }}>
                     <Box p={2}>
                         <Grid container justifyContent='space-between'>
                             <Typography 
@@ -147,11 +148,11 @@ const UsersPage: React.FC = () =>
                         }
                     </Grid>
                 </Card>
-            </Grid>
+            </Grid> */}
+            <Users/>
         </MainLayout>
     )
 }
-
 
 export default UsersPage;
 

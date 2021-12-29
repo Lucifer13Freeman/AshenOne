@@ -152,24 +152,37 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
         <div>
         { user ? 
             <>
-            <Card className={styles.card}>
+            <Card className={styles.card} sx={{ maxWidth: 345 }}>
                 <Grid 
                     container 
                     //direction="column" 
                     style={{ margin: 20 }}
                 >
                     <Grid>
-                        <IconButton>
+                        {/* <IconButton>
                             <Avatar 
                                 variant="square" 
                                 alt={user.username} 
                                 src={LINKS.STATIC_FILES_LINK + user.avatar}
                                 style={{ height: 150, width: 150 }}
                             />
-                        </IconButton>
+                        </IconButton> */}
                         {/* <UploadUserAvatar user_id={user.id}/> */}
-                        {auth.user.id === user.id 
-                            && <ImageDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>}
+                        { auth.user.id === user.id ?
+                            <ImageDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}>
+                                <Avatar 
+                                    variant="square" 
+                                    alt={user.username} 
+                                    src={LINKS.STATIC_FILES_LINK + user.avatar}
+                                    style={{ height: 150, width: 150 }}
+                                />
+                            </ImageDialog> :
+                            <Avatar 
+                                variant="square" 
+                                alt={user.username} 
+                                src={LINKS.STATIC_FILES_LINK + user.avatar}
+                                style={{ height: 150, width: 150 }}
+                            /> }
                     </Grid> 
                     <Grid
                         //container

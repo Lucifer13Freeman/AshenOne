@@ -11,6 +11,8 @@ import SlideTransitionUp from '../Transitions/SlideTransitionUp';
 import { IconButton } from '@mui/material';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 
 
 // const Transition = React.forwardRef(function Transition(
@@ -22,12 +24,13 @@ enum BUTTON_TYPE
 {
   LEAVE = "leave",
   DELETE = "delete",
+  REMOVE = "remove",
   DEFAULT = "default"
 }
 
 interface ConfirmDialogProps
 {
-    button_type?: "leave" | "delete" | "default";
+    button_type?: "leave" | "delete" | "remove" | "default";
     button_title?: string;
     button_variant?: "text" | "contained" | "outlined";
     dialog_title?: string;
@@ -45,9 +48,13 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ children, button_title, b
         <div>
             { button_type === BUTTON_TYPE.LEAVE ?
                 <IconButton onClick={handle_click_open}>
-                    <MeetingRoomIcon/>
+                    <LogoutRoundedIcon/>
                 </IconButton> :
-                button_type === BUTTON_TYPE.DELETE ?
+            button_type === BUTTON_TYPE.REMOVE ?
+                <IconButton onClick={handle_click_open}>
+                    <HighlightOffRoundedIcon/>
+                </IconButton> :
+            button_type === BUTTON_TYPE.DELETE ?
                 <IconButton onClick={handle_click_open}>
                     <DeleteForeverRoundedIcon/>
                 </IconButton> :

@@ -60,14 +60,6 @@ type ChatType {
   updated_at: DateTime
 }
 
-type SubscriptionType {
-  id: ID!
-  follower: UserType!
-  profile: UserType!
-  created_at: DateTime
-  updated_at: DateTime
-}
-
 type LikeType {
   id: ID!
   post_id: ID
@@ -119,6 +111,29 @@ type GroupType {
   updated_at: DateTime
 }
 
+type InviteType {
+  id: ID!
+  user_id: ID!
+  user: UserType!
+  sender_id: ID!
+  sender: UserType!
+  chat_id: ID
+  chat: ChatType
+  group_id: ID
+  group: GroupType
+  status: String!
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type SubscriptionType {
+  id: ID!
+  follower: UserType!
+  profile: UserType!
+  created_at: DateTime
+  updated_at: DateTime
+}
+
 type ReportType {
   total_users: Int
   total_banned_users: Int
@@ -139,6 +154,10 @@ type Query {
   search_users(input: SearchUserInput!): [UserType!]
   get_current_user: UserType!
   get_statistics_report: ReportType
+  get_invite(input: GetInviteInput!): InviteType
+  get_all_invites(input: GetAllInvitesInput!): [InviteType!]
+  get_received_invites(input: GetAllInvitesInput!): [InviteType!]
+  get_sent_invites(input: GetAllInvitesInput!): [InviteType!]
   get_chat(input: GetChatInput!): ChatType
   get_all_chats(input: GetAllChatsInput!): [ChatType!]
   search_chats(input: SearchChatInput!): [ChatType!]
@@ -179,6 +198,26 @@ input GetAllUsersInput {
 
 input SearchUserInput {
   username: String!
+  limit: Int
+  offset: Int = 0
+}
+
+input GetInviteInput {
+  id: ID
+  current_user_id: ID
+  user_id: ID
+  sender_id: ID
+  chat_id: ID
+  group_id: ID
+}
+
+input GetAllInvitesInput {
+  current_user_id: ID
+  user_id: ID
+  sender_id: ID
+  chat_id: ID
+  group_id: ID
+  status: String = "WAIT"
   limit: Int
   offset: Int = 0
 }
@@ -320,10 +359,15 @@ type Mutation {
   register(input: RegisterUserInput!): UserType!
   update_user(input: UpdateUserInput!): UserType!
   delete_user(input: GetUserInput!): String!
+  create_invite(input: CreateInviteInput!): InviteType!
+  update_invite(input: UpdateInviteInput!): InviteType!
+  update_and_delete_invite(input: UpdateInviteInput!): InviteType!
+  delete_invite(input: GetInviteInput!): String!
   create_chat(input: CreateChatInput!): ChatType!
   delete_chat(input: GetChatInput!): String!
   delete_all_messages_in_chat(input: GetChatInput!): ChatType!
   add_chat_member(input: GetChatMemberInput!): ChatType!
+  add_chat_invited_member(input: GetChatMemberInput!): ChatType!
   remove_chat_member(input: GetChatMemberInput!): ChatType!
   create_message(input: CreateMessageInput!): MessageType!
   update_message(input: UpdateMessageInput!): MessageType!
@@ -345,6 +389,7 @@ type Mutation {
   update_group(input: UpdateGroupInput!): GroupType!
   delete_group(input: GetGroupInput!): String!
   add_group_member(input: GetGroupMemberInput!): GroupType!
+  add_group_invited_member(input: GetGroupMemberInput!): GroupType!
   remove_group_member(input: GetGroupMemberInput!): GroupType!
 }
 
@@ -372,6 +417,21 @@ input UpdateUserInput {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+
+input CreateInviteInput {
+  current_user_id: ID
+  user_id: ID!
+  sender_id: ID
+  chat_id: ID
+  group_id: ID
+  status: String = "WAIT"
+}
+
+input UpdateInviteInput {
+  id: ID!
+  current_user_id: ID
+  status: String!
+}
 
 input CreateChatInput {
   current_user_id: ID
@@ -490,6 +550,7 @@ input GetGroupMemberInput {
 }
 
 type Subscription {
+  new_invite: InviteType!
   new_message: MessageType!
   deleted_message: String!
   new_reaction: ReactionType!

@@ -9,6 +9,7 @@ import { report_watcher } from './watchers/report-watcher';
 import { post_watcher } from './watchers/post-watcher';
 import { comment_watcher } from './watchers/comment-watcher';
 import { group_watcher } from './watchers/group-watcher';
+import { invite_watcher } from './watchers/invite-watcher';
 
 
 export default function* root_saga() 
@@ -24,6 +25,7 @@ export default function* root_saga()
         post_watcher(),
         comment_watcher(),
         group_watcher(),
+        invite_watcher(),
         report_watcher()
     ]);
 }

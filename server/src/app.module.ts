@@ -20,6 +20,7 @@ import { GQLModule } from './graphql/graphql.module';
 import { GroupModule } from './group/group.module';
 import { join } from 'path';
 import { AdminModule } from './admin/admin.module';
+import { InviteModule } from './invite/invite.module';
 
 
 @Module(
@@ -42,6 +43,7 @@ import { AdminModule } from './admin/admin.module';
         //PubSubModule,
         UserModule,
         AdminModule,
+        InviteModule,
         ChatModule,
         SubscriptionModule,
         PostModule,

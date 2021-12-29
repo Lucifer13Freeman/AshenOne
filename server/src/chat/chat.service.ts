@@ -1,5 +1,5 @@
 // import { Connection, Model, ObjectId } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 // import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { FileService } from 'src/file/file.service';
 import { RegisterUserInput } from '../auth/inputs/register.input';
@@ -22,6 +22,8 @@ import { select_chat } from './selects/chat.select';
 import { ObjectId } from 'bson';
 import { UpdateChatInput } from './inputs/chat/update-chat.input';
 import { connect } from 'http2';
+import { InviteService } from 'src/invite/invite.service';
+import { INVITE_STATUS } from 'src/config/configs/consts.config';
 
 
 @Injectable()
@@ -35,6 +37,8 @@ export class ChatService
                 //@InjectModel(Message.name)  
                 //private message_model: Model<MessageDocument>,
                 // private message_service: MessageService,
+                @Inject(forwardRef(() => InviteService))
+                private invite_service: InviteService,
                 private user_service: UserService) {}
 
 
@@ -258,7 +262,7 @@ export class ChatService
                 const get_all_chats /*const chat_ids*/ = await prisma.chat.findMany(
                 {
                     // where: { member_ids: { hasSome: [current_user_id] } },
-                    where: { members: { some: { id: current_user_id } } },
+                    // where: { members: { some: { id: current_user_id } } },
                     // where: {
                     //     members: {
                     //     }
@@ -288,11 +292,9 @@ export class ChatService
 
                 return get_all_chats;
             });
-
-
             
-            // chats = chats?.filter((chat: Chat) => 
-            //     chat.member_ids?.find((id) => id === current_user_id) !== undefined);
+            chats = chats?.filter((chat: Chat) => 
+                chat.member_ids?.find((id) => id === current_user_id) !== undefined);
 
 
 
@@ -618,6 +620,73 @@ export class ChatService
     }
 
 
+    async add_invited_member(dto: GetChatMemberInput): Promise<Chat | null>
+    {
+        try 
+        {
+            let errors: any = {
+                user_id: undefined,
+                chat: undefined,
+                chat_id: undefined
+            };
+
+            const { user_id, chat_id, current_user_id } = dto;
+
+            const user = await this.user_service.get({ id: user_id ? user_id : current_user_id });
+            const invite = await this.invite_service.get({ user_id: user.id, chat_id });
+
+            let chat = await this.get({ id: chat_id });
+
+            let member_ids = chat.member_ids;
+
+            const is_member = member_ids.find((id: string) => id === user.id);
+
+            if (invite && is_member === undefined)
+            {
+                member_ids.push(user_id);
+
+                chat = await this.prisma.$transaction(async (prisma) => 
+                {
+                    const is_exist = await prisma.chat.findFirst(
+                    {
+                        where: { member_ids: { equals: member_ids } }
+                    });
+        
+                    if (is_exist) 
+                    {
+                        errors.chat = 'Chat with these members is already exists!';
+                        errors.chat_id = is_exist.id;
+                        throw new UserInputError('Chat with these members is already exists!', { errors });
+                    }
+
+                    const update_chat = await prisma.chat.update(
+                    {
+                        where: { id: chat_id },
+                        data: { member_ids: { set: member_ids } },
+                        select: select_chat
+                    });
+
+                    return update_chat;
+                });
+
+                await this.invite_service.update_and_delete({ id: invite.id, status: INVITE_STATUS.ACCEPTED });
+
+                return chat;
+            }
+            else
+            {
+                errors.user_id = 'You are member of this chat already!';
+                throw new UserInputError('You are member of this chat already!', { errors });
+            }
+        } 
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
     async add_member(dto: GetChatMemberInput): Promise<Chat/*Document*/>//: Promise<Chat> 
     {
         // const session = await this.connection.startSession();
@@ -627,32 +696,45 @@ export class ChatService
         {
             let errors: any = {
                 user_id: undefined,
+                chat: undefined,
+                chat_id: undefined
             };
 
-            const { user_id, chat_id, current_user_id } = dto;
-
-            if (user_id === current_user_id)
-            {
-                errors.user_id = 'You are member of this chat already!';
-                throw new UserInputError('You are member of this chat already!', { errors });
-            }
+            const { user_id, chat_id, current_user_id/*, is_for_invited*/ } = dto;
 
             const user = await this.user_service.get({ id: user_id ? user_id : current_user_id });
 
             let chat = await this.get({ id: chat_id, current_user_id });
+
+            let member_ids = chat.member_ids;
             
-            const is_member = chat.member_ids.find((id: string) => id === user.id);
+            const is_member = member_ids.find((id: string) => id === user.id);
 
             if (is_member === undefined)
             {
-                chat.member_ids.push(user_id);
+                const invite = await this.invite_service.get({ user_id: user.id, chat_id });
+                if (invite) await this.invite_service.delete({ id: invite.id, current_user_id });
+
+                member_ids.push(user_id);
 
                 chat = await this.prisma.$transaction(async (prisma) => 
                 {
+                    const is_exist = await prisma.chat.findFirst(
+                    {
+                        where: { member_ids: { equals: member_ids } }
+                    });
+            
+                    if (is_exist) 
+                    {
+                        errors.chat = 'Chat with these members is already exists!';
+                        errors.chat_id = is_exist.id;
+                        throw new UserInputError('Chat with these members is already exists!', { errors });
+                    }
+
                     const update_chat = await prisma.chat.update(
                     {
                         where: { id: chat_id },
-                        data: { member_ids: { set: chat.member_ids } },
+                        data: { member_ids: { set: member_ids } },
                         select: select_chat
                     });
 
@@ -660,6 +742,11 @@ export class ChatService
                 });
 
                 return chat;
+            }
+            else
+            {
+                errors.user_id = 'You are member of this chat already!';
+                throw new UserInputError('You are member of this chat already!', { errors });
             }
         } 
         catch (err) 

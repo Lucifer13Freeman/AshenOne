@@ -5,6 +5,7 @@ import { LINKS } from "../../utils/constants";
 import { IUser } from "../../types/user";
 import ImageDialog from "../Shared/Dialogs/ImageDialog";
 import styles from "../../styles/App.module.scss";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 
 interface AdminProfileProps 
@@ -19,23 +20,23 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ user }) =>
 
     //const input = { input: { id: user_id } }
     
-    // const { auth, error: auth_error } = useTypedSelector(state => state.auth);
+    const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     // const { async_get_user, async_logout, async_get_subscription } = useActions();
 
     
     return (
 
-        <div>
+        <Grid /*container direction='column'*/>
         { user ? 
             <>
-            <Card className={styles.card}>
+            <Card className={styles.card} sx={{ maxWidth: 345 }}>
                 <Grid 
                     container 
                     //direction="column" 
                     style={{ margin: 20 }}
                 >
                     <Grid>
-                        <IconButton>
+                        {/* <IconButton>
                             <Avatar 
                                 variant="square" 
                                 alt={user.username} 
@@ -45,8 +46,23 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ user }) =>
                                     width: 150
                                 }}
                             />
-                        </IconButton>
-                        <ImageDialog user_id = {user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/>
+                        </IconButton> */}
+                        { auth.user.id === user.id ?
+                            <ImageDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}>
+                                <Avatar 
+                                    variant="square" 
+                                    alt={user.username} 
+                                    src={LINKS.STATIC_FILES_LINK + user.avatar}
+                                    style={{ height: 150, width: 150 }}
+                                />
+                            </ImageDialog> :
+                            <Avatar 
+                                variant="square" 
+                                alt={user.username} 
+                                src={LINKS.STATIC_FILES_LINK + user.avatar}
+                                style={{ height: 150, width: 150 }}
+                            /> }
+                        {/* <ImageDialog user_id = {user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}/> */}
                     </Grid> 
                     <Grid
                         //container
@@ -72,7 +88,7 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ user }) =>
             </Card>
             </>
             : <div>User not found!</div> }
-        </div>
+        </Grid>
     );
 }
 

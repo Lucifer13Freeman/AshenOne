@@ -37,7 +37,8 @@ const GroupsPage: React.FC = () =>
     const { groups, error: groups_error } = useTypedSelector(state => state.group);
     const { messages, error: messages_error } = useTypedSelector(state => state.message);
 
-    const { async_set_all_groups, async_set_all_messages, async_logout } = useActions();
+    const { async_set_all_groups, async_set_all_messages, 
+            async_set_group, async_logout } = useActions();
 
 
     const input = {
@@ -47,6 +48,7 @@ const GroupsPage: React.FC = () =>
         }
     }
 
+    // async_set_group(null);
 
     const { loading: groups_loading, data: groups_data } = useQuery(GET_ALL_GROUPS,   
     {
@@ -103,6 +105,7 @@ const GroupsPage: React.FC = () =>
         },
         nextFetchPolicy: "cache-first"
     });
+
 
     return (
         <MainLayout>

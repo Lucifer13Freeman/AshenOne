@@ -16,9 +16,12 @@ import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import { Avatar, CardActionArea, 
         createStyles, 
-        Divider, Hidden,
+        Divider, Grid, Hidden,
         Theme, useMediaQuery, useTheme } from '@mui/material';
 import styles from '../../styles/Navbar.module.scss'
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -29,6 +32,8 @@ import { AppBar, CssBaseline, Drawer, IconButton, List, ListItem, ListItemIcon,
 import FeedIcon from '@mui/icons-material/Feed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import Link from 'next/link';
+import ListDialog from '../../components/Shared/Dialogs/ListDialog';
+import Invites from '../../components/Invites/Invites';
 
 
 /*const drawerWidth = 240;
@@ -66,16 +71,17 @@ const useStyles = makeStyles((theme: Theme) =>
 const menu_items: Array<NavMenu> = [
 
   { text: NAV_MENU.HOME, href: ROUTES.HOME, icon: <HomeIcon/> },
-  { text: NAV_MENU.ADMIN, href: ROUTES.ADMIN, icon: <AdminPanelSettingsIcon/> },
+  { text: NAV_MENU.FEED, href: ROUTES.FEED, icon: <FeedIcon/> },
+  { text: NAV_MENU.INVITES, href: ROUTES.INVITES, icon: <NotificationsRoundedIcon/> },
   { text: NAV_MENU.CHATS, href: ROUTES.CHATS, icon: <ChatBubbleIcon/> },
   { text: NAV_MENU.PEOPLE, href: ROUTES.PEOPLE, icon: <PeopleAltIcon/> },
   { text: NAV_MENU.GROUPS, href: ROUTES.GROUPS, icon: <GroupsIcon/> },
-  { text: NAV_MENU.FEED, href: ROUTES.FEED, icon: <FeedIcon/> },
+  { text: NAV_MENU.ADMIN, href: ROUTES.ADMIN, icon: <AdminPanelSettingsIcon/> },
   // { text: 'Track list', href: '/tracks', icon: <StarOutlineOutlinedIcon/> },
   // { text: 'Album list', href: '/albums', icon: <StarOutlineOutlinedIcon/> },
-  { text: NAV_MENU.LOGIN, href: ROUTES.LOGIN, icon: <ExitToAppIcon/> },
+  { text: NAV_MENU.LOGIN, href: ROUTES.LOGIN, icon: <LoginRoundedIcon/> },
   { text: NAV_MENU.REGISTER, href: ROUTES.REGISTER, icon: <AccountBoxIcon/> },
-  { text: NAV_MENU.LOGOUT, href: ROUTES.LOGOUT, icon: <MeetingRoomIcon/> }
+  { text: NAV_MENU.LOGOUT, href: ROUTES.LOGOUT, icon: <LogoutRoundedIcon/> }
 ];
 
 
@@ -169,6 +175,7 @@ const Navbar: React.FC = () =>
         <List style={{ paddingTop: 0 }}>
           { menu.map(({ text, href, icon }, index) => (
             <div key={index}>
+              { text !== NAV_MENU.INVITES ?
               <ListItem button onClick={ () => 
                 {
                   if (text === NAV_MENU.LOGOUT && check_auth)
@@ -179,13 +186,53 @@ const Navbar: React.FC = () =>
                       
                   router.push(href);
                   set_open(false);
-                }}>
+                }}> 
                 <ListItemIcon>
                   {icon}
                 </ListItemIcon>
                 <ListItemText primary={text}/>
-              </ListItem>
-              {text === NAV_MENU.FEED && <Divider/>}
+              </ListItem> : 
+              // <Grid onClick={() => set_open(false)}>
+                <Invites />
+              // </Grid> 
+              }
+              {/* // <ListDialog 
+              //     button_title='Edit' 
+              //     dialog_title='Edit post'
+              //     button_variant='text'
+              //     is_default_input={false}
+              //     form_content={{
+              //         value: post_text,
+              //         set_value: set_post_text,
+              //         is_loading: update_post_loading,
+              //         is_with_button: false,
+              //         placeholder: 'Edit post...'
+              //     }}
+              // >
+              //   <ListItem button onClick={ () => 
+              //   { set_open(false);
+              //   }}> 
+              //     {/* <Button onClick={update_post}>Save changes</Button> 
+               </ListDialog> } */}
+
+              {/* <ListItem button onClick={ () => 
+                {
+                  // if (text === NAV_MENU.LOGOUT && check_auth)
+                  // {
+                  //   async_logout();
+                  //   window.location.href = href;
+                  // }
+                      
+                  // router.push(href);
+                  set_open(false);
+                }}> 
+                <ListItemIcon>
+                  {icon}
+                </ListItemIcon>
+                <ListItemText primary={text}/>
+              </ListItem> } */}
+              {text === NAV_MENU.GROUPS && <Divider/>}
+              {text === NAV_MENU.ADMIN && <Divider/>}
             </div>
           )) }
         </List>

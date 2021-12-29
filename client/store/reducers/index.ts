@@ -11,6 +11,7 @@ import { report_reducer } from "./report-reducer";
 import { post_reducer } from "./post-reducer";
 import { comment_reducer } from "./comment-reducer";
 import { group_reducer } from "./group-reducer";
+import { invite_reducer } from "./invite-reducer";
 
 
 const combined_reducer = combineReducers(
@@ -23,6 +24,7 @@ const combined_reducer = combineReducers(
     post: post_reducer,
     comment: comment_reducer,
     group: group_reducer,
+    invite: invite_reducer,
     report: report_reducer
     // player: player_reducer,
     // track: track_reducer,

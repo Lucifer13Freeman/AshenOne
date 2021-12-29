@@ -71,28 +71,28 @@ export const comment_reducer = (state = initial_state, action: CommentAction): I
                 error: action.payload
             }
         }
-        case CommentActionTypes.UPDATE_COMMENT:
-        {
-            const updated_comments = state.comments.map((comment: IComment) => 
-            { 
-                if (comment.id === action.payload.id) comment = action.payload
-                return comment 
-            });
+        // case CommentActionTypes.UPDATE_COMMENT:
+        // {
+        //     const updated_comments = state.comments.map((comment: IComment) => 
+        //     { 
+        //         if (comment.id === action.payload.id) comment = action.payload
+        //         return comment 
+        //     });
 
-            return {
-                ...state, 
-                comment: action.payload,
-                comments: updated_comments,
-                error: undefined
-            }
-        }
-        case CommentActionTypes.UPDATE_COMMENT_ERROR:
-        {
-            return {
-                ...state,
-                error: action.payload
-            }
-        }
+        //     return {
+        //         ...state, 
+        //         comment: action.payload,
+        //         comments: updated_comments,
+        //         error: undefined
+        //     }
+        // }
+        // case CommentActionTypes.UPDATE_COMMENT_ERROR:
+        // {
+        //     return {
+        //         ...state,
+        //         error: action.payload
+        //     }
+        // }
         case CommentActionTypes.LIKE_COMMENT:
         {
             const new_like = action.payload;

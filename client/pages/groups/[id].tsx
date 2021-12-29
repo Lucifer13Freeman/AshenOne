@@ -5,7 +5,7 @@ import { Box,
     Typography,
     InputAdornment, 
     NoSsr } from "@mui/material";
-import { useLazyQuery, useQuery, useSubscription } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -23,6 +23,8 @@ import GroupProfile from "../../components/Groups/GroupProfile";
 import { IUser } from "../../types/user";
 import { SEARCH_GROUP_POSTS } from "../../graphql/queries.ts/posts";
 import ItemsSelect from "../../components/Shared/Selects/ItemsSelect";
+import { REMOVE_GROUP_MEMBER } from "../../graphql/mutations/groups";
+import GroupMembers from "../../components/Groups/Members/GroupMembers";
 
 
 // interface GroupProps
@@ -42,7 +44,8 @@ const Group: React.FC = () =>
     const { group, groups, error: group_error } = useTypedSelector(state => state.group);
     const { posts, error: posts_error } = useTypedSelector(state => state.post);
 
-    const { async_set_all_posts, async_set_group, async_logout } = useActions();
+    const { async_set_all_posts, async_set_group, 
+            async_logout, async_leave_group } = useActions();
 
     const check_member = () => group?.members?.find((mem: IUser) => mem.id === auth.user.id) !== undefined;
 
@@ -60,8 +63,8 @@ const Group: React.FC = () =>
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_set_group(null);
-                async_set_all_posts([]);
+                // async_set_group(null);
+                // async_set_all_posts([]);
                 async_logout();
                 router.push(ROUTES.LOGIN);
             }
@@ -139,7 +142,7 @@ const Group: React.FC = () =>
                                         </InputAdornment> )
                                 }}
                             />
-                            <ItemsSelect users={group?.members}/>
+                            <GroupMembers group={group}/>
                         </Grid>
                     </Box>
                         {/* <Grid className={styles.posts_container}>

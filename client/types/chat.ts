@@ -39,17 +39,17 @@ export enum ChatActionTypes
     ASYNC_SEARCH_CHATS = 'ASYNC_SEARCH_CHATS',
     SEARCH_CHATS_ERROR = 'SEARCH_CHATS_ERROR',
 
-    LEAVE_CHAT = 'LEAVE_CHAT',
-    ASYNC_LEAVE_CHAT = 'ASYNC_LEAVE_CHAT',
+    LEAVE_CHAT= 'LEAVE_CHAT',
+    ASYNC_LEAVE_CHAT= 'ASYNC_LEAVE_CHAT',
     LEAVE_CHAT_ERROR = 'LEAVE_CHAT_ERROR',
 
-    ADD_MEMBER = 'ADD_MEMBER',
-    ASYNC_ADD_MEMBER = 'ASYNC_ADD_MEMBER',
-    ADD_MEMBER_ERROR = 'ADD_MEMBER_ERROR',
+    // ADD_CHAT_MEMBER = 'ADD_CHAT_MEMBER',
+    // ASYNC_ADD_CHAT_MEMBER = 'ASYNC_ADD_CHAT_MEMBER',
+    // ADD_CHAT_MEMBER_ERROR = 'ADD_CHAT_MEMBER_ERROR',
 
-    REMOVE_MEMBER = 'REMOVE_MEMBER',
-    ASYNC_REMOVE_MEMBER = 'ASYNC_REMOVE_MEMBER',
-    REMOVE_MEMBER_ERROR = 'REMOVE_MEMBER_ERROR',
+    // REMOVE_CHAT_MEMBER = 'REMOVE_CHAT_MEMBER',
+    // ASYNC_REMOVE_CHAT_MEMBER = 'ASYNC_REMOVE_CHAT_MEMBER',
+    // REMOVE_CHAT_MEMBER_ERROR = 'REMOVE_CHAT_MEMBER_ERROR',
 
     DELETE_CHAT = 'DELETE_CHAT',
     ASYNC_DELETE_CHAT = 'ASYNC_DELETE_CHAT',
@@ -146,41 +146,41 @@ interface IDeleteChatErrorAction
     payload: string
 }
 
-interface IAddMemberAction
-{
-    type: ChatActionTypes.ADD_MEMBER;
-    payload: IChat
-}
+// interface IAddChatMemberAction
+// {
+//     type: ChatActionTypes.ADD_CHAT_MEMBER;
+//     payload: IChat
+// }
 
-interface IAsyncAddMemberAction
-{
-    type: ChatActionTypes.ASYNC_ADD_MEMBER;
-    payload: IChat
-}
+// interface IAsyncAddChatMemberAction
+// {
+//     type: ChatActionTypes.ASYNC_ADD_CHAT_MEMBER;
+//     payload: IChat
+// }
 
-interface IAddMemberErrorAction
-{
-    type: ChatActionTypes.ADD_MEMBER_ERROR;
-    payload: string
-}
+// interface IAddChatMemberErrorAction
+// {
+//     type: ChatActionTypes.ADD_CHAT_MEMBER_ERROR;
+//     payload: string
+// }
 
-interface IRemoveMemberAction
-{
-    type: ChatActionTypes.REMOVE_MEMBER;
-    payload: IChat
-}
+// interface IRemoveChatMemberAction
+// {
+//     type: ChatActionTypes.REMOVE_CHAT_MEMBER;
+//     payload: IChat
+// }
 
-interface IAsyncRemoveMemberAction
-{
-    type: ChatActionTypes.ASYNC_REMOVE_MEMBER;
-    payload: IChat
-}
+// interface IAsyncRemoveChatMemberAction
+// {
+//     type: ChatActionTypes.ASYNC_REMOVE_CHAT_MEMBER;
+//     payload: IChat
+// }
 
-interface IRemoveMemberErrorAction
-{
-    type: ChatActionTypes.REMOVE_MEMBER_ERROR;
-    payload: string
-}
+// interface IRemoveChatMemberErrorAction
+// {
+//     type: ChatActionTypes.REMOVE_CHAT_MEMBER_ERROR;
+//     payload: string
+// }
 
 interface ILeaveChatAction
 {
@@ -216,12 +216,12 @@ export type ChatAction = ICreateChatAction
                         | IDeleteChatAction
                         | IAsyncDeleteChatAction
                         | IDeleteChatErrorAction
-                        | IAddMemberAction
-                        | IAsyncAddMemberAction
-                        | IAddMemberErrorAction
-                        | IRemoveMemberAction
-                        | IAsyncRemoveMemberAction
-                        | IRemoveMemberErrorAction
+                        // | IAddChatMemberAction
+                        // | IAsyncAddChatMemberAction
+                        // | IAddChatMemberErrorAction
+                        // | IRemoveChatMemberAction
+                        // | IAsyncRemoveChatMemberAction
+                        // | IRemoveChatMemberErrorAction
                         | ILeaveChatAction
                         | IAsyncLeaveChatAction
                         | ILeaveChatErrorAction;

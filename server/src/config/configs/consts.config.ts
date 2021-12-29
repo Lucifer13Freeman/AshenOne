@@ -21,6 +21,7 @@ export enum EVENTS
     NEW_LIKE_POST_EVENT = 'NEW_LIKE_POST_EVENT',
     NEW_COMMENT_EVENT = 'NEW_COMMENT_EVENT',
     NEW_LIKE_COMMENT_EVENT = 'NEW_LIKE_COMMENT_EVENT',
+    NEW_INVITE_EVENT = 'NEW_INVITE_EVENT'
 }
 
 export enum CONFIG
@@ -47,7 +48,7 @@ export class REGEXP
     static FILE_PATH = /http(s?):\/\/[-\w\.]{3,}\.[A-Za-z]{2,3}/;
 }
 
-export enum FileType
+export enum FILE_TYPE
 {
     AUDIO = 'audio',
     IMAGE = 'image'
@@ -57,6 +58,13 @@ export enum ROLES
 {
     ADMIN = 'ADMIN',
     USER = 'USER'
+}
+
+export enum INVITE_STATUS
+{
+    ACCEPTED = 'ACCEPTED',
+    REJECTED = 'REJECTED',
+    WAIT = 'WAIT'
 }
 
 export enum DEFAULT_IMAGES

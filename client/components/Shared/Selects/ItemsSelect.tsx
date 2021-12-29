@@ -15,16 +15,24 @@ import { Button,
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 
+enum ICON_TYPE
+{
+    PEOPLE = 'people',
+    PRIVATE = 'private'
+}
+
 interface ItemsSelectProps
 {
+    icon?: 'people' | 'private'
     title?: string;
     users?: IUser[];
 }
 
-const ItemsSelect: React.FC<ItemsSelectProps> = ({ users, title, children }) =>
+const ItemsSelect: React.FC<ItemsSelectProps> = ({ users, title, icon, children }) =>
 {
     const router = useRouter();
 
@@ -67,7 +75,9 @@ const ItemsSelect: React.FC<ItemsSelectProps> = ({ users, title, children }) =>
                 style={{ textTransform: "none", marginTop: 6 }}
             >
                 <ListItemIcon>
-                    <PeopleAltIcon />
+                    { icon === ICON_TYPE.PRIVATE ?
+                        <ShieldRoundedIcon /> :
+                        <PeopleAltIcon /> }
                 </ListItemIcon>
                 <ListItemText primary={title ? title : "Members"} />
                 {open_items ? <ExpandLess /> : <ExpandMore />}

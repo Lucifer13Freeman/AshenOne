@@ -141,6 +141,23 @@ export class GroupResolver
 
 
     @Mutation(() => GroupType)
+    async add_group_invited_member(@GqlCurrentUser() user: GetUserInput,
+                                @Args('input') input: GetGroupMemberInput) 
+    {
+        try
+        {
+            return await this.group_service.add_invited_member({ ...input,
+                                                                current_user_id: user.id });
+        }
+        catch (err) 
+        {
+            console.error(err);
+            throw err;
+        }
+    }
+
+
+    @Mutation(() => GroupType)
     async remove_group_member(@GqlCurrentUser() user: GetUserInput,
                     @Args('input') input: GetGroupMemberInput) 
     {
