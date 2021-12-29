@@ -125,6 +125,7 @@ const Navbar: React.FC = () =>
 
   if (!check_admin) menu = menu.filter((item: NavMenu) => item.text !== NAV_MENU.ADMIN);
   
+  // const check_private_routes = (text: string) => text !== NAV_MENU.INVITES || text !== NAV_MENU.CHATS || text !== NAV_MENU.FEED
 
   const user_profile = (
     check_auth &&
@@ -193,7 +194,7 @@ const Navbar: React.FC = () =>
                 <ListItemText primary={text}/>
               </ListItem> : 
               // <Grid onClick={() => set_open(false)}>
-                <Invites />
+              check_auth && <Invites />
               // </Grid> 
               }
               {/* // <ListDialog 
