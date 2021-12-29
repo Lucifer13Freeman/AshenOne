@@ -73,12 +73,12 @@ const InviteUsers: React.FC<InviteUsersProps> = ({ chat_id, group_id}) =>
         onError: err => 
         {
             console.log(err);
-            async_set_all_users([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_all_users([]);
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"

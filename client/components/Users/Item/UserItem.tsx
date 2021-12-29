@@ -62,8 +62,8 @@ const UserItem: React.FC<UserItemProps> = ({ user, is_for_invites, chat_id, grou
             //set_errors(err.graphQLErrors[0].extensions?.errors);
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
             else router.push(ROUTES.CHATS/* + err.graphQLErrors[0].extensions?.errors.chat_id*/);
         }
@@ -85,8 +85,8 @@ const UserItem: React.FC<UserItemProps> = ({ user, is_for_invites, chat_id, grou
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -100,8 +100,8 @@ const UserItem: React.FC<UserItemProps> = ({ user, is_for_invites, chat_id, grou
                 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });

@@ -55,9 +55,9 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
-                router.reload();
+                // router.reload();
                 router.push(ROUTES.LOGIN);
+                async_logout();
                 //window.location.href = ROUTES.LOGIN;
             }
         },
@@ -87,13 +87,13 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
         onError: err => 
         {
             console.log(err);
-            async_set_user(null);
                 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
-                router.reload();
                 router.push(ROUTES.LOGIN);
+                async_set_user(null);
+                async_logout();
+                // router.reload();
                 //window.location.href = ROUTES.LOGIN;
             }
         },
@@ -193,7 +193,7 @@ const UserPage: React.FC/*<UserProps>*/ = (/*{ user_id }*/) =>
                 {/* <Grid container justifyContent='center'> */}
                     {/* <Followers subscriptions={subscriptions} /*user_id={user.id}/> */}
                 {/* </Grid> */}
-                { auth.user.id === user?.id && 
+                { auth.user?.id === user?.id && 
                 <Grid container justifyContent='center'>
                     <PostForm />
                 </Grid> }

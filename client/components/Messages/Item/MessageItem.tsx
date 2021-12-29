@@ -57,8 +57,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -82,8 +82,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
     });
@@ -247,6 +247,5 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         // </Card>
     );
 }
-
 
 export default MessageItem;

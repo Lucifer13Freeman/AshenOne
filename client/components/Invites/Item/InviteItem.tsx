@@ -61,8 +61,8 @@ const InviteItem: React.FC<InviteItemProps> = ({ invite }) =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -81,8 +81,8 @@ const InviteItem: React.FC<InviteItemProps> = ({ invite }) =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -96,8 +96,8 @@ const InviteItem: React.FC<InviteItemProps> = ({ invite }) =>
                 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
          }
     });

@@ -113,8 +113,8 @@ const Navbar: React.FC = () =>
   //   set_open(!open);// set_open({ ...state, [anchor]: open });
   // };
 
-  const check_auth = auth.is_auth && auth.user ? true : false;
-  const check_admin = check_auth && auth.user.role === ROLES.ADMIN ? true : false;
+  const check_auth = auth.is_auth && auth.user;
+  const check_admin = check_auth && auth.user.role === ROLES.ADMIN;
 
   let menu: Array<NavMenu>
 

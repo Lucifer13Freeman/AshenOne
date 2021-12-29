@@ -44,8 +44,8 @@ const CommentForm: React.FC<CommentFormProps> = ({ post_id }) =>
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -83,6 +83,5 @@ const CommentForm: React.FC<CommentFormProps> = ({ post_id }) =>
       </Card>
     );
 }
-
 
 export default CommentForm;

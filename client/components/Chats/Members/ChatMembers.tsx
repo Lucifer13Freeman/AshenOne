@@ -59,8 +59,8 @@ const ChatMembers: React.FC<ChatMembersProps> = ({ /*chat*/ }) =>
                     
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -74,10 +74,10 @@ const ChatMembers: React.FC<ChatMembersProps> = ({ /*chat*/ }) =>
         }}
         gql_remove_chat_member({ variables: input });
 
-        if (id === auth.user.id)
+        if (id === auth.user?.id)
         {
-            async_leave_chat(chat);
             router.push(ROUTES.CHATS);
+            async_leave_chat(chat);
         }
     }
     
@@ -100,7 +100,7 @@ const ChatMembers: React.FC<ChatMembersProps> = ({ /*chat*/ }) =>
                 onClick={() => router.push(ROUTES.PEOPLE + id)}
               />
               {
-                id !== auth.user.id && auth.user.id === chat?.admin_id && (
+                id !== auth.user?.id && auth.user?.id === chat?.admin_id && (
                   <Grid style={{ marginLeft: 10 }}>
                     <ConfirmDialog
                       button_title="Remove"
@@ -119,7 +119,7 @@ const ChatMembers: React.FC<ChatMembersProps> = ({ /*chat*/ }) =>
                 //     <HighlightOffRoundedIcon/>
                 // </IconButton>
               }
-              {id == auth.user.id && (
+              {id == auth.user?.id && (
                 <Grid style={{ marginLeft: 10 }}>
                   <ConfirmDialog
                     button_title="Leave"

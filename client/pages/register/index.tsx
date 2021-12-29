@@ -91,7 +91,7 @@ const RegisterPage: React.FC = () =>
             <Grid 
                 container 
                 direction="column" 
-                style={{ padding: 20 }}
+                style={{ padding: 20, maxWidth: 400 }}
             >
                 <form onSubmit={submit_register_form}>
                     <FormGroup>
@@ -198,6 +198,5 @@ const RegisterPage: React.FC = () =>
         </MainLayout>
     )
 }
-
 
 export default RegisterPage;

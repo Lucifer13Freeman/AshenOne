@@ -63,10 +63,10 @@ const Group: React.FC = () =>
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                // async_set_group(null);
-                // async_set_all_posts([]);
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_group(null);
+                async_set_all_posts([]);
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"
@@ -102,9 +102,9 @@ const Group: React.FC = () =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
+                router.push(ROUTES.LOGIN);
                 async_set_all_posts([]);
                 async_logout();
-                router.push(ROUTES.LOGIN);
             }
         },
         nextFetchPolicy: "cache-first"

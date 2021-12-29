@@ -51,8 +51,8 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -66,8 +66,8 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
                 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
          }
     });
@@ -77,7 +77,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
         e.stopPropagation();
         const input = { input: { 
             group_id: group.id,
-            user_id: auth.user.id
+            user_id: auth.user?.id
         }}
         gql_leave_group({ variables: input });
     }
@@ -156,7 +156,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
                     <Button>Cancel</Button>
                 </ConfirmDialog>
             </Grid>
-            { auth.user.id === group?.admin_id && 
+            { auth.user?.id === group?.admin_id && 
             <Grid style={{marginLeft: 'auto'}}>
                 <ConfirmDialog 
                     button_title='Delete' 

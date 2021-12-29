@@ -58,12 +58,12 @@ const GroupsPage: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            async_set_all_groups([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE)
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_all_groups([]);
+                async_logout();
             }
         },
         // fetchPolicy: "cache-and-network",
@@ -95,12 +95,12 @@ const GroupsPage: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            async_set_all_groups([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
+                router.push(ROUTES.LOGIN); 
+                async_set_all_groups([]);
                 async_logout();
-                router.push(ROUTES.LOGIN);
             }
         },
         nextFetchPolicy: "cache-first"

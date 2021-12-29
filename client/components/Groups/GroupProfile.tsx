@@ -63,11 +63,11 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     }
 
     const check_auth = auth.is_auth && auth.user;
-    const check_admin = check_auth && auth.user.role === ROLES.ADMIN;
-    const check_group_admin = check_auth && group?.admin_id === auth.user.id;
+    const check_admin = check_auth && auth.user?.role === ROLES.ADMIN;
+    const check_group_admin = check_auth && group?.admin_id === auth.user?.id;
     const check_group_moderator = check_auth 
-        && group?.moderator_ids.find((id: string) => id === auth.user.id) !== undefined;
-    const check_member = () => group?.members.find((mem: IUser) => mem.id === auth.user.id) !== undefined;
+        && group?.moderator_ids.find((id: string) => id === auth.user?.id) !== undefined;
+    const check_member = () => group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
 
     const is_available = check_group_admin || check_group_moderator;
 
@@ -117,9 +117,9 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
+                router.push(ROUTES.LOGIN);
                 async_set_group(null);
                 async_logout();
-                router.push(ROUTES.LOGIN);
             }
         }
     });

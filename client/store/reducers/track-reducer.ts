@@ -1,5 +1,6 @@
 import { ITrackState, TrackAction, TrackActionTypes } from "../../types/track"
 
+
 const initial_state: ITrackState =
 {
     tracks: [],
@@ -11,20 +12,20 @@ export const track_reducer = (state = initial_state, action: TrackAction): ITrac
     switch (action.type) 
     {
         case TrackActionTypes.FETCH_TRACKS:
-            
+        {
             return {
-                    error: '',
-                    tracks: action.payload
+                tracks: action.payload,
+                error: ''
             }
           
-            
+        }   
         case TrackActionTypes.FETCH_TRACKS_ERROR:
-            
+        {
             return {
-                    ...state, 
-                    error: action.payload
+                ...state, 
+                error: action.payload
             }
-
+        }
 
         /*case TrackActionTypes.DELETE_TRACK:
             
@@ -41,9 +42,9 @@ export const track_reducer = (state = initial_state, action: TrackAction): ITrac
                     error: action.payload
             }*/
 
-
         default:
-
+        {
             return state;
+        }
     }
 }

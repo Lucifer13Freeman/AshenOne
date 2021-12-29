@@ -98,9 +98,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
-                router.reload();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -114,8 +113,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"
@@ -152,8 +151,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
         
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
     });
@@ -176,8 +175,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
     });
@@ -209,7 +208,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
                     </IconButton>
                 }
                 action={
-                    auth.user.id === post.user?.id && (
+                    auth.user?.id === post.user?.id && (
                     <EditPopper>
                         <Grid container direction="column">
                             {/* <Button style={{marginBottom: 6}}>Edit</Button> */}

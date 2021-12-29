@@ -51,8 +51,8 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group }) =>
                         
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -92,7 +92,7 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group }) =>
                 onClick={() => router.push(ROUTES.PEOPLE + id)}
               />
               {
-                id !== auth.user.id && auth.user.id === group.admin_id && (
+                id !== auth.user?.id && auth.user?.id === group.admin_id && (
                   <Grid style={{ marginLeft: 10 }}>
                     <ConfirmDialog
                       button_title="Remove"
@@ -111,7 +111,7 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group }) =>
                 //     <HighlightOffRoundedIcon/>
                 // </IconButton>
               }
-              {id == auth.user.id && (
+              {id == auth.user?.id && (
                 <Grid style={{ marginLeft: 10 }}>
                   <ConfirmDialog
                     button_title="Leave"

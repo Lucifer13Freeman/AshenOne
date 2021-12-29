@@ -84,5 +84,4 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ children, button_title, b
     );
 }
 
-
 export default ConfirmDialog;

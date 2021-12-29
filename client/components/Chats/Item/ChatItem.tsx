@@ -131,8 +131,8 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
                     
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         }
     });
@@ -142,7 +142,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
         e.stopPropagation();
         const input = { input: { 
             chat_id: chat.id,
-            user_id: auth.user.id
+            user_id: auth.user?.id
         }}
         gql_leave_chat({ variables: input });
     }
@@ -223,7 +223,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) =>
                     <Button>Cancel</Button>
                 </ConfirmDialog>
             </Grid>
-            { auth.user.id === chat?.admin_id && 
+            { auth.user?.id === chat?.admin_id && 
             <Grid style={{marginLeft: 'auto'}}>
                 <ConfirmDialog 
                     button_title='Delete' 

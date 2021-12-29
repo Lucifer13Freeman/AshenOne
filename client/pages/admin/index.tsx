@@ -32,9 +32,9 @@ const AdminPage: React.FC = () =>
                 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
-                router.reload();
                 router.push(ROUTES.LOGIN);
+                // router.reload();
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"

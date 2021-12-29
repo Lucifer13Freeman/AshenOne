@@ -68,7 +68,7 @@ export const logout = () =>
 
         //delete_cookie_with_token();
         remove_auth_token();
-        localStorage.removeItem('persist:root');
+        // localStorage.removeItem('persist:root');
 
 
         return (

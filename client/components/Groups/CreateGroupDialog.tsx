@@ -122,10 +122,10 @@ const CreateGroupDialog: React.FC<FormDialogProps> = ({ button_title, button_var
         
         if (err.message === TOKEN.ERROR_MESSAGE) 
         {
-            async_set_group(null);
-            async_set_all_groups([]);
-            async_logout();
-            router.push(ROUTES.LOGIN);
+          router.push(ROUTES.LOGIN);
+          async_set_group(null);
+          async_set_all_groups([]);
+          async_logout();
         }
     }
   });

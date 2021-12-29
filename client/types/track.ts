@@ -1,7 +1,7 @@
 
 export interface IComment 
 {
-    _id: string;
+    id: string;
     username: string;
     text: string;
     trackId: string
@@ -9,7 +9,7 @@ export interface IComment
 
 export interface ITrack 
 {
-    _id: string;
+    id: string;
     name: string;
     artist: string;
     text: string;

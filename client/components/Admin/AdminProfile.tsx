@@ -47,7 +47,7 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ user }) =>
                                 }}
                             />
                         </IconButton> */}
-                        { auth.user.id === user.id ?
+                        { auth.user?.id === user.id ?
                             <ImageDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}>
                                 <Avatar 
                                     variant="square" 

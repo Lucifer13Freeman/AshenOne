@@ -88,10 +88,10 @@ const ChatPage: React.FC = () =>
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             { 
+                router.push(ROUTES.LOGIN);
                 async_set_chat(null);
                 async_set_all_messages([]);
                 async_logout();
-                router.push(ROUTES.LOGIN);
             }
         },
         // fetchPolicy: "cache-and-network",
@@ -110,9 +110,9 @@ const ChatPage: React.FC = () =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
+                router.push(ROUTES.LOGIN);
                 async_set_all_messages([]);
                 async_logout();
-                router.push(ROUTES.LOGIN);
             }
         },
         nextFetchPolicy: "cache-first"

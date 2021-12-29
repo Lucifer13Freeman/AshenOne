@@ -169,5 +169,4 @@ const MessageForm: React.FC<MessageFormProps> = ({ chat_id }) =>
     );
 }
 
-
 export default MessageForm;

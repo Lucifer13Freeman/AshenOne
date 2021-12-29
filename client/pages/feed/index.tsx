@@ -46,18 +46,19 @@ const FeedPage: React.FC = () =>
         );
     }
         
-    const [search_posts, { loading: search_post_loading, data: search_post_data }] = useLazyQuery(SEARCH_POSTS,
+    const [search_posts, { loading: search_post_loading, 
+                            data: search_post_data }] = useLazyQuery(SEARCH_POSTS,
     {
         onCompleted: data => async_set_all_posts(data.search_posts),
         onError: err => 
         {
             console.log(err);
-            async_set_all_posts([]);
-                    
+
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_all_posts([]);
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"
@@ -82,13 +83,13 @@ const FeedPage: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            async_set_user(null);
-                    
+            
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
-                router.reload();
+                // router.reload();
                 router.push(ROUTES.LOGIN);
+                async_set_user(null);
+                async_logout();
                 //window.location.href = ROUTES.LOGIN;
             }
         },

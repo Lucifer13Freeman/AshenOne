@@ -71,18 +71,19 @@ const Users: React.FC<UsersProps> = ({ is_for_invites, chat_id, group_id }) =>
         );
     }
 
-    const [search_users, { loading: search_user_loading, data: search_user_data }] = useLazyQuery(SEARCH_USERS,
+    const [search_users, { loading: search_user_loading, 
+                            data: search_user_data }] = useLazyQuery(SEARCH_USERS,
     {
         onCompleted: data => async_set_all_users(data.search_users),
         onError: err => 
         {
             console.log(err);
-            async_set_all_users([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_all_users([]);
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"
@@ -95,12 +96,12 @@ const Users: React.FC<UsersProps> = ({ is_for_invites, chat_id, group_id }) =>
         onError: err => 
         {
             console.log(err);
-            async_set_all_users([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_all_users([]);
+                async_logout();
             }
         },
         // fetchPolicy: "cache-and-network",
@@ -117,9 +118,9 @@ const Users: React.FC<UsersProps> = ({ is_for_invites, chat_id, group_id }) =>
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             { 
+                router.push(ROUTES.LOGIN);
                 async_set_all_invites([]);
                 async_logout();
-                router.push(ROUTES.LOGIN);
             }
         },
         nextFetchPolicy: "cache-first"

@@ -50,9 +50,9 @@ const Invites: React.FC = () =>
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             { 
+                router.push(ROUTES.LOGIN);
                 async_set_all_invites([]);
                 async_logout();
-                router.push(ROUTES.LOGIN);
             }
         },
         nextFetchPolicy: "cache-first"

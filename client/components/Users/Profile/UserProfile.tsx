@@ -88,11 +88,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
             async_set_all_subscriptions(data.get_all_subscriptions);
 
             let check_subscription = data.get_all_subscriptions.find(
-                (sub: ISubscription) => sub.follower.id === auth.user.id
+                (sub: ISubscription) => sub.follower.id === auth.user?.id
             );
 
-            set_is_followed(check_subscription !== undefined ? true : false);
-            
+            set_is_followed(check_subscription !== undefined);
             set_followers_count(data.get_all_subscriptions.length);
             //console.log(data.get_all_subscriptions.length)
         },
@@ -102,8 +101,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"
@@ -138,7 +137,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
 
     const follow = () =>
     {
-        let subscription_input = { input: { profile_id: user.id } }
+        let subscription_input = { input: { profile_id: user?.id } }
 
         if (is_followed) delete_subscription({ variables: subscription_input });
         else create_subscription({ variables: subscription_input });
@@ -168,7 +167,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
                             />
                         </IconButton> */}
                         {/* <UploadUserAvatar user_id={user.id}/> */}
-                        { auth.user.id === user.id ?
+                        { auth.user?.id === user?.id ?
                             <ImageDialog user_id={user.id} avatar={LINKS.STATIC_FILES_LINK + user.avatar}>
                                 <Avatar 
                                     variant="square" 
@@ -198,7 +197,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
                         >
                             Registered at: { date_format(user.created_at) }
                         </div>
-                        { user.id !== auth.user.id &&
+                        { user.id !== auth.user?.id &&
                             <Button
                                 onClick={() => follow()}
                                 style={{marginTop: 40}}
@@ -222,6 +221,5 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
         </div>
     );
 }
-
 
 export default UserProfile;

@@ -80,7 +80,7 @@ const LoginPage: React.FC = () =>
             //console.log(auth)
             //async_login({ token: data.login.token });
 
-            window.location.href = ROUTES.HOME;
+            // window.location.href = ROUTES.HOME;
             //router.push(ROUTES.HOME);
         }
     });
@@ -111,7 +111,7 @@ const LoginPage: React.FC = () =>
             <Grid 
                 container 
                 direction="column" 
-                style={{ padding: 20 }}
+                style={{ padding: 20, maxWidth: 400 }}
             >
                 {/* <Card className={styles.card}> */}
                 <form onSubmit={submit_login_form}>
@@ -184,6 +184,5 @@ const LoginPage: React.FC = () =>
         </MainLayout>
     )
 }
-
 
 export default LoginPage;

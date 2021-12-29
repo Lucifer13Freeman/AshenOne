@@ -53,12 +53,12 @@ const ChatsPage: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            async_set_all_chats([]);
-
+            
             if (err.message === TOKEN.ERROR_MESSAGE)
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_all_chats([]);
+                async_logout();
             }
         },
         // fetchPolicy: "cache-and-network",
@@ -126,12 +126,12 @@ const ChatsPage: React.FC = () =>
         onError: err => 
         {
             console.log(err);
-            async_set_all_chats([]);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_set_all_chats([]);
+                async_logout();
             }
         },
         nextFetchPolicy: "cache-first"
@@ -210,6 +210,5 @@ const ChatsPage: React.FC = () =>
         </MainLayout>
     )
 }
-
 
 export default ChatsPage;

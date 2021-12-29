@@ -72,8 +72,8 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
     });
@@ -130,8 +130,8 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
     
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
     });
@@ -154,8 +154,8 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
         
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
-                async_logout();
                 router.push(ROUTES.LOGIN);
+                async_logout();
             }
         },
     });
@@ -183,7 +183,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
                     </IconButton>
                 }
                 action={
-                    auth.user.id === comment.user.id && (
+                    auth.user?.id === comment.user.id && (
                     <EditPopper>
                         <Grid container direction="column">
                             {/* <Button style={{marginBottom: 6}}>Edit</Button> */}

@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useActions } from '../hooks/useAction'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import MainLayout from '../layouts/MainLayout'
-//import { NextThunkDispatch, wrapper } from '../store'
-import { async_get_all_users, get_all_users } from '../store/actions/user'
 import styles from '../styles/Home.module.scss'
 import { IUser } from '../types/user'
 
@@ -41,7 +39,6 @@ const Home: React.FC = () =>
     </MainLayout>
   )
 }
-
 
 export default Home;
 
