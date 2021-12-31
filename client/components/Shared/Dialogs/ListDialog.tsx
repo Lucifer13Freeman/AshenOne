@@ -66,7 +66,7 @@ const ListDialog: React.FC<ListDialogProps> = ({ children, button_title, button_
 
   return (
     <div>
-      <Grid container direction="column" style={{ maxHeight: 100 }}>
+      <Grid container direction="column">
         { button_type === BUTTON_TYPE.INVITE ? 
         <ListItem button onClick={handle_click_open}>
             <ListItemIcon>

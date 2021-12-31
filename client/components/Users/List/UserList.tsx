@@ -37,11 +37,11 @@ const UserList: React.FC<UserListProps > = ({ users, is_for_invites,
         if (group_id)
             found_invite = invites?.find((inv: IInvite) => inv.user.id === user_id 
                                                         && inv.group?.id === group_id 
-                                                        && inv.sender.id === auth.user.id);
+                                                        && inv.sender.id === auth.user?.id);
         else if (chat_id)
             found_invite = invites?.find((inv: IInvite) => inv.user.id === user_id 
                                                             && inv.chat?.id === chat_id 
-                                                            && inv.sender.id === auth.user.id);
+                                                            && inv.sender.id === auth.user?.id);
         return found_invite;
     }
 

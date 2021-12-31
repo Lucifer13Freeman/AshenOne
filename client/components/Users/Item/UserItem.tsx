@@ -16,6 +16,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import { CREATE_INVITE, DELETE_INVITE } from "../../../graphql/mutations/invites";
 import { IInvite } from "../../../types/invite";
+import { date_format } from "../../../utils/date-format";
 
 
 // interface IError
@@ -150,7 +151,7 @@ const UserItem: React.FC<UserItemProps> = ({ user, is_for_invites, chat_id, grou
                         {user.username}
                     </div>
                     <div style={{ fontSize: 12, color: 'gray' }}>
-                        {user.created_at}
+                        {date_format(user.created_at)}
                     </div>
                 </Grid>
             </CardActionArea>
