@@ -1,0 +1,48 @@
+@import "variables";
+
+
+.item
+{
+    // margin: 20px;
+    margin: 4px 0;
+    //padding: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .name
+    {
+        color: black;
+        font-size: 1rem;
+    }
+
+    .username
+    {
+        color: black;
+    }
+
+    .latest_message
+    {
+        color: $secondary_color;
+        font-size: 0.8rem;//12px;
+        word-break: break-all;
+        max-height: 40px;
+        overflow-y: hidden;
+    }
+
+    &:hover
+    {
+        //background-color: #cccccc;
+        background-color: $primary_hover_color;
+
+        .username
+        {
+            color: $secondary_color;
+        }
+
+        .last_message
+        {
+            color: white;
+        }
+    }
+}

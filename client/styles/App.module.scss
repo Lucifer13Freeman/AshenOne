@@ -1,0 +1,77 @@
+@import "variables";
+
+
+.main 
+{
+    //background-color: $background_color;
+    //width: 100vw;
+    min-height: 100vh;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 90px 0 60px 0;
+    
+
+    @media screen and (min-width: $md)  
+    {
+        padding: 90px 20px 60px 20px;
+        margin-left: $short_drawer_width;
+        transition-property: margin;
+        // padding-left: $short_drawer_width;
+        // transition-property: padding;
+        transition-duration: .2s;
+    }
+
+    @media screen and (min-width: $lg)  
+    {
+        padding: 90px 40px 60px 40px;
+        margin-left: $drawer_width;
+        transition-property: margin;
+        // padding-left: $drawer_width;
+        // transition-property: padding;
+        transition-duration: .2s;
+    }
+}
+
+
+.card
+{
+    min-width: 410px;
+    margin-bottom: 10px;
+
+    @media screen and (min-width: $sm)  
+    {
+        min-width: 480px;
+    }
+
+    @media screen and (min-width: $md)  
+    {
+        min-width: 500px
+    }
+
+    @media screen and (min-width: $lg)  
+    {
+        min-width: 680px
+    }
+
+    @media screen and (min-width: $xl)  
+    {
+        min-width: 780px
+    }
+}
+
+// .content
+// {
+//     //background-color: $background_color;
+//     //padding: 0 40px;
+//     //margin-left: auto;
+//     //margin: 0;
+//     // max-width: none;
+// }
+
+.page_title
+{
+    color: $primary_color;
+    font-family: $font_dancing;
+    font-size: 3rem;
+}

@@ -1,0 +1,57 @@
+@import "variables";
+
+
+// .arrow_btn
+// {
+//     display: flex;
+//     margin-left: auto;
+//     width: 20px;
+//     height: 20px;
+// }
+
+.logo
+{
+    font-family: $font_dancing;
+    font-size: 2rem;
+}
+
+.drawer_menu
+{
+    width: $drawer_width;
+    overflow-x: hidden;
+}
+
+.short_drawer_menu
+{
+    width: $short_drawer_width;
+    overflow-x: hidden;
+}
+
+.app_bar
+{
+    transition-property: width;
+    transition-property: margin;
+    transition-duration: .2s;
+
+    @media screen and (min-width: $md)  
+    {
+        width: calc(100% - $short_drawer_width);
+        padding-left: $short_drawer_width;
+    }
+
+    @media screen and (min-width: $lg)  
+    {
+        width: calc(100% - $drawer_width);
+        padding-left: $drawer_width;
+    }
+}
+  
+.app_bar_shift
+{
+    width: calc(100% - $drawer_width);
+    padding-left: $drawer_width;
+    transition-property: width;
+    transition-property: margin;
+    transition-duration: .2s;
+}
+

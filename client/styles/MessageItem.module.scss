@@ -1,0 +1,137 @@
+@import "variables";
+
+
+// .sent_message_container
+// {
+
+// }
+
+// .recieved_message_container
+// {
+
+// }
+
+.recieved_message_box
+{
+    // margin: 20px;
+    //margin: 4px 0;
+
+    padding: 4px;
+    display: flex;
+    //align-items: flex-start;
+    //border-radius: 10px;
+    //align-self: flex-end;
+    //align-content: flex-end;
+    //justify-content: flex-start;
+    
+
+    .username
+    {
+        margin-top: 10px;
+        margin-left: 10px;
+        font-size: 0.9rem;//14px;
+        color: black;
+        text-align: start;
+    }
+
+    .avatar
+    {
+        justify-content: flex-start;
+    }
+
+    // .avatar
+    // {
+    //     justify-content: flex-end;
+    // }
+
+    .message_content
+    {
+        background-color: $background_color;
+        padding: 10px;
+        border-radius: 20px;
+        width: fit-content;
+
+        .message
+        {
+            //color: gray;
+            color: black;
+            font-size: 1rem;//16px;
+            word-break: break-all;
+            //background-color: $primary_color;
+        }
+
+        .message_date
+        {
+            color: $secondary_color;
+            //background-color: $primary_color;
+            font-size: 0.8rem;//12px;
+        }
+    }
+
+    // &:hover
+    // {
+    //     background-color: #cccccc;
+
+    //     .username
+    //     {
+    //         color: #555555;
+    //     }
+
+    //     .last_message
+    //     {
+    //         color: white;
+    //     }
+    // }
+}
+
+.sent_message_box
+{
+    // margin: 20px;
+    //margin: 4px 0;
+
+    padding: 4px;
+    display: flex;
+    //align-items: center;
+    //justify-self: flex-end;
+    //border-radius: 10px;
+    //justify-content: end;
+    //justify-items: right;
+    //align-items: flex-end;
+    //justify-content: flex-end;
+
+    .username
+    {
+        margin-top: 10px;
+        margin-right: 10px;
+        font-size: 0.9rem;//14px;
+        color: black;
+        text-align: end;
+    }
+
+    .avatar
+    {
+        justify-content: flex-start;
+    }
+
+    .message_content
+    {
+        background-color: $primary_color;
+        padding: 10px;
+        border-radius: 20px;
+        width: fit-content;
+
+        .message
+        {
+            //color: gray;
+            color: white;
+            word-break: break-all;
+            font-size: 1rem;//16px;
+        }
+
+        .message_date
+        {
+            color: rgb(180, 180, 180);
+            font-size: 0.8rem;//12px;
+        }
+    }
+}

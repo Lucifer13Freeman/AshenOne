@@ -1,0 +1,206 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["mongoDb", "interactiveTransactions"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DB_MONGO_URI")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum InviteStatus {
+  ACCEPTED
+  REJECTED
+  WAIT
+}
+
+model User {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  username          String
+  email             String          @unique
+  password          String?      
+  role              Role            @default(USER)
+  avatar            String          @default("image/no_avatar.png")
+  is_banned         Boolean         @default(false)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+
+  chat_admin        Chat[]          @relation("ChatAdmin")
+  chat_ids          String[]        @db.Array(ObjectId)
+  chat_member       Chat[]          @relation("ChatMembers", fields: [chat_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  reactions         Reaction[]      @relation("UserReaction")
+  messages          Message[]       @relation("UserMessage")
+  subs_follower     Subscription[]  @relation("SubscriptionFollower")
+  subs_profile      Subscription[]  @relation("SubscriptionProfile")
+  posts             Post[]          @relation("UserPost")
+  comments          Comment[]       @relation("UserComment")
+  post_likes        PostLike[]      @relation("UserPostLike")
+  comment_likes     CommentLike[]   @relation("UserCommentLike")
+  group_admin       Group[]         @relation("GroupAdmin")
+  group_moder_ids   String[]        @db.Array(ObjectId)
+  group_moderator   Group[]         @relation("GroupModerators", fields: [group_moder_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  group_ids         String[]        @db.Array(ObjectId)
+  group_member      Group[]         @relation("GroupMembers", fields: [group_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_invite       Invite[]        @relation("UserInvite")
+  sender_invite     Invite[]        @relation("SenderInvite")
+
+  @@index([username])
+  @@index([role])
+  @@index([is_banned])
+}
+
+model Reaction {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserReaction", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  message_id        String          @db.ObjectId
+  message           Message         @relation("MessageReactions", fields: [message_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  content           String
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+}
+
+model Message {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  chat_id           String          @db.ObjectId
+  chat              Chat            @relation("ChatMessage", fields: [chat_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserMessage", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  //reaction_ids      String[]        @db.Array(ObjectId)
+  reactions         Reaction[]      @relation("MessageReactions")
+  text              String?     
+  image             String?
+  audio             String?
+  video             String?
+  is_read           Boolean         @default(false)
+  is_edited         Boolean         @default(false)
+  is_forwarded      Boolean         @default(false)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+
+  @@index([text])
+}
+
+model Chat {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  admin_id          String          @db.ObjectId
+  admin             User            @relation("ChatAdmin", fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  member_ids        String[]        @db.Array(ObjectId)
+  members           User[]          @relation("ChatMembers", fields: [member_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  // message_ids       String[]        @db.Array(ObjectId)
+  messages          Message[]       @relation("ChatMessage")//, fields: [message_ids], references: [id])
+  is_private        Boolean         @default(false)
+  is_secure         Boolean         @default(false)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+  
+  chat_invite       Invite[]        @relation("ChatInvite")
+}
+
+model Invite {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  sender_id         String          @db.ObjectId
+  sender            User            @relation("SenderInvite", fields: [sender_id], references: [id])
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserInvite", fields: [user_id], references: [id])
+  chat_id           String?         @db.ObjectId
+  chat              Chat?           @relation("ChatInvite", fields: [chat_id], references: [id])
+  group_id          String?         @db.ObjectId
+  group             Group?          @relation("GroupInvite", fields: [group_id], references: [id])
+  status            InviteStatus    @default(WAIT)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+}
+
+model Subscription {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  follower_id       String          @db.ObjectId
+  follower          User            @relation("SubscriptionFollower", fields: [follower_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profile_id        String          @db.ObjectId
+  profile           User            @relation("SubscriptionProfile", fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+}
+
+model Post {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserPost", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  group_id          String?         @db.ObjectId
+  group             Group?          @relation("GroupPost", fields: [group_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  comments          Comment[]       @relation("PostComment")
+  likes             PostLike[]      @relation("PostLike")
+  views             Int             @default(0)
+  text              String?     
+  image             String?
+  audio             String?
+  video             String?
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+
+  @@index([text])
+}
+
+model Comment {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  post_id           String          @db.ObjectId
+  post              Post            @relation("PostComment", fields: [post_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserComment", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  likes             CommentLike[]   @relation("CommentLike")
+  text              String?     
+  image             String?
+  audio             String?
+  video             String?
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+
+  @@index([text])
+}
+
+model PostLike {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  post_id           String          @db.ObjectId
+  post              Post            @relation("PostLike", fields: [post_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserPostLike", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+}
+
+model CommentLike {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  comment_id        String          @db.ObjectId
+  comment           Comment         @relation("CommentLike", fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id           String          @db.ObjectId
+  user              User            @relation("UserCommentLike", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+}
+
+model Group {
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name              String
+  avatar            String?         @default("image/no_group_avatar.png")
+  admin_id          String          @db.ObjectId
+  admin             User            @relation("GroupAdmin", fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  moderator_ids     String[]        @db.Array(ObjectId)
+  moderators        User[]          @relation("GroupModerators", fields: [moderator_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  member_ids        String[]        @db.Array(ObjectId)
+  members           User[]          @relation("GroupMembers", fields: [member_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  posts             Post[]          @relation("GroupPost")
+  is_private        Boolean         @default(false)
+  is_secure         Boolean         @default(false)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @default(now())
+
+  group             Invite[]        @relation("GroupInvite")
+}

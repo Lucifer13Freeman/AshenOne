@@ -1,0 +1,29 @@
+@import "variables";
+
+
+.no_invites
+{
+    text-align: center;
+    color: $secondary_color;
+    margin: 10px;
+    font-size: 1.5rem;
+    // display: inline-block;
+    // width: 100%;
+    // flex-wrap: nowrap;
+}
+
+.invites_container
+{
+    height: 56vh;
+    overflow-y: scroll;
+    display: flex;
+    // flex-direction: column-reverse;
+    // background-color: $secondary_background_color; //$gradient_background; //$background_color;
+
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar
+    {
+        display: none;
+    }
+}
