@@ -38,11 +38,7 @@ export const make_store = (context: Context) =>
         const persist_config = {
             key: 'root',
             storage,
-<<<<<<< HEAD
             // whitelist: ['auth']
-=======
-            whitelist: ['auth']
->>>>>>> b8792ebc844f83b0779f0b79e47e5d609e262c5a
         }
         
         const persisted_reducer = persistReducer(persist_config, root_reducer);
