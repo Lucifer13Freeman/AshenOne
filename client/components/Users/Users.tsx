@@ -157,8 +157,7 @@ const Users: React.FC<UsersProps> = ({ is_for_invites, chat_id, group_id }) =>
             <Grid 
                 container 
                 justifyContent='center'
-                style={!is_for_invites ? {width: 900/*'80vw'*/} 
-                                    : {minHeight: 480, maxHeight: 480}}>
+                style={is_for_invites ? {minHeight: 480, maxHeight: 480} : {}}>
                 <Card style={{width: 900/*'80vw'*/}} raised>
                     <Box p={2}>
                         <Grid container justifyContent='space-between'>
