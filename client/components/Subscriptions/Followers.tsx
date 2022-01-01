@@ -50,7 +50,7 @@ const Followers: React.FC<FollowersProps> = ({ subscriptions }) =>
 
     return (
        
-        <Card style={{ marginBottom: 10 }}>
+        <Card style={{ marginBottom: 10 }} raised>
             <Typography variant="h5" color='gray' ml={2} mt={1}>Followers</Typography>
             <Grid container direction="column" style={{ margin: 10 }}>
                 <FollowersList subscriptions={subscriptions}/>

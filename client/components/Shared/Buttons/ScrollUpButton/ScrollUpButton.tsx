@@ -6,7 +6,7 @@ import { LINKS } from "../../../../utils/constants";
 //import './ScrollUpButton.scss';
 import ArrowUp from "./arrow-up.png";
 
-const ScrollUpButton = () => (
+const ScrollUpButton: React.FC = () => (
 
     <ScrollToTop 
         showUnder={160} 

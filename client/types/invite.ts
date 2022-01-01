@@ -31,6 +31,8 @@ export interface IInviteState
 { 
     invite: IInvite | null;
     invites: IInvite[];
+    //received_invites: IInvite[];
+    //sent_invites: IInvite[];
     error?: string;
 }
 
@@ -47,6 +49,14 @@ export enum InviteActionTypes
     SET_ALL_INVITES = 'SET_ALL_INVITES',
     ASYNC_SET_ALL_INVITES = 'ASYNC_SET_ALL_INVITES',
     SET_ALL_INVITES_ERROR = 'SET_ALL_INVITES_ERROR',
+
+    // SET_RECEIVED_INVITES = 'SET_RECEIVED_INVITES',
+    // ASYNC_SET_RECEIVED_INVITES = 'ASYNC_SET_RECEIVED_INVITES',
+    // SET_RECEIVED_INVITES_ERROR = 'SET_RECEIVED_INVITES_ERROR',
+
+    // SET_SENT_INVITES = 'SET_SENT_INVITES',
+    // ASYNC_SET_SENT_INVITES = 'ASYNC_SET_SENT_INVITES',
+    // SET_SENT_INVITES_ERROR = 'SET_SENT_INVITES_ERROR',
 
     DELETE_INVITE = 'DELETE_INVITE',
     ASYNC_DELETE_INVITE = 'ASYNC_DELETE_INVITE',
@@ -71,41 +81,77 @@ interface ICreateInviteErrorAction
     payload: string;
 }
 
-interface IGetInviteAction
+interface ISetInviteAction
 {
     type: InviteActionTypes.SET_INVITE;
     payload: IInvite;
 }
 
-interface IAsyncGetInviteAction
+interface IAsyncSetInviteAction
 {
     type: InviteActionTypes.ASYNC_SET_INVITE;
     payload: IInvite;
 }
 
-interface IGetInviteErrorAction
+interface ISetInviteErrorAction
 {
     type: InviteActionTypes.SET_INVITE_ERROR;
     payload: string;
 }
 
-interface IGetAllInvitesAction
+interface ISetAllInvitesAction
 {
     type: InviteActionTypes.SET_ALL_INVITES;
     payload: IInvite[];
 }
 
-interface IAsyncGetAllInvitesAction
+interface IAsyncSetAllInvitesAction
 {
     type: InviteActionTypes.ASYNC_SET_ALL_INVITES;
     payload: IInvite[];
 }
 
-interface IGetAllInvitesErrorAction
+interface ISetAllInvitesErrorAction
 {
     type: InviteActionTypes.SET_ALL_INVITES_ERROR;
     payload: string;
 }
+
+// interface ISetReceivedInvitesAction
+// {
+//     type: InviteActionTypes.SET_RECEIVED_INVITES;
+//     payload: IInvite[];
+// }
+
+// interface IAsyncSetReceivedInvitesAction
+// {
+//     type: InviteActionTypes.ASYNC_SET_RECEIVED_INVITES;
+//     payload: IInvite[];
+// }
+
+// interface ISetReceivedInvitesErrorAction
+// {
+//     type: InviteActionTypes.SET_RECEIVED_INVITES_ERROR;
+//     payload: string;
+// }
+
+// interface ISetSentInvitesAction
+// {
+//     type: InviteActionTypes.SET_SENT_INVITES;
+//     payload: IInvite[];
+// }
+
+// interface IAsyncSetSentInvitesAction
+// {
+//     type: InviteActionTypes.ASYNC_SET_SENT_INVITES;
+//     payload: IInvite[];
+// }
+
+// interface ISetSentInvitesErrorAction
+// {
+//     type: InviteActionTypes.SET_SENT_INVITES_ERROR;
+//     payload: string;
+// }
 
 interface IDeleteInviteAction
 {
@@ -129,13 +175,18 @@ interface IDeleteInviteErrorAction
 export type InviteAction = ICreateInviteAction
                         | IAsyncCreateInviteAction
                         | ICreateInviteErrorAction
-                        | IGetInviteAction 
-                        | IAsyncGetInviteAction
-                        | IGetInviteErrorAction 
-                        | IGetAllInvitesAction
-                        | IAsyncGetAllInvitesAction
-                        | IGetAllInvitesAction
-                        | IGetAllInvitesErrorAction
+                        | ISetInviteAction 
+                        | IAsyncSetInviteAction
+                        | ISetInviteErrorAction 
+                        | ISetAllInvitesAction
+                        | IAsyncSetAllInvitesAction
+                        | ISetAllInvitesErrorAction
+                        // | ISetReceivedInvitesAction
+                        // | IAsyncSetReceivedInvitesAction
+                        // | ISetReceivedInvitesErrorAction
+                        // | ISetSentInvitesAction
+                        // | IAsyncSetSentInvitesAction
+                        // | ISetSentInvitesErrorAction
                         | IDeleteInviteAction
                         | IAsyncDeleteInviteAction
                         | IDeleteInviteErrorAction;

@@ -94,37 +94,37 @@ interface ICreatePostErrorAction
     payload: string;
 }
 
-interface IGetPostAction
+interface ISetPostAction
 {
     type: PostActionTypes.SET_POST;
     payload: IPost;
 }
 
-interface IAsyncGetPostAction
+interface IAsyncSetPostAction
 {
     type: PostActionTypes.ASYNC_SET_POST;
     payload: IPost;
 }
 
-interface IGetPostErrorAction
+interface ISetPostErrorAction
 {
     type: PostActionTypes.SET_POST_ERROR;
     payload: string;
 }
 
-interface IGetAllPostsAction
+interface ISetAllPostsAction
 {
     type: PostActionTypes.SET_ALL_POSTS;
     payload: IPost[];
 }
 
-interface IAsyncGetAllPostsAction
+interface IAsyncSetAllPostsAction
 {
     type: PostActionTypes.ASYNC_SET_ALL_POSTS;
     payload: IPost[];
 }
 
-interface IGetAllPostsErrorAction
+interface ISetAllPostsErrorAction
 {
     type: PostActionTypes.SET_ALL_POSTS_ERROR;
     payload: string;
@@ -242,13 +242,13 @@ interface IDeleteAllCommentssInPostErrorAction
 export type PostAction = ICreatePostAction
                         | IAsyncCreatePostAction
                         | ICreatePostErrorAction
-                        | IGetPostAction 
-                        | IAsyncGetPostAction
-                        | IGetPostErrorAction 
-                        | IGetAllPostsAction
-                        | IAsyncGetAllPostsAction
-                        | IGetAllPostsAction
-                        | IGetAllPostsErrorAction
+                        | ISetPostAction 
+                        | IAsyncSetPostAction
+                        | ISetPostErrorAction 
+                        | ISetAllPostsAction
+                        | IAsyncSetAllPostsAction
+                        | ISetAllPostsAction
+                        | ISetAllPostsErrorAction
                         // | IUpdatePostAction
                         // | IAsyncUpdatePostAction
                         // | IUpdatePostErrorAction

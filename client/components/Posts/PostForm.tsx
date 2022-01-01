@@ -69,7 +69,7 @@ const PostForm: React.FC<PostFormProps> = ({ group_id = null}) =>
     
 
     return (
-        <Card className={app_styles.card} sx={{ maxWidth: 345 }} style={{marginBottom: 10}}>
+        <Card className={app_styles.card} sx={{ maxWidth: 345 }} style={{marginBottom: 10}} raised>
             <Grid className={styles.message_input_box}>
                     <form onSubmit={share_post}>
                         <FormGroup>

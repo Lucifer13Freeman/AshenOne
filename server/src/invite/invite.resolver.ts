@@ -99,8 +99,9 @@ export class InviteResolver
     {
         try
         {
-            return await this.invite_service.create({ ...input,
-                                                    current_user_id: user.id });
+            const invite = await this.invite_service.create({ ...input, current_user_id: user.id });
+            this.pubsub.publish(EVENTS.NEW_INVITE_EVENT, { new_invite: invite });
+            return invite;
         }
         catch (err) 
         {

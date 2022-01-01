@@ -78,37 +78,37 @@ interface ICreateCommentErrorAction
     payload: string;
 }
 
-interface IGetCommentAction
+interface ISetCommentAction
 {
     type: CommentActionTypes.SET_COMMENT;
     payload: IComment;
 }
 
-interface IAsyncGetCommentAction
+interface IAsyncSetCommentAction
 {
     type: CommentActionTypes.ASYNC_SET_COMMENT;
     payload: IComment;
 }
 
-interface IGetCommentErrorAction
+interface ISetCommentErrorAction
 {
     type: CommentActionTypes.SET_COMMENT_ERROR;
     payload: string;
 }
 
-interface IGetAllCommentsAction
+interface ISetAllCommentsAction
 {
     type: CommentActionTypes.SET_ALL_COMMENTS;
     payload: IComment[];
 }
 
-interface IAsyncGetAllCommentsAction
+interface IAsyncSetAllCommentsAction
 {
     type: CommentActionTypes.ASYNC_SET_ALL_COMMENTS;
     payload: IComment[];
 }
 
-interface IGetAllCommentsErrorAction
+interface ISetAllCommentsErrorAction
 {
     type: CommentActionTypes.SET_ALL_COMMENTS_ERROR;
     payload: string;
@@ -172,12 +172,12 @@ interface IDeleteCommentErrorAction
 export type CommentAction = ICreateCommentAction
                             | IAsyncCreateCommentAction
                             | ICreateCommentErrorAction
-                            | IGetCommentAction 
-                            | IAsyncGetCommentAction
-                            | IGetCommentErrorAction 
-                            | IGetAllCommentsAction
-                            | IAsyncGetAllCommentsAction
-                            | IGetAllCommentsErrorAction
+                            | ISetCommentAction 
+                            | IAsyncSetCommentAction
+                            | ISetCommentErrorAction 
+                            | ISetAllCommentsAction
+                            | IAsyncSetAllCommentsAction
+                            | ISetAllCommentsErrorAction
                             // | IUpdateCommentAction
                             // | IAsyncUpdateCommentAction
                             // | IUpdateCommentErrorAction

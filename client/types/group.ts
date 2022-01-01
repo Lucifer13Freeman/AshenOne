@@ -85,37 +85,37 @@ interface ICreateGroupErrorAction
     payload: string
 }
 
-interface IGetGroupAction
+interface ISetGroupAction
 {
     type: GroupActionTypes.SET_GROUP;
     payload: IGroup
 }
 
-interface IAsyncGetGroupAction
+interface IAsyncSetGroupAction
 {
     type: GroupActionTypes.ASYNC_SET_GROUP;
     payload: IGroup
 }
 
-interface IGetGroupErrorAction
+interface ISetGroupErrorAction
 {
     type: GroupActionTypes.SET_GROUP_ERROR;
     payload: string
 }
 
-interface IGetAllGroupsAction
+interface ISetAllGroupsAction
 {
     type: GroupActionTypes.SET_ALL_GROUPS;
     payload: IGroup[]
 }
 
-interface IAsyncGetAllGroupsAction
+interface IAsyncSetAllGroupsAction
 {
     type: GroupActionTypes.ASYNC_SET_ALL_GROUPS;
     payload: IGroup[];
 }
 
-interface IGetAllGroupsErrorAction
+interface ISetAllGroupsErrorAction
 {
     type: GroupActionTypes.SET_ALL_GROUPS_ERROR;
     payload: string
@@ -215,12 +215,12 @@ interface ILeaveGroupErrorAction
 export type GroupAction = ICreateGroupAction 
                         | IAsyncCreateGroupAction
                         | ICreateGroupErrorAction
-                        | IGetGroupAction 
-                        | IAsyncGetGroupAction
-                        | IGetGroupErrorAction 
-                        | IGetAllGroupsAction
-                        | IAsyncGetAllGroupsAction
-                        | IGetAllGroupsErrorAction
+                        | ISetGroupAction 
+                        | IAsyncSetGroupAction
+                        | ISetGroupErrorAction 
+                        | ISetAllGroupsAction
+                        | IAsyncSetAllGroupsAction
+                        | ISetAllGroupsErrorAction
                         | ISearchGroupsAction
                         | IAsyncSearchGroupsAction
                         | ISearchGroupsErrorAction

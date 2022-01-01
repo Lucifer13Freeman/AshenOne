@@ -85,37 +85,37 @@ interface ICreateMessageErrorAction
     payload: string;
 }
 
-interface IGetMessageAction
+interface ISetMessageAction
 {
     type: MessageActionTypes.SET_MESSAGE;
     payload: IMessage;
 }
 
-interface IAsyncGetMessageAction
+interface IAsyncSetMessageAction
 {
     type: MessageActionTypes.ASYNC_SET_MESSAGE;
     payload: IMessage;
 }
 
-interface IGetMessageErrorAction
+interface ISetMessageErrorAction
 {
     type: MessageActionTypes.SET_MESSAGE_ERROR;
     payload: string;
 }
 
-interface IGetAllMessagesAction
+interface ISetAllMessagesAction
 {
     type: MessageActionTypes.SET_ALL_MESSAGES;
     payload: IMessage[];
 }
 
-interface IAsyncGetAllMessagesAction
+interface IAsyncSetAllMessagesAction
 {
     type: MessageActionTypes.ASYNC_SET_ALL_MESSAGES;
     payload: IMessage[];
 }
 
-interface IGetAllMessagesErrorAction
+interface ISetAllMessagesErrorAction
 {
     type: MessageActionTypes.SET_ALL_MESSAGES_ERROR;
     payload: string;
@@ -179,12 +179,12 @@ interface IDeleteAllMessagesInChatErrorAction
 export type MessageAction = ICreateMessageAction
                             | IAsyncCreateMessageAction
                             | ICreateMessageErrorAction
-                            | IGetMessageAction 
-                            | IAsyncGetMessageAction
-                            | IGetMessageErrorAction 
-                            | IGetAllMessagesAction
-                            | IAsyncGetAllMessagesAction
-                            | IGetAllMessagesErrorAction
+                            | ISetMessageAction 
+                            | IAsyncSetMessageAction
+                            | ISetMessageErrorAction 
+                            | ISetAllMessagesAction
+                            | IAsyncSetAllMessagesAction
+                            | ISetAllMessagesErrorAction
                             // | IUpdateMessageAction
                             // | IAsyncUpdateMessageAction
                             // | IUpdateMessageErrorAction

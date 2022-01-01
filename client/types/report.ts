@@ -31,7 +31,7 @@ export enum ReportActionTypes
     DELETE_STATISTICS_REPORT_ERROR = 'DELETE_STATISTICS_REPORT_ERROR'
 }
 
-interface IGetStatisticsReportAction
+interface ISetStatisticsReportAction
 {
     type: ReportActionTypes.SET_STATISTICS_REPORT;
     payload: IStatisticsReport;
@@ -43,7 +43,7 @@ interface IAsyncStatisticsReportAction
     payload: IStatisticsReport;
 }
 
-interface IGetStatisticsReportErrorAction
+interface ISetStatisticsReportErrorAction
 {
     type: ReportActionTypes.SET_STATISTICS_REPORT_ERROR;
     payload: string
@@ -68,9 +68,9 @@ interface IDeleteStatisticsReportErrorAction
 }
 
 
-export type ReportAction = IGetStatisticsReportAction 
+export type ReportAction = ISetStatisticsReportAction 
                         | IAsyncStatisticsReportAction
-                        | IGetStatisticsReportErrorAction 
+                        | ISetStatisticsReportErrorAction 
                         | IDeleteStatisticsReportAction
                         | IAsyncDeleteStatisticsReportAction
                         | IDeleteStatisticsReportErrorAction;

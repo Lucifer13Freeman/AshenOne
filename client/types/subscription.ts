@@ -55,37 +55,37 @@ interface ICreateSubscriptionErrorAction
     payload: string
 }
 
-interface IGetSubscriptionAction
+interface ISetSubscriptionAction
 {
     type: SubscriptionsActionTypes.SET_SUBSCRIPTION;
     payload: ISubscription
 }
 
-interface IAsyncGetSubscriptionAction
+interface IAsyncSetSubscriptionAction
 {
     type: SubscriptionsActionTypes.ASYNC_SET_SUBSCRIPTION;
     payload: ISubscription
 }
 
-interface IGetSubscriptionErrorAction
+interface ISetSubscriptionErrorAction
 {
     type: SubscriptionsActionTypes.SET_SUBSCRIPTION_ERROR;
     payload: string
 }
 
-interface IGetAllSubscriptionsAction
+interface ISetAllSubscriptionsAction
 {
     type: SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS;
     payload: ISubscription[]
 }
 
-interface IAsyncGetAllSubscriptionsAction
+interface IAsyncSetAllSubscriptionsAction
 {
     type: SubscriptionsActionTypes.ASYNC_SET_ALL_SUBSCRIPTIONS;
     payload: ISubscription[];
 }
 
-interface IGetAllSubscriptionsErrorAction
+interface ISetAllSubscriptionsErrorAction
 {
     type: SubscriptionsActionTypes.SET_ALL_SUBSCRIPTIONS_ERROR;
     payload: string
@@ -113,12 +113,12 @@ interface IDeleteSubscriptionErrorAction
 export type SubscriptionAction = ICreateSubscriptionAction
                             | IAsyncCreateSubscriptionAction
                             | ICreateSubscriptionErrorAction
-                            | IGetSubscriptionAction 
-                            | IAsyncGetSubscriptionAction
-                            | IGetSubscriptionErrorAction 
-                            | IGetAllSubscriptionsAction
-                            | IAsyncGetAllSubscriptionsAction
-                            | IGetAllSubscriptionsErrorAction
+                            | ISetSubscriptionAction 
+                            | IAsyncSetSubscriptionAction
+                            | ISetSubscriptionErrorAction 
+                            | ISetAllSubscriptionsAction
+                            | IAsyncSetAllSubscriptionsAction
+                            | ISetAllSubscriptionsErrorAction
                             | IDeleteSubscriptionAction
                             | IAsyncDeleteSubscriptionAction
                             | IDeleteSubscriptionErrorAction;

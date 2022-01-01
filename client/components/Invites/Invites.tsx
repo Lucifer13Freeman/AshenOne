@@ -5,13 +5,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormControl, Grid, IconButton, Input, InputLabel, ListItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import ListDialog from '../Shared/Dialogs/ListDialog';
-import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
 import { GET_ALL_INVITES, GET_ALL_RECEIVED_INVITES } from '../../graphql/queries.ts/invites';
 import { useActions } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -21,6 +21,7 @@ import { ROUTES } from '../../utils/constants';
 import { IInvite } from '../../types/invite';
 import InviteList from './List/InviteList';
 import styles from '../../styles/Invites.module.scss';
+import { NEW_INVITE } from '../../graphql/subscriptions/invites';
 
 
 
@@ -57,6 +58,15 @@ const Invites: React.FC = () =>
         },
         nextFetchPolicy: "cache-first"
     });
+
+
+    const { data: invite_data, error: invite_error } = useSubscription(NEW_INVITE);
+
+    useEffect(() => 
+    {
+        if (invite_error) console.error(invite_error);
+        if (invite_data && invite_data.new_invite.user.id === auth.user.id) async_set_all_invites([...invites, invite_data.new_invite]);
+    }, [invite_data, invite_error]);
     
 
     return (
@@ -66,17 +76,17 @@ const Invites: React.FC = () =>
                 transition='right'
                 dialog_title='Invites'
                 button_type='invite'
-                // form_content={{
-                //     // value: post_text,
+                // list_content={{
+                //     // value: invites.,
                 //     // set_value: set_post_text,
                 //     // is_loading: update_post_loading,
                 //     // placeholder: 'Edit post...'
                 // }}
             >
                 { invites?.length > 0 ?
-                    <InviteList invites={invites}/> :
+                    <InviteList invites={invites?.filter((inv: IInvite) => (inv.user.id === auth.user.id))}/> :
                     <Grid className={styles.no_invites}>No invites...</Grid> }
-            </ListDialog>
+            </ListDialog> 
         </Grid>
     );
 }

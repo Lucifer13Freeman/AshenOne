@@ -22,7 +22,7 @@ const Printer: React.FC = ({ children }) =>
     }
 
     return (
-        <Card className={styles.card} style={{ margin: '10px 0px' }}>
+        <Card className={styles.card} style={{ margin: '10px 0px' }} raised>
             <Grid 
                 container 
                 //direction="column" 

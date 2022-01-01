@@ -116,7 +116,7 @@ const Group: React.FC = () =>
             <Grid container justifyContent='center'>
                 <GroupProfile group={group} />
                 {!group?.is_private || check_member() ? 
-                <Card className={app_styles.card} style={{width: 400}}>
+                <Card className={app_styles.card} style={{width: 400}} raised>
                     <Box p={2}>
                         <Grid container direction="row" >
                             <Typography 

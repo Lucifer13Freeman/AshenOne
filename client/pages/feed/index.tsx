@@ -101,7 +101,7 @@ const FeedPage: React.FC = () =>
         <MainLayout>
             <Grid container justifyContent='center'>
                 <Card 
-                    className={styles.card}
+                    className={styles.card}  raised
                     //style={{width: 900/*'80vw'*/}}
                 >
                     <Box p={2}>

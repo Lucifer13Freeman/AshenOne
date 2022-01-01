@@ -34,37 +34,37 @@ export enum UserActionTypes
     DELETE_USER_ERROR = 'DELETE_USER_ERROR'
 }
 
-interface IGetUserAction
+interface ISetUserAction
 {
     type: UserActionTypes.SET_USER;
     payload: IUser
 }
 
-interface IAsyncGetUserAction
+interface IAsyncSetUserAction
 {
     type: UserActionTypes.ASYNC_SET_USER;
     payload: IUser
 }
 
-interface IGetUserErrorAction
+interface ISetUserErrorAction
 {
     type: UserActionTypes.SET_USER_ERROR;
     payload: string
 }
 
-interface IGetAllUsersAction
+interface ISetAllUsersAction
 {
     type: UserActionTypes.SET_ALL_USERS;
     payload: IUser[]
 }
 
-interface IAsyncGetAllUsersAction
+interface IAsyncSetAllUsersAction
 {
     type: UserActionTypes.ASYNC_SET_ALL_USERS;
     payload: IUser[];
 }
 
-interface IGetAllUsersErrorAction
+interface ISetAllUsersErrorAction
 {
     type: UserActionTypes.SET_ALL_USERS_ERROR;
     payload: string
@@ -89,12 +89,12 @@ interface IDeleteUserErrorAction
 }
 
 
-export type UserAction = IGetUserAction 
-                        | IAsyncGetUserAction
-                        | IGetUserErrorAction 
-                        | IGetAllUsersAction
-                        | IAsyncGetAllUsersAction
-                        | IGetAllUsersErrorAction
+export type UserAction = ISetUserAction 
+                        | IAsyncSetUserAction
+                        | ISetUserErrorAction 
+                        | ISetAllUsersAction
+                        | IAsyncSetAllUsersAction
+                        | ISetAllUsersErrorAction
                         | IDeleteUserAction
                         | IAsyncDeleteUserAction
                         | IDeleteUserErrorAction;

@@ -113,7 +113,7 @@ export class MessageResolver
             //                                             current_user_id: user.id });
                                                         
                 
-            this.pubsub.publish(EVENTS.NEW_MESSAGE_EVENT, { new_message: message, is_create: true/*, chat_members: chat.members*/ });
+            this.pubsub.publish(EVENTS.NEW_MESSAGE_EVENT, { new_message: message/*, chat_members: chat.members*/ });
 
             return message;
         }

@@ -8,6 +8,8 @@ const initial_state: IInviteState = {
 
     invite: null,
     invites: [],
+    // received_invites: [],
+    // sent_invites: [],
     error: undefined
 }
 
@@ -21,6 +23,7 @@ switch (action.type)
             ...state, 
             invite: action.payload,
             invites: [action.payload, ...state.invites],
+            //sent_invites: [action.payload, ...state.sent_invites],
             error: undefined
         }
     }
@@ -39,10 +42,17 @@ switch (action.type)
             return invite 
         });
 
+        // const update_sent_invites = state.sent_invites.map((invite: IInvite) => 
+        // { 
+        //     if (invite.id === action.payload.id) invite = action.payload
+        //     return invite 
+        // });
+
         return {
             ...state, 
             invite: action.payload,
             invites: update_invites,
+            // sent_invites: update_sent_invites,
             error: undefined
         }
     }
@@ -68,6 +78,36 @@ switch (action.type)
             error: action.payload
         }
     }
+    // case InviteActionTypes.SET_RECEIVED_INVITES:
+    // {
+    //     return {
+    //         ...state, 
+    //         received_invites: action.payload,
+    //         error: undefined
+    //     }
+    // }
+    // case InviteActionTypes.SET_RECEIVED_INVITES_ERROR:
+    // {
+    //     return {
+    //         ...state, 
+    //         error: action.payload
+    //     }
+    // }
+    // case InviteActionTypes.SET_SENT_INVITES:
+    // {
+    //     return {
+    //         ...state, 
+    //         sent_invites: action.payload,
+    //         error: undefined
+    //     }
+    // }
+    // case InviteActionTypes.SET_SENT_INVITES_ERROR:
+    // {
+    //     return {
+    //         ...state, 
+    //         error: action.payload
+    //     }
+    // }
     case InviteActionTypes.DELETE_INVITE:
     {
         const updated_invites = state.invites.filter((invite: IInvite) => invite.id !== action.payload);

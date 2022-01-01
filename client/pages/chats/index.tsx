@@ -170,7 +170,7 @@ const ChatsPage: React.FC = () =>
         
         <MainLayout>
             <Grid container justifyContent='center'>
-                <Card style={{width: 900}}>
+                <Card style={{width: 900}} raised>
                     <Box p={2}>
                         <Grid container justifyContent='space-between'>
                             <Typography 

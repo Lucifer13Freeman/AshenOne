@@ -132,7 +132,7 @@ const ChatPage: React.FC = () =>
 
     useEffect(() => 
     {
-        console.log(message_data)
+        // console.log(message_data)
         if (message_error) console.error(message_error);
         if (message_data) async_set_all_messages([...messages, message_data.new_message]); 
         // { 
@@ -234,7 +234,7 @@ const ChatPage: React.FC = () =>
         
         <MainLayout>
             <Grid container justifyContent='center'>
-                <Card style={{width: 900}}>
+                <Card style={{width: 900}} raised>
                     <Box p={2}>
                         <Grid container justifyContent='space-between'>
                             <Typography 

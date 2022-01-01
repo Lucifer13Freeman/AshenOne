@@ -74,37 +74,37 @@ interface ICreateChatErrorAction
     payload: string
 }
 
-interface IGetChatAction
+interface ISetChatAction
 {
     type: ChatActionTypes.SET_CHAT;
     payload: IChat
 }
 
-interface IAsyncGetChatAction
+interface IAsyncSetChatAction
 {
     type: ChatActionTypes.ASYNC_SET_CHAT;
     payload: IChat
 }
 
-interface IGetChatErrorAction
+interface ISetChatErrorAction
 {
     type: ChatActionTypes.SET_CHAT_ERROR;
     payload: string
 }
 
-interface IGetAllChatsAction
+interface ISetAllChatsAction
 {
     type: ChatActionTypes.SET_ALL_CHATS;
     payload: IChat[]
 }
 
-interface IAsyncGetAllChatsAction
+interface IAsyncSetAllChatsAction
 {
     type: ChatActionTypes.ASYNC_SET_ALL_CHATS;
     payload: IChat[];
 }
 
-interface IGetAllChatsErrorAction
+interface ISetAllChatsErrorAction
 {
     type: ChatActionTypes.SET_ALL_CHATS_ERROR;
     payload: string
@@ -204,12 +204,12 @@ interface ILeaveChatErrorAction
 export type ChatAction = ICreateChatAction 
                         | IAsyncCreateChatAction
                         | ICreateChatErrorAction
-                        | IGetChatAction 
-                        | IAsyncGetChatAction
-                        | IGetChatErrorAction 
-                        | IGetAllChatsAction
-                        | IAsyncGetAllChatsAction
-                        | IGetAllChatsErrorAction
+                        | ISetChatAction 
+                        | IAsyncSetChatAction
+                        | ISetChatErrorAction 
+                        | ISetAllChatsAction
+                        | IAsyncSetAllChatsAction
+                        | ISetAllChatsErrorAction
                         | ISearchChatsAction
                         | IAsyncSearchChatsAction
                         | ISearchChatsErrorAction

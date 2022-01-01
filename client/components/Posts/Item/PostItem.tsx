@@ -193,7 +193,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
 
 
     return (
-        <Card className={styles.card} sx={{ maxWidth: 345 }} style={{marginBottom: 10}}>
+        <Card className={styles.card} sx={{ maxWidth: 345 }} style={{marginBottom: 10}} raised>
             <CardHeader
                 avatar={
                     <IconButton onClick={() => router.push(ROUTES.PEOPLE + (is_for_group 

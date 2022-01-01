@@ -49,40 +49,40 @@ const InviteUsers: React.FC<InviteUsersProps> = ({ chat_id, group_id}) =>
         }
     }
 
-    const [query, set_query] = useState<string>('');
-    const [timer, set_timer]: any = useState(null);
+    // const [query, set_query] = useState<string>('');
+    // const [timer, set_timer]: any = useState(null);
 
-    const search = async (e: React.ChangeEvent<HTMLInputElement>) =>
-    {
-        set_query(e.target.value);
+    // const search = async (e: React.ChangeEvent<HTMLInputElement>) =>
+    // {
+    //     set_query(e.target.value);
 
-        if (timer) clearTimeout(timer);
+    //     if (timer) clearTimeout(timer);
 
-        set_timer(
-            setTimeout(
-                async () => 
-                {
-                    await search_users({ variables: { input: { username: e.target.value }}});
-                }, 500)
-        );
-    }
+    //     set_timer(
+    //         setTimeout(
+    //             async () => 
+    //             {
+    //                 await search_users({ variables: { input: { username: e.target.value }}});
+    //             }, 500)
+    //     );
+    // }
 
-    const [search_users, { loading: search_user_loading, data: search_user_data }] = useLazyQuery(SEARCH_USERS,
-    {
-        onCompleted: data => async_set_all_users(data.search_users),
-        onError: err => 
-        {
-            console.log(err);
+    // const [search_users, { loading: search_user_loading, data: search_user_data }] = useLazyQuery(SEARCH_USERS,
+    // {
+    //     onCompleted: data => async_set_all_users(data.search_users),
+    //     onError: err => 
+    //     {
+    //         console.log(err);
             
-            if (err.message === TOKEN.ERROR_MESSAGE) 
-            {
-                router.push(ROUTES.LOGIN);
-                async_set_all_users([]);
-                async_logout();
-            }
-        },
-        nextFetchPolicy: "cache-first"
-    });
+    //         if (err.message === TOKEN.ERROR_MESSAGE) 
+    //         {
+    //             router.push(ROUTES.LOGIN);
+    //             async_set_all_users([]);
+    //             async_logout();
+    //         }
+    //     },
+    //     nextFetchPolicy: "cache-first"
+    // });
 
 
     // const { loading: invites_loading, data: invites_data } = useQuery(GET_ALL_SENT_INVITES,   

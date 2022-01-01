@@ -151,7 +151,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
         <div>
         { user ? 
             <>
-            <Card className={styles.card} sx={{ maxWidth: 345 }}>
+            <Card className={styles.card} sx={{ maxWidth: 345 }} raised>
                 <Grid 
                     container 
                     //direction="column" 
