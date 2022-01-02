@@ -65,7 +65,7 @@ const Invites: React.FC = () =>
     useEffect(() => 
     {
         if (invite_error) console.error(invite_error);
-        if (invite_data && invite_data.new_invite.user.id === auth.user.id) async_set_all_invites([...invites, invite_data.new_invite]);
+        if (invite_data && invite_data?.new_invite?.user?.id === auth?.user?.id) async_set_all_invites([...invites, invite_data.new_invite]);
     }, [invite_data, invite_error]);
     
 
