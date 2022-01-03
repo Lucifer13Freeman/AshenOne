@@ -26,6 +26,8 @@ import { EVENTS, PROVIDERS } from 'src/config/configs/consts.config';
 import { MessageType } from './dto/message.dto';
 import { ReactionType } from './dto/reaction.dto';
 import { ChatType } from './dto/chat.dto';
+import { GqlHttpAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 
 //const NEW_MESSAGE_EVENT = 'NEW_MESSAGE';
@@ -47,7 +49,7 @@ export class MessageResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => MessageType, { nullable: true })
     async get_message(@Args('input') input: GetMessageInput) 
     {
@@ -63,9 +65,9 @@ export class MessageResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [MessageType], { nullable: true })
-    async get_all_messages(@GqlCurrentUser() user: GetUserInput,
+    async get_all_messages(@CurrentUser() user: GetUserInput,
                             @Args('input') input: GetAllMessagesInput) 
     {
         try
@@ -81,9 +83,9 @@ export class MessageResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [MessageType], { nullable: true })
-    async search_messages(@GqlCurrentUser() user: GetUserInput,
+    async search_messages(@CurrentUser() user: GetUserInput,
                         @Args('input') input: SearchMessageInput) 
     {
         try
@@ -99,9 +101,9 @@ export class MessageResolver
     }
     
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => MessageType)
-    async create_message(@GqlCurrentUser() user: GetUserInput,
+    async create_message(@CurrentUser() user: GetUserInput,
                         @Args('input') input: CreateMessageInput) 
     {
         try
@@ -125,9 +127,9 @@ export class MessageResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => MessageType)
-    async update_message(@GqlCurrentUser() user: GetUserInput,
+    async update_message(@CurrentUser() user: GetUserInput,
                         @Args('input') input: UpdateMessageInput) 
     {
         try
@@ -144,9 +146,9 @@ export class MessageResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => ReactionType)
-    async create_reaction(@GqlCurrentUser() user: GetUserInput,
+    async create_reaction(@CurrentUser() user: GetUserInput,
                         @Args('input') input: CreateReactionInput)
     {
         try
@@ -166,9 +168,9 @@ export class MessageResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => ReactionType)
-    async delete_reaction(@GqlCurrentUser() user: GetUserInput,
+    async delete_reaction(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetReactionInput)
     {
         try
@@ -184,9 +186,9 @@ export class MessageResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => String)
-    async delete_message(@GqlCurrentUser() user: GetUserInput,
+    async delete_message(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetMessageInput) 
     {
         try 
@@ -251,11 +253,13 @@ export class MessageResolver
         return this.pubsub.asyncIterator(EVENTS.NEW_MESSAGE_EVENT);
     }
 
+
     @Subscription(() => MessageType)
     async updated_message(/*@CurrentUser() user: GetUserInput*/) 
     {
         return this.pubsub.asyncIterator(EVENTS.UPDATE_MESSAGE_EVENT);
     }
+
 
     @Subscription(() => String)
     async deleted_message(/*@CurrentUser() user: GetUserInput*/) 
@@ -263,6 +267,7 @@ export class MessageResolver
         return this.pubsub.asyncIterator(EVENTS.DELETE_MESSAGE_EVENT);
     }
 
+    
     @Subscription(() => ReactionType)
     async new_reaction(/*@CurrentUser() user: GetUserInput*/) 
     {

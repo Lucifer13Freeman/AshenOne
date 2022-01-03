@@ -12,8 +12,6 @@ export class FileService
     {
         try 
         {
-            console.log(__dirname)
-
             const extension = file.originalname.split('.').pop();
             const filename = uuid.v4() + '.' + extension;
             const filepath = path.resolve(__dirname, '..', '..', 'static', type);

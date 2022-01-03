@@ -73,7 +73,10 @@ const ListDialog: React.FC<ListDialogProps> = ({ children, button_title, button_
         { button_type === BUTTON_TYPE.INVITE ? 
         <ListItem button onClick={handle_click_open}>
             <ListItemIcon>
-              <Badge color="primary" badgeContent={invites?.filter((inv: IInvite) => (inv.user.id === auth.user.id)).length}>
+              <Badge 
+                color="primary" 
+                max={99}
+                badgeContent={invites?.filter((inv: IInvite) => (inv.user.id === auth.user.id)).length}>
                 <NotificationsRoundedIcon/>
               </Badge>
             </ListItemIcon>

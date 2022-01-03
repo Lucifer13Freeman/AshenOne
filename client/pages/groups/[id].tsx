@@ -113,7 +113,7 @@ const Group: React.FC = () =>
     
     return (
         <MainLayout>  
-            <Grid container justifyContent='center'>
+            <Grid container justifyContent='center' style={{maxWidth: 900}} /*direction='column' flexWrap='nowrap'*/>
                 <GroupProfile group={group} />
                 {!group?.is_private || check_member() ? 
                 <Card className={app_styles.card} style={{width: 400}} raised>

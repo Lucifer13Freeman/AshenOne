@@ -11,9 +11,11 @@ import { GetSubscriptionInput } from './inputs/get-subscription.input';
 import { CreateSubscriptionInput } from './inputs/create-subscription.input';
 import { GetAllChatsInput } from 'src/chat/inputs/chat/get-all-chats.input';
 import { GetAllSubscriptionsInput } from './inputs/get-all-subscriptions.input';
+import { GqlHttpAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 
-@UseGuards(GqlAuthGuard)
+@UseGuards(GqlHttpAuthGuard)
 @Resolver()
 export class SubscriptionResolver 
 {
@@ -21,8 +23,8 @@ export class SubscriptionResolver
 
 
     @Query(() => SubscriptionType, { nullable: true })
-    async get_subscription(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: GetSubscriptionInput) 
+    async get_subscription(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: GetSubscriptionInput) 
     {
         try
         {
@@ -37,8 +39,8 @@ export class SubscriptionResolver
 
 
     @Query(() => [SubscriptionType], { nullable: true })
-    async get_all_subscriptions(@GqlCurrentUser() user: GetUserInput,
-                            @Args('input') input: GetAllSubscriptionsInput) 
+    async get_all_subscriptions(@CurrentUser() user: GetUserInput,
+                                @Args('input') input: GetAllSubscriptionsInput) 
     {
         try
         {
@@ -53,8 +55,8 @@ export class SubscriptionResolver
 
 
     @Query(() => Boolean, { nullable: true })
-    async check_subscription(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: GetSubscriptionInput) 
+    async check_subscription(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: GetSubscriptionInput) 
     {
         try
         {
@@ -69,8 +71,8 @@ export class SubscriptionResolver
 
 
     @Mutation(() => SubscriptionType)
-    async create_subscription(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: CreateSubscriptionInput) 
+    async create_subscription(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: CreateSubscriptionInput) 
     {
         try
         {
@@ -86,8 +88,8 @@ export class SubscriptionResolver
 
 
     @Mutation(() => String)
-    async delete_subscription(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: GetSubscriptionInput) 
+    async delete_subscription(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: GetSubscriptionInput) 
     {
         try 
         {

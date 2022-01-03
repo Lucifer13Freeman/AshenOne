@@ -4,12 +4,17 @@
 .main 
 {
     //background-color: $background_color;
-    //width: 100vw;
+    // width: 100vw;
     min-height: 100vh;
     align-items: center;
     display: flex;
     flex-direction: column;
     padding: 90px 0 60px 0;
+    // flex-wrap: nowrap;
+    // align-content: center;
+    // align-self: center;
+    // justify-content: center;
+    // justify-self: center;
     
 
     @media screen and (min-width: $md)  

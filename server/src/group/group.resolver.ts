@@ -13,16 +13,18 @@ import { SearchGroupInput } from './inputs/search-group.input';
 import { GetGroupMemberInput } from './inputs/get-member.input';
 import { GetAllGroupsInput } from './inputs/get-all-groups.input';
 import { UpdateGroupInput } from './inputs/update-group.input';
+import { GqlHttpAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 
-@UseGuards(GqlAuthGuard)
+@UseGuards(GqlHttpAuthGuard)
 @Resolver()
 export class GroupResolver 
 {
     constructor(private readonly group_service: GroupService) {}
 
     @Query(() => GroupType, { nullable: true })
-    async get_group(@GqlCurrentUser() user: GetUserInput,
+    async get_group(@CurrentUser() user: GetUserInput,
                     @Args('input') input: GetGroupInput) 
     {
         try
@@ -39,7 +41,7 @@ export class GroupResolver
 
 
     @Query(() => [GroupType], { nullable: true })
-    async get_all_groups(@GqlCurrentUser() user: GetUserInput,
+    async get_all_groups(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetAllGroupsInput) 
     {
         try
@@ -55,7 +57,7 @@ export class GroupResolver
 
 
     @Query(() => [GroupType], { nullable: true })
-    async search_groups(@GqlCurrentUser() user: GetUserInput,
+    async search_groups(@CurrentUser() user: GetUserInput,
                         @Args('input') input: SearchGroupInput) 
     {
         try
@@ -72,7 +74,7 @@ export class GroupResolver
     
 
     @Mutation(() => GroupType)
-    async create_group(@GqlCurrentUser() user: GetUserInput,
+    async create_group(@CurrentUser() user: GetUserInput,
                         @Args('input') input: CreateGroupInput) 
     {
         try
@@ -90,7 +92,7 @@ export class GroupResolver
 
     @UseGuards(GqlAuthGuard)
     @Mutation(() => GroupType)
-    async update_group(@GqlCurrentUser() user: GetUserInput,
+    async update_group(@CurrentUser() user: GetUserInput,
                         @Args('input') input: UpdateGroupInput) 
     {
         try
@@ -107,7 +109,7 @@ export class GroupResolver
 
 
     @Mutation(() => String)
-    async delete_group(@GqlCurrentUser() user: GetUserInput,
+    async delete_group(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetGroupInput) 
     {
         try 
@@ -124,8 +126,8 @@ export class GroupResolver
 
 
     @Mutation(() => GroupType)
-    async add_group_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetGroupMemberInput) 
+    async add_group_member(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: GetGroupMemberInput) 
     {
         try
         {
@@ -141,8 +143,8 @@ export class GroupResolver
 
 
     @Mutation(() => GroupType)
-    async add_group_invited_member(@GqlCurrentUser() user: GetUserInput,
-                                @Args('input') input: GetGroupMemberInput) 
+    async add_group_invited_member(@CurrentUser() user: GetUserInput,
+                                    @Args('input') input: GetGroupMemberInput) 
     {
         try
         {
@@ -158,8 +160,8 @@ export class GroupResolver
 
 
     @Mutation(() => GroupType)
-    async remove_group_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetGroupMemberInput) 
+    async remove_group_member(@CurrentUser() user: GetUserInput,
+                                @Args('input') input: GetGroupMemberInput) 
     {
         try
         {

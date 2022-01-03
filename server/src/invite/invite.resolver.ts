@@ -15,9 +15,11 @@ import { EVENTS, PROVIDERS } from 'src/config/configs/consts.config';
 import { PubSub } from 'graphql-subscriptions';
 import { GetGroupMemberInput } from 'src/group/inputs/get-member.input';
 import { GetChatMemberInput } from 'src/chat/inputs/chat/get-member.input';
+import { GqlHttpAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 
-@UseGuards(GqlAuthGuard)
+// @UseGuards(GqlAuthGuard)
 @Resolver()
 export class InviteResolver 
 {
@@ -26,7 +28,7 @@ export class InviteResolver
                 private readonly invite_service: InviteService) {}
 
     @Query(() => InviteType, { nullable: true })
-    async get_invite(@GqlCurrentUser() user: GetUserInput,
+    async get_invite(@CurrentUser() user: GetUserInput,
                     @Args('input') input: GetInviteInput) 
     {
         try
@@ -42,9 +44,10 @@ export class InviteResolver
     }
 
 
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [InviteType], { nullable: true })
-    async get_all_invites(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: GetAllInvitesInput) 
+    async get_all_invites(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: GetAllInvitesInput) 
     {
         try
         {
@@ -59,8 +62,9 @@ export class InviteResolver
     }
 
 
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [InviteType], { nullable: true })
-    async get_received_invites(@GqlCurrentUser() user: GetUserInput,
+    async get_received_invites(@CurrentUser() user: GetUserInput,
                                 @Args('input') input: GetAllInvitesInput) 
     {
         try
@@ -76,9 +80,10 @@ export class InviteResolver
     }
 
 
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [InviteType], { nullable: true })
-    async get_sent_invites(@GqlCurrentUser() user: GetUserInput,
-                                @Args('input') input: GetAllInvitesInput) 
+    async get_sent_invites(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: GetAllInvitesInput) 
     {
         try
         {
@@ -93,8 +98,9 @@ export class InviteResolver
     }
     
 
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => InviteType)
-    async create_invite(@GqlCurrentUser() user: GetUserInput,
+    async create_invite(@CurrentUser() user: GetUserInput,
                         @Args('input') input: CreateInviteInput) 
     {
         try
@@ -111,9 +117,9 @@ export class InviteResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => InviteType)
-    async update_invite(@GqlCurrentUser() user: GetUserInput,
+    async update_invite(@CurrentUser() user: GetUserInput,
                         @Args('input') input: UpdateInviteInput) 
     {
         try
@@ -131,8 +137,8 @@ export class InviteResolver
 
     @UseGuards(GqlAuthGuard)
     @Mutation(() => InviteType)
-    async update_and_delete_invite(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: UpdateInviteInput) 
+    async update_and_delete_invite(@CurrentUser() user: GetUserInput,
+                                    @Args('input') input: UpdateInviteInput) 
     {
         try
         {
@@ -147,9 +153,9 @@ export class InviteResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => String)
-    async delete_invite(@GqlCurrentUser() user: GetUserInput,
+    async delete_invite(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetInviteInput) 
     {
         try 

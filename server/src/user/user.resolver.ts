@@ -11,9 +11,11 @@ import { GqlCurrentUser } from 'src/decorators/gql-current-user.decorator';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { createReadStream, createWriteStream } from 'fs';
 import { GraphQLUpload, FileUpload } from "graphql-upload";
+import { GqlHttpAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 
-@UseGuards(GqlAuthGuard)
+@UseGuards(GqlHttpAuthGuard)
 @Resolver()
 export class UserResolver 
 {
@@ -77,7 +79,7 @@ export class UserResolver
 
 
     @Mutation(() => UserType)
-    async update_user(@GqlCurrentUser() user: GetUserInput, 
+    async update_user(@CurrentUser() user: GetUserInput, 
                         @Args('input') input: UpdateUserInput)
                         //@Args({ name: 'file', type: () => GraphQLUpload }) file: Promise<FileUpload>)
     {
@@ -150,7 +152,7 @@ export class UserResolver
     //@UseGuards(GqlAuthGuard)
     //@CurrentUser(GqlAuthGuard)
     @Mutation(() => String)
-    async delete_user(@GqlCurrentUser() user: GetUserInput, 
+    async delete_user(@CurrentUser() user: GetUserInput, 
                         @Args('input') input: GetUserInput) 
     {
         try 
@@ -168,7 +170,7 @@ export class UserResolver
 
     //@UseGuards(GqlAuthGuard)
     @Query(() => UserType)
-    async get_current_user(@GqlCurrentUser() input: GetUserInput /*user: UserType*/ ) 
+    async get_current_user(@CurrentUser() input: GetUserInput /*user: UserType*/ ) 
     {
         try 
         {

@@ -1,8 +1,10 @@
 import { Inject, UseGuards } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver, Subscription } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
+import { GqlHttpAuthGuard } from "src/auth/auth.guard";
 import { GqlAuthGuard } from "src/auth/gql-auth.guard";
 import { EVENTS, PROVIDERS } from "src/config/configs/consts.config";
+import { CurrentUser } from "src/decorators/current-user.decorator";
 import { GqlCurrentUser } from "src/decorators/gql-current-user.decorator";
 import { GetUserInput } from "src/user/inputs/get-user.input";
 import { CommentService } from "./comment.service";
@@ -27,7 +29,7 @@ export class CommentResolver
                 private readonly post_service: PostService) {}
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => CommentType, { nullable: true })
     async get_comment(@Args('input') input: GetCommentInput) 
     {
@@ -43,9 +45,9 @@ export class CommentResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [CommentType], { nullable: true })
-    async get_all_comments(@GqlCurrentUser() user: GetUserInput,
+    async get_all_comments(@CurrentUser() user: GetUserInput,
                             @Args('input') input: GetAllCommentsInput) 
     {
         try
@@ -61,9 +63,9 @@ export class CommentResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [CommentType], { nullable: true })
-    async search_comments(@GqlCurrentUser() user: GetUserInput,
+    async search_comments(@CurrentUser() user: GetUserInput,
                         @Args('input') input: SearchCommentInput) 
     {
         try
@@ -79,9 +81,9 @@ export class CommentResolver
     }
     
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => CommentType)
-    async create_comment(@GqlCurrentUser() user: GetUserInput,
+    async create_comment(@CurrentUser() user: GetUserInput,
                         @Args('input') input: CreateCommentInput) 
     {
         try
@@ -99,9 +101,9 @@ export class CommentResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => CommentType)
-    async update_comment(@GqlCurrentUser() user: GetUserInput,
+    async update_comment(@CurrentUser() user: GetUserInput,
                         @Args('input') input: UpdateCommentInput) 
     {
         try
@@ -116,10 +118,10 @@ export class CommentResolver
         }
     }
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => LikeType)
-    async like_comment(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: LikeInput) 
+    async like_comment(@CurrentUser() user: GetUserInput,
+                        @Args('input') input: LikeInput) 
     {
         try
         {
@@ -138,9 +140,9 @@ export class CommentResolver
     }
 
     
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => String)
-    async delete_comment(@GqlCurrentUser() user: GetUserInput,
+    async delete_comment(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetCommentInput) 
     {
         try 
@@ -162,6 +164,7 @@ export class CommentResolver
         return this.pubsub.asyncIterator(EVENTS.NEW_COMMENT_EVENT);
     }
 
+    
     @Subscription(() => LikeType)
     async new_like_comment(/*@CurrentUser() user: GetUserInput*/) 
     {

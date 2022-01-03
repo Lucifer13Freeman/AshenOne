@@ -13,16 +13,18 @@ import { GetAllChatsInput } from './inputs/chat/get-all-chats.input';
 import { SearchChatInput } from './inputs/chat/search-chat.input';
 import { GetChatMemberInput } from './inputs/chat/get-member.input';
 import { ChatType } from './dto/chat.dto';
+import { GqlHttpAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 
-@UseGuards(GqlAuthGuard)
+@UseGuards(GqlHttpAuthGuard)
 @Resolver()
 export class ChatResolver 
 {
     constructor(private readonly chat_service: ChatService) {}
 
     @Query(() => ChatType, { nullable: true })
-    async get_chat(@GqlCurrentUser() user: GetUserInput,
+    async get_chat(@CurrentUser() user: GetUserInput,
                     @Args('input') input: GetChatInput) 
     {
         try
@@ -39,7 +41,7 @@ export class ChatResolver
 
 
     @Query(() => [ChatType], { nullable: true })
-    async get_all_chats(@GqlCurrentUser() user: GetUserInput,
+    async get_all_chats(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetAllChatsInput) 
     {
         try
@@ -56,7 +58,7 @@ export class ChatResolver
 
 
     @Query(() => [ChatType], { nullable: true })
-    async search_chats(@GqlCurrentUser() user: GetUserInput,
+    async search_chats(@CurrentUser() user: GetUserInput,
                         @Args('input') input: SearchChatInput) 
     {
         try
@@ -73,7 +75,7 @@ export class ChatResolver
     
 
     @Mutation(() => ChatType)
-    async create_chat(@GqlCurrentUser() user: GetUserInput,
+    async create_chat(@CurrentUser() user: GetUserInput,
                         @Args('input') input: CreateChatInput) 
     {
         try
@@ -90,7 +92,7 @@ export class ChatResolver
 
 
     @Mutation(() => String)
-    async delete_chat(@GqlCurrentUser() user: GetUserInput,
+    async delete_chat(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetChatInput) 
     {
         try 
@@ -106,10 +108,9 @@ export class ChatResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
     @Mutation(() => ChatType)
-    async delete_all_messages_in_chat(@GqlCurrentUser() user: GetUserInput,
-                                    @Args('input') input: GetChatInput) 
+    async delete_all_messages_in_chat(@CurrentUser() user: GetUserInput,
+                                        @Args('input') input: GetChatInput) 
     {
         try 
         {
@@ -125,8 +126,8 @@ export class ChatResolver
 
 
     @Mutation(() => ChatType)
-    async add_chat_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetChatMemberInput) 
+    async add_chat_member(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: GetChatMemberInput) 
     {
         try
         {
@@ -142,8 +143,8 @@ export class ChatResolver
 
 
     @Mutation(() => ChatType)
-    async add_chat_invited_member(@GqlCurrentUser() user: GetUserInput,
-                                @Args('input') input: GetChatMemberInput) 
+    async add_chat_invited_member(@CurrentUser() user: GetUserInput,
+                                    @Args('input') input: GetChatMemberInput) 
     {
         try
         {
@@ -159,8 +160,8 @@ export class ChatResolver
 
 
     @Mutation(() => ChatType)
-    async remove_chat_member(@GqlCurrentUser() user: GetUserInput,
-                    @Args('input') input: GetChatMemberInput) 
+    async remove_chat_member(@CurrentUser() user: GetUserInput,
+                                @Args('input') input: GetChatMemberInput) 
     {
         try
         {

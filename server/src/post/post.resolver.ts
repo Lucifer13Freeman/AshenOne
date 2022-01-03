@@ -20,13 +20,15 @@ import { LikeInput } from './inputs/like/like.input';
 // import { LikeSchema } from './schemas/like.schema';
 import { EVENTS, PROVIDERS } from 'src/config/configs/consts.config';
 import { LikeType } from './dto/like.dto';
+import { GqlHttpAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 
 //const NEW_POST_EVENT = 'NEW_POST';
 //const NEW_LIKE_POST_EVENT = 'NEW_LIKE_POST';
 //const pubsub = new PubSub();
 
-//@UseGuards(GqlAuthGuard)
+// @UseGuards(GqlHttpAuthGuard)
 @Resolver()
 export class PostResolver 
 {
@@ -41,7 +43,7 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => PostType, { nullable: true })
     async get_post(@Args('input') input: GetPostInput) 
     {
@@ -57,10 +59,10 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [PostType], { nullable: true })
-    async get_all_posts(@GqlCurrentUser() user: GetUserInput,
-                            @Args('input') input: GetAllPostsInput) 
+    async get_all_posts(@CurrentUser() user: GetUserInput,
+                        @Args('input') input: GetAllPostsInput) 
     {
         try
         {
@@ -75,10 +77,10 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [PostType], { nullable: true })
-    async get_user_posts(@GqlCurrentUser() user: GetUserInput,
-                            @Args('input') input: GetAllPostsInput) 
+    async get_user_posts(@CurrentUser() user: GetUserInput,
+                        @Args('input') input: GetAllPostsInput) 
     {
         try
         {
@@ -93,9 +95,9 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [PostType], { nullable: true })
-    async get_group_posts(@GqlCurrentUser() user: GetUserInput,
+    async get_group_posts(@CurrentUser() user: GetUserInput,
                             @Args('input') input: GetAllPostsInput) 
     {
         try
@@ -111,9 +113,9 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [PostType], { nullable: true })
-    async search_posts(@GqlCurrentUser() user: GetUserInput,
+    async search_posts(@CurrentUser() user: GetUserInput,
                         @Args('input') input: SearchPostInput) 
     {
         try
@@ -129,10 +131,10 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [PostType], { nullable: true })
-    async search_user_posts(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: SearchPostInput) 
+    async search_user_posts(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: SearchPostInput) 
     {
         try
         {
@@ -147,10 +149,10 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Query(() => [PostType], { nullable: true })
-    async search_group_posts(@GqlCurrentUser() user: GetUserInput,
-                        @Args('input') input: SearchPostInput) 
+    async search_group_posts(@CurrentUser() user: GetUserInput,
+                            @Args('input') input: SearchPostInput) 
     {
         try
         {
@@ -165,9 +167,9 @@ export class PostResolver
     }
     
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => PostType)
-    async create_post(@GqlCurrentUser() user: GetUserInput,
+    async create_post(@CurrentUser() user: GetUserInput,
                         @Args('input') input: CreatePostInput) 
     {
         try
@@ -187,9 +189,9 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => PostType)
-    async update_post(@GqlCurrentUser() user: GetUserInput,
+    async update_post(@CurrentUser() user: GetUserInput,
                         @Args('input') input: UpdatePostInput) 
     {
         try
@@ -205,9 +207,9 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => LikeType)
-    async like_post(@GqlCurrentUser() user: GetUserInput,
+    async like_post(@CurrentUser() user: GetUserInput,
                     @Args('input') input: LikeInput) 
     {
         try
@@ -268,9 +270,9 @@ export class PostResolver
     // }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => String)
-    async delete_post(@GqlCurrentUser() user: GetUserInput,
+    async delete_post(@CurrentUser() user: GetUserInput,
                         @Args('input') input: GetPostInput) 
     {
         try 
@@ -286,10 +288,10 @@ export class PostResolver
     }
 
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlHttpAuthGuard)
     @Mutation(() => PostType)
-    async delete_all_comments_in_post(@GqlCurrentUser() user: GetUserInput,
-                                    @Args('input') input: GetPostInput) 
+    async delete_all_comments_in_post(@CurrentUser() user: GetUserInput,
+                                        @Args('input') input: GetPostInput) 
     {
         try 
         {
