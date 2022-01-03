@@ -62,21 +62,25 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
         update_group({ variables: { input: { id: group?.id, is_private }}});
     }
 
-    const check_auth = auth.is_auth && auth.user;
-    const check_admin = check_auth && auth.user?.role === ROLES.ADMIN;
-    const check_group_admin = check_auth && group?.admin_id === auth.user?.id;
-    const check_group_moderator = check_auth 
+    const is_auth = auth.is_auth && auth.user;
+    const is_admin = is_auth && auth.user?.role === ROLES.ADMIN;
+    const is_group_admin = is_auth && group?.admin_id === auth.user?.id;
+    const is_group_moderator = is_auth 
         && group?.moderator_ids.find((id: string) => id === auth.user?.id) !== undefined;
-    const check_member = () => group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+    
+    let is_member;
 
-    const is_available = check_group_admin || check_group_moderator;
+    const is_available = is_group_admin || is_group_moderator;
 
-    useEffect(() => {
-        if (group)
-        group.is_private 
-            ? set_access(ACCESS.PRIVATE) 
-            : set_access(ACCESS.PUBLIC);
-        set_is_followed(check_member());
+    useEffect(() => 
+    {
+        is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+
+        if (group) group.is_private 
+                    ? set_access(ACCESS.PRIVATE) 
+                    : set_access(ACCESS.PUBLIC);
+
+        set_is_followed(is_member);
         if (group?.members?.length) set_followers_count(group.members.length);
     }, [group]);
 
@@ -169,7 +173,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                             style={{ height: 150, width: 150 }}
                         /> }
                         <Grid container direction="row">
-                        { check_group_admin &&
+                        { is_group_admin &&
                             <Grid>
                                 <form style={{paddingTop: 8}} 
                                     onSubmit={update_group_name}>
@@ -196,7 +200,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                                 <Grid style={{margin: '0 10px'}}>
                                     <InviteUsers group_id={group.id}/>
                                 </Grid> }
-                            { check_group_admin &&
+                            { is_group_admin &&
                                 <Grid>
                                     <ItemsSelect title='Access' icon='private'>
                                         <RadioGroup
@@ -239,7 +243,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                         >
                             Registered at: { date_format(group.created_at) }
                         </div>
-                        { !group.is_private || check_member() ?
+                        { !group.is_private || is_member ?
                             <Button
                                 onClick={() => follow()}
                                 style={{marginTop: 40}}

@@ -369,13 +369,21 @@ export class GroupService
 
             if (is_member === undefined)
             {
-                const invite = await this.invite_service.get({ user_id: user.id, group_id });
-                if (invite) await this.invite_service.delete({ id: invite.id, current_user_id });
+                // const invite = await this.invite_service.get({ user_id: user.id, group_id });
+                // if (invite) await this.invite_service.delete({ id: invite.id, current_user_id });
                 
                 group.member_ids.push(user.id);
                 
                 group = await this.prisma.$transaction(async (prisma) => 
                 {
+                    const invite = await prisma.invite.findFirst(
+                    {
+                        where: { group_id, user_id: user.id },
+                        select: { id: true }
+                    });
+
+                    if (invite) await prisma.invite.delete({ where: { id: invite.id }});
+
                     const update_group = await prisma.group.update(
                     {
                         where: { id: group_id },
