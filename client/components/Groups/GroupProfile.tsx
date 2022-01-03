@@ -78,7 +78,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
             : set_access(ACCESS.PUBLIC);
         set_is_followed(check_member());
         if (group?.members?.length) set_followers_count(group.members.length);
-    }, []);
+    }, [group]);
 
     const [become_member, 
         { loading: become_member_loading }] = useMutation(ADD_GROUP_MEMBER, 
