@@ -19,10 +19,13 @@ export class UpdateUserInput
     readonly email?: string;
 
     @Field({ nullable: true })
-    readonly password?: string;
+    readonly old_password?: string;
 
     @Field({ nullable: true })
-    readonly confirm_password?: string;
+    readonly new_password?: string;
+
+    @Field({ nullable: true })
+    readonly confirm_new_password?: string;
 
     @Field(() => GraphQLUpload, { nullable: true })
     readonly avatar?: FileUpload;

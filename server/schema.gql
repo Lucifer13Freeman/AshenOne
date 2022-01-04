@@ -410,8 +410,9 @@ input UpdateUserInput {
   current_user_id: ID
   username: String
   email: String
-  password: String
-  confirm_password: String
+  old_password: String
+  new_password: String
+  confirm_new_password: String
   avatar: Upload
 }
 
