@@ -16,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 enum BUTTON_TYPE
 {
-  SETTINGS = "setting",
+  SETTINGS = "settings",
   EDIT = "edit",
   DEFAULT = "default"
 }
@@ -41,7 +41,7 @@ interface FormDialogProps
   dialog_description?: string;
   // dialog_form?: Function;
   form_content: IFormContent;
-  button_type?: "setting" | "edit" | "default" | undefined;
+  button_type?: "settings" | "edit" | "default" | undefined;
   is_default_input?: boolean;
 }
 

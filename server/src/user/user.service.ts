@@ -429,6 +429,9 @@ export class UserService
                 const email_regexp: RegExp = new RegExp(REGEXP.EMAIL);
                 const is_valid_email = email_regexp.test(email);
                 if (!is_valid_email) errors.email = 'Invalid email!';
+
+                const is_email_exists = await this.get({ email: email, is_for_regist: true });
+                if (is_email_exists) errors.email = 'User with this email is already exists!';
             }
 
             if (new_password.trim() !== '')

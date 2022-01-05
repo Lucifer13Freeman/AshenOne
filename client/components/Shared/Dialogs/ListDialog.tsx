@@ -24,7 +24,7 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 enum BUTTON_TYPE
 {
-  SETTINGS = "setting",
+  SETTINGS = "settings",
   EDIT = "edit",
   INVITE = "invite",
   INVITE_USER = "invite_user",
@@ -50,7 +50,7 @@ interface ListDialogProps
   dialog_description?: string;
   // dialog_form?: Function;
   list_content?: IListContent;
-  button_type?: "invite" | "invite_user" | "setting" | "edit" | "default" | undefined;
+  button_type?: "invite" | "invite_user" | "settings" | "edit" | "default" | undefined;
   is_default_input?: boolean;
   transition?: "up" | "right";
 }

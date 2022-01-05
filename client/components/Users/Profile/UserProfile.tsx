@@ -18,8 +18,9 @@ import Followers from '../../Subscriptions/Followers';
 import { Print } from "@mui/icons-material";
 import PrinterForm from "../../Printer/PrinterForm";
 import Printer from "../../Printer/Printer";
-import {  Card, Grid, IconButton, Avatar, Typography, Button  } from "@mui/material";
+import {  Card, Grid, IconButton, Avatar, Typography, Button, FormGroup  } from "@mui/material";
 import ImageDialog from "../../Shared/Dialogs/ImageDialog";
+import FormDialog from "../../Shared/Dialogs/FormDialog";
 
 
 interface UserProfileProps 
@@ -188,9 +189,34 @@ const UserProfile: React.FC<UserProfileProps> = ({ user /*user_id*/ }) =>
                         //direction="column" 
                         style={{ margin: '0 20px' }}
                     >
+                        <Grid container direction='row'>
                         <Typography variant="h4">
                             {user.username}
                         </Typography>
+                        {/* { auth.user?.id === user?.id &&
+                        <Grid style={{ marginLeft: 'auto' }}>
+                            <form
+                                onSubmit={update_group_name}>
+                                <FormGroup>
+                                    <FormDialog 
+                                        button_title='Edit' 
+                                        dialog_title='Edit username'
+                                        button_variant='text'
+                                        button_type='settings'
+                                        form_content={{
+                                            // text: group_name,
+                                            // set_text: set_group_name,
+                                            // is_loading: update_group_loading,
+                                            is_with_button: false,
+                                            placeholder: 'Edit username...'
+                                        }}
+                                    >
+                                        <Button onClick={update_group_name}>Save changes</Button>
+                                    </FormDialog>
+                                </FormGroup>
+                            </form> 
+                        </Grid> } */}
+                        </Grid>
                         <div style={{
                             fontSize: 12, 
                             color: 'gray'}}

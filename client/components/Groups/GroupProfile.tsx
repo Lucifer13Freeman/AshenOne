@@ -62,19 +62,31 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
         update_group({ variables: { input: { id: group?.id, is_private }}});
     }
 
+    // let is_auth;
+    // let is_admin;
+    let is_member;
+    // let is_group_admin;
+    // let is_group_moderator;
+    // let is_available;
+
     const is_auth = auth.is_auth && auth.user;
     const is_admin = is_auth && auth.user?.role === ROLES.ADMIN;
     const is_group_admin = is_auth && group?.admin_id === auth.user?.id;
     const is_group_moderator = is_auth 
         && group?.moderator_ids.find((id: string) => id === auth.user?.id) !== undefined;
-    
-    let is_member;
 
     const is_available = is_group_admin || is_group_moderator;
 
     useEffect(() => 
     {
+        // is_auth = auth.is_auth && auth.user;
+        // is_admin = is_auth && auth.user?.role === ROLES.ADMIN;
+
         is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+        // is_group_admin = is_auth && group?.admin_id === auth.user?.id;
+        // is_group_moderator = is_auth && group?.moderator_ids.find((id: string) => id === auth.user?.id) !== undefined;
+        
+        // is_available = is_group_admin || is_group_moderator;
 
         if (group) group.is_private 
                     ? set_access(ACCESS.PRIVATE) 
