@@ -34,6 +34,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import Link from 'next/link';
 import ListDialog from '../../components/Shared/Dialogs/ListDialog';
 import Invites from '../../components/Invites/Invites';
+import UserSettings from '../../components/Users/Profile/UserSettings';
 
 
 /*const drawerWidth = 240;
@@ -72,7 +73,7 @@ const menu_items: Array<NavMenu> = [
 
   { text: NAV_MENU.HOME, href: ROUTES.HOME, icon: <HomeIcon/> },
   { text: NAV_MENU.FEED, href: ROUTES.FEED, icon: <FeedIcon/> },
-  { text: NAV_MENU.INVITES, href: ROUTES.INVITES, icon: <NotificationsRoundedIcon/> },
+  { text: NAV_MENU.INVITES, href: undefined/*ROUTES.INVITES*/, icon: undefined/*<NotificationsRoundedIcon/>*/ },
   { text: NAV_MENU.CHATS, href: ROUTES.CHATS, icon: <ChatBubbleIcon/> },
   { text: NAV_MENU.PEOPLE, href: ROUTES.PEOPLE, icon: <PeopleAltIcon/> },
   { text: NAV_MENU.GROUPS, href: ROUTES.GROUPS, icon: <GroupsIcon/> },
@@ -81,6 +82,7 @@ const menu_items: Array<NavMenu> = [
   // { text: 'Album list', href: '/albums', icon: <StarOutlineOutlinedIcon/> },
   { text: NAV_MENU.LOGIN, href: ROUTES.LOGIN, icon: <LoginRoundedIcon/> },
   { text: NAV_MENU.REGISTER, href: ROUTES.REGISTER, icon: <AccountBoxIcon/> },
+  { text: NAV_MENU.SETTINGS, href: undefined/*ROUTES.SETTINGS*/, icon: undefined/*<AccountBoxIcon/>*/ },
   { text: NAV_MENU.LOGOUT, href: ROUTES.LOGOUT, icon: <LogoutRoundedIcon/> }
 ];
 
@@ -121,11 +123,14 @@ const Navbar: React.FC = () =>
   if (check_auth) menu = menu_items.filter(
     (item: NavMenu) => item.text !== NAV_MENU.LOGIN && item.text !== NAV_MENU.REGISTER);
   else menu = menu_items.filter(
-    (item: NavMenu) => item.text !== NAV_MENU.LOGOUT);
+    (item: NavMenu) => item.text !== NAV_MENU.LOGOUT 
+                      && item.text !== NAV_MENU.CHATS 
+                      && item.text !== NAV_MENU.FEED 
+                      && item.text !== NAV_MENU.PEOPLE 
+                      && item.text !== NAV_MENU.GROUPS);
 
   if (!check_admin) menu = menu.filter((item: NavMenu) => item.text !== NAV_MENU.ADMIN);
-  
-  // const check_private_routes = (text: string) => text !== NAV_MENU.INVITES || text !== NAV_MENU.CHATS || text !== NAV_MENU.FEED
+
 
   const user_profile = (
     check_auth &&
@@ -176,25 +181,24 @@ const Navbar: React.FC = () =>
         <List style={{ paddingTop: 0 }}>
           { menu.map(({ text, href, icon }, index) => (
             <div key={index}>
-              { text !== NAV_MENU.INVITES ?
+              { text !== NAV_MENU.INVITES && text !== NAV_MENU.SETTINGS ?
               <ListItem button onClick={ () => 
                 {
                   if (text === NAV_MENU.LOGOUT && check_auth)
                   {
                     async_logout();
-                    window.location.href = href;
+                    if (href) window.location.href = href;
                   }
                       
-                  router.push(href);
+                  if (href) router.push(href);
                   set_open(false);
                 }}> 
                 <ListItemIcon>
                   {icon}
                 </ListItemIcon>
                 <ListItemText primary={text}/>
-              </ListItem> : 
+              </ListItem> : null
               // <Grid onClick={() => set_open(false)}>
-              check_auth && <Invites />
               // </Grid> 
               }
               {/* // <ListDialog 
@@ -232,8 +236,17 @@ const Navbar: React.FC = () =>
                 </ListItemIcon>
                 <ListItemText primary={text}/>
               </ListItem> } */}
-              {text === NAV_MENU.GROUPS && <Divider/>}
-              {text === NAV_MENU.ADMIN && <Divider/>}
+              {text === NAV_MENU.FEED && check_auth && <Invites />}
+              {text === NAV_MENU.GROUPS && 
+                <>
+                  <Divider/>
+                  { check_auth && !check_admin && <UserSettings button_type='nav_settings'/> }
+                </> }
+              {text === NAV_MENU.ADMIN && 
+                <>
+                  <Divider/>
+                  { check_auth && check_admin && <UserSettings button_type='nav_settings'/> }
+                </>}
             </div>
           )) }
         </List>

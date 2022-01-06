@@ -164,7 +164,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
         gql_delete_post({ variables: input });
     }
     
-    const [post_text, set_post_text] = useState(post.text);
+    const [post_text, set_post_text] = useState({ text: post.text });
     
     const [gql_update_post, { loading: update_post_loading }] = useMutation(UPDATE_POST, 
     {
@@ -186,7 +186,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
         e.preventDefault();
         const input = { input: { 
             post_id: post.id,
-            text: post_text
+            ...post_text
+            // text: post_text
         }}
         gql_update_post({ variables: input });
     }
@@ -220,8 +221,10 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
                                         button_variant='text'
                                         is_default_input={false}
                                         form_content={{
-                                            text: post_text,
-                                            set_text: set_post_text,
+                                            // text: post_text,
+                                            // set_text: set_post_text,
+                                            values: post_text,
+                                            set_values: set_post_text,
                                             is_loading: update_post_loading,
                                             is_with_button: false,
                                             placeholder: 'Edit post...'

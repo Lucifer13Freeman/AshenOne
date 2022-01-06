@@ -143,7 +143,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
         gql_delete_comment({ variables: input });
     }
 
-    const [comment_text, set_comment_text] = useState(comment.text);
+    const [comment_text, set_comment_text] = useState({ text: comment.text });
 
     const [gql_update_comment, { loading: update_comment_loading }] = useMutation(UPDATE_COMMENT, 
     {
@@ -165,8 +165,9 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
         e.preventDefault();
         const input = { input: { 
             comment_id: comment.id,
-            text: comment_text
-        } }
+            ...comment_text
+            // text: comment_text
+        }}
         gql_update_comment({ variables: input });
     }
 
@@ -195,8 +196,10 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
                                         button_variant='text'
                                         is_default_input={false}
                                         form_content={{
-                                            text: comment_text,
-                                            set_text: set_comment_text,
+                                            // text: comment_text,
+                                            // set_text: set_comment_text,
+                                            values: comment_text,
+                                            set_values: set_comment_text,
                                             is_loading: update_comment_loading,
                                             is_with_button: false,
                                             placeholder: 'Edit comment...'

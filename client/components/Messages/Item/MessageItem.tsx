@@ -36,11 +36,11 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
     const { async_delete_message, async_set_message, 
             async_set_reaction, async_logout } = useActions();
 
-    const reaction_icons = [...new Set(message.reactions?.map((r: IReaction) => r.content))];
+    let reaction_icons = [...new Set(message.reactions?.map((r: IReaction) => r.content))];
 
-    // useEffect(() => {
-    //     reaction_icons = [...new Set(message.reactions?.map((r: IReaction) => r.content))];
-    // }, [message])
+    useEffect(() => {
+        reaction_icons = [...new Set(message.reactions?.map((r: IReaction) => r.content))];
+    }, [state_message]);
 
     const check_sender = () =>
     {
@@ -70,12 +70,16 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         gql_delete_message({ variables: input });
     }
     
-    const [message_text, set_message_text] = useState(message.text);
+    const [message_text, set_message_text] = useState({ text: message.text });
     
     const [gql_update_message, 
         { loading: update_message_loading }] = useMutation(UPDATE_MESSAGE, 
     {
-        onCompleted: (data) => async_set_message(data.update_message),
+        onCompleted: (data) => 
+        {
+            async_set_message(data.update_message);
+            message = data.update_message;
+        },
         onError: (err) => 
         {
             console.log(err);
@@ -93,7 +97,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         e.preventDefault();
         const input = { input: { 
             message_id: message.id,
-            text: message_text
+            ...message_text
+            // text: message_text
         }}
         gql_update_message({ variables: input });
     }
@@ -183,7 +188,16 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                             {date_format(message?.created_at)}
                         </Typography>
                         {reactions}
-                        {/* </div> */}
+                        {/* {message.reactions?.length > 0 && (
+                            <div 
+                                className={reaction_styles.reactions_box }
+                                style={ check_sender() 
+                                    ? {marginRight: 'auto'} 
+                                    : {marginLeft: 'auto'} }
+                            >
+                                {reaction_icons} {message.reactions?.length}
+                            </div>
+                        )} */}
                         {/* </CardContent></CardActionArea> */}
                         {/* </Card> */}
                     </div>
@@ -212,8 +226,10 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                                             dialog_title='Edit message'
                                             button_variant='text'
                                             form_content={{
-                                                text: message_text,
-                                                set_text: set_message_text,
+                                                // text: message_text,
+                                                // set_text: set_message_text,
+                                                values: message_text,
+                                                set_values: set_message_text,
                                                 is_loading: update_message_loading,
                                                 is_with_button: false,
                                                 placeholder: 'Edit message...'

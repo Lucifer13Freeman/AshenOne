@@ -414,17 +414,23 @@ export class UserService
 
         try 
         {
-            const { id, current_user_id, username, avatar, email, old_password, new_password, confirm_new_password } = dto;
+            const { id, 
+                    current_user_id, 
+                    username, avatar, 
+                    email, 
+                    old_password, 
+                    new_password, 
+                    confirm_new_password } = dto;
+            
+            let user = await this.get({ id: id ? id : current_user_id });
 
-            if ((!username || username.trim() === '') && 
-                (!email || email.trim() === '') &&
+            if ((!username || username.trim() === '' || username.trim() === user.username) && 
+                (!email || email.trim() === '' || email.trim() === user.email) &&
                 (!new_password || new_password.trim() === '') &&
                 (!confirm_new_password || confirm_new_password.trim() === ''))
                 throw new UserInputError('Nothing to update!');
 
-            let user: User;
-
-            if (email.trim() !== '')
+            if (email.trim() !== '' && email.trim() !== user.email)
             {
                 const email_regexp: RegExp = new RegExp(REGEXP.EMAIL);
                 const is_valid_email = email_regexp.test(email);
@@ -440,19 +446,15 @@ export class UserService
                     errors.old_password = 'Enter your old password!';
 
                 if (confirm_new_password.trim() === '')
-                    errors.confirm_password = 'Repeat password must not be empty!';
+                    errors.confirm_new_password = 'Repeat password must not be empty!';
 
-                if (new_password !== confirm_new_password) errors.confirm_password = 'Passwords must match!';
+                if (new_password !== confirm_new_password) errors.confirm_new_password = 'Passwords must match!';
 
-                user = await this.get({ id, current_user_id, is_for_login: true });
+                user = await this.get({ id: id ? id : current_user_id, is_for_login: true });
                 
                 const is_match = await argon2.verify(user.password, old_password);
 
-                if (!is_match)
-                {
-                    errors.old_password = 'Password is incorrect!';
-                    throw new UserInputError('Password is incorrect!', { errors });
-                }
+                if (!is_match) errors.old_password = 'Password is incorrect!';
             }
             
             
@@ -469,8 +471,6 @@ export class UserService
 
             // const file_url = `${FileType.IMAGE}/${filename}`;
 
-
-
             for (let value of Object.values(errors)) 
                 if (value !== undefined) 
                     throw errors;
@@ -486,7 +486,7 @@ export class UserService
             {
                 const update_user = prisma.user.update(
                 {
-                    where: { id },
+                    where: { id: id ? id : current_user_id },
                     data,
                     select: select_user
                 });

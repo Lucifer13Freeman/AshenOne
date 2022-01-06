@@ -13,8 +13,8 @@ export enum LINKS
 export interface NavMenu
 {
     text: NAV_MENU,
-    href: ROUTES,
-    icon: any
+    href?: ROUTES,
+    icon?: any
 }
 
 export enum NAV_MENU
@@ -28,7 +28,8 @@ export enum NAV_MENU
     PEOPLE = 'People',
     GROUPS = 'Groups',
     FEED = 'Feed',
-    INVITES = 'Invites'
+    INVITES = 'Invites',
+    SETTINGS = 'Settings'
 }
 
 export enum ROUTES
@@ -42,7 +43,8 @@ export enum ROUTES
     PEOPLE = '/people/',
     GROUPS = '/groups/',
     FEED = '/feed/',
-    INVITES = '/invites/'
+    // INVITES = '/invites/',
+    // SETTINGS = '/settings/'
 }
 
 export enum ROLES

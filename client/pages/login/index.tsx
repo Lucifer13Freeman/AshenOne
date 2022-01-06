@@ -31,9 +31,9 @@ interface ILogin
 
 interface IError
 {
-    email: string | undefined;
-    password: string | undefined;
-    is_banned: string | undefined;
+    email?: string;
+    password?: string;
+    is_banned?: string;
 }
 
 const initial_state: ILogin = 
@@ -101,7 +101,6 @@ const LoginPage: React.FC = () =>
     {
         e.preventDefault();
         const input = { input: { ...values, show_password: undefined }}
-
         login_user({ variables: input });
     }
 

@@ -50,7 +50,7 @@ const initial_state: ICreateGroup =
 
 interface IError
 {
-  name: string | undefined;
+  name?: string;
 }
 
 const initial_error: IError = 
@@ -73,7 +73,7 @@ const initial_error: IError =
 interface FormDialogProps
 {
   button_title?: string;
-  button_variant?: "text" | "contained" | "outlined" | undefined;
+  button_variant?: "text" | "contained" | "outlined";
   dialog_title?: string;
   dialog_description?: string;
   // form_content: IFormContent;

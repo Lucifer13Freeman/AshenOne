@@ -51,7 +51,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     const [is_followed, set_is_followed] = useState(false);
     const [followers_count, set_followers_count] = useState(0);
-    const [group_name, set_group_name] = useState(group?.name);
+    const [group_name, set_group_name] = useState({ text: group?.name });
 
     const [access, set_access] = useState('');
 
@@ -81,6 +81,8 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     {
         // is_auth = auth.is_auth && auth.user;
         // is_admin = is_auth && auth.user?.role === ROLES.ADMIN;
+
+        set_group_name({ text: group.name});
 
         is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
         // is_group_admin = is_auth && group?.admin_id === auth.user?.id;
@@ -153,7 +155,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
         e.preventDefault();
         const input = { input: { 
             id: group?.id,
-            name: group_name
+            name: group_name.text
         }}
         update_group({ variables: input });
     }
@@ -196,8 +198,10 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                                             button_variant='text'
                                             button_type='edit'
                                             form_content={{
-                                                text: group_name,
-                                                set_text: set_group_name,
+                                                // text: group_name,
+                                                // set_text: set_group_name,
+                                                values: group_name,
+                                                set_values: set_group_name,
                                                 is_loading: update_group_loading,
                                                 is_with_button: false,
                                                 placeholder: 'Edit group name...'

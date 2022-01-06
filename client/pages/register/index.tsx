@@ -30,10 +30,10 @@ interface IRegist
 
 interface IError
 {
-    username: string | undefined;
-    email: string | undefined;
-    password: string | undefined;
-    confirm_password: string | undefined;
+    username?: string;
+    email?: string;
+    password?: string;
+    confirm_password?: string;
 }
 
 const initial_state: IRegist = 

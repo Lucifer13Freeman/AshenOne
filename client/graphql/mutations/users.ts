@@ -35,31 +35,24 @@ const LOGIN_USER = gql`
     }
 `;
 
-// const SEND_MESSAGE = gql`
-//   mutation send_message($to: String!, $content: String!) {
-//     send_message(to: $to, content: $content) {
-//       id 
-//       from 
-//       to 
-//       content 
-//       created_at
-//       updated_at
-//     }
-//   }
-// `;
-
-// const REACT_TO_MESSAGE = gql`
-//     mutation react_to_message($id: String! $content: String!) {
-//         react_to_message(id: $id content: $content) {
-//             id
-//         }
-//     }
-// `;
+const UPDATE_USER = gql`
+  mutation update_user( $input: UpdateUserInput! ) {
+        update_user( input: $input ) {
+            id
+            username
+            email
+            avatar
+            role
+            is_banned
+            created_at
+            updated_at
+        }
+    }
+`;
 
 
 export {
     REGISTER_USER,
     LOGIN_USER,
-    // SEND_MESSAGE,
-    // REACT_TO_MESSAGE
+    UPDATE_USER
 }
