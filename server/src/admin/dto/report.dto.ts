@@ -34,6 +34,9 @@ export class ReportType
     @Field(() => Int, { nullable: true })
     readonly total_groups: number;
 
+    @Field(() => Int, { nullable: true })
+    readonly total_invites: number;
+
     @Field()
     readonly created_at: Date;
 }

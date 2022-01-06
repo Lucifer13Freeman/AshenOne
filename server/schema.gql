@@ -145,6 +145,7 @@ type ReportType {
   total_comment_likes: Int
   total_subscriptions: Int
   total_groups: Int
+  total_invites: Int
   created_at: DateTime!
 }
 

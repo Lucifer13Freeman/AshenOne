@@ -57,8 +57,12 @@ const PrinterForm: React.FC<PrinterFormProps> = ({ statistics_report }) =>
                     <td style={{textAlign: 'right'}}>{statistics_report?.total_subscriptions}</td>
                 </tr>
                 <tr>
-                    <td>Total comment groups</td>
+                    <td>Total groups</td>
                     <td style={{textAlign: 'right'}}>{statistics_report?.total_groups}</td>
+                </tr>
+                <tr>
+                    <td>Total invites</td>
+                    <td style={{textAlign: 'right'}}>{statistics_report?.total_invites}</td>
                 </tr>
             </table>
             <h5>Дата: {date_format(statistics_report?.created_at)}</h5>

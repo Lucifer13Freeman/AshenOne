@@ -11,6 +11,7 @@ export interface IStatisticsReport
     total_comment_likes: number;
     total_groups: number;
     total_subscriptions: number;
+    total_invites: number;
     created_at: Date;
 }
 

@@ -41,6 +41,7 @@ export class AdminService
                     total_comment_likes: await prisma.commentLike.count(),
                     total_groups: await prisma.group.count(),
                     total_subscriptions: await prisma.subscription.count(),
+                    total_invites: await prisma.invite.count(),
                     created_at: new Date()
                 }
 

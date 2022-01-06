@@ -14,6 +14,7 @@ const GET_STATISTICS_REPORT = gql`
             total_comment_likes
             total_groups
             total_subscriptions
+            total_invites
             created_at
         }
     }
