@@ -140,14 +140,14 @@ const UserSettings: React.FC<UserSettingsProps> = ({ user, button_type = "settin
                             }}
                         >
                             <Grid style={{marginRight: 'auto'}}>
-                            <ConfirmDialog 
-                                button_title='Delete account' 
-                                dialog_title='Delete account'
-                                button_variant='contained'
-                            >
-                                <Button onClick={delete_account}>Delete</Button>
-                                <Button>Cancel</Button>
-                            </ConfirmDialog>
+                                <ConfirmDialog 
+                                    button_title='Delete account' 
+                                    dialog_title='Delete account'
+                                    button_variant='contained'
+                                >
+                                    <Button onClick={delete_account}>Delete</Button>
+                                    <Button>Cancel</Button>
+                                </ConfirmDialog>
                             </Grid>
                             <Button onClick={update_user}>Save changes</Button>
                         </FormDialog>
