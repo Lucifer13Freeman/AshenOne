@@ -15,7 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IComment } from '../../../types/comment';
-import { ROUTES, LINKS } from '../../../utils/constants';
+import { ROUTES, LINKS, ROLES } from '../../../utils/constants';
 import { date_format } from '../../../utils/date-format';
 import styles from '../../../styles/App.module.scss';
 import { LIKE_COMMENT } from '../../../graphql/mutations/likes';
@@ -171,6 +171,9 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
         gql_update_comment({ variables: input });
     }
 
+    const is_available = (auth.user?.id === comment.user.id) 
+                        || (auth.user?.role === ROLES.ADMIN);
+
 
     return (
         <Card /*lassName={styles.card}*/ style={{ margin: '10px 0' }} /*sx={{ maxWidth: 345 }}*/ raised>
@@ -184,7 +187,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
                     </IconButton>
                 }
                 action={
-                    auth.user?.id === comment.user.id && (
+                    /*auth.user?.id === comment.user.id*/ is_available ? (
                     <EditPopper>
                         <Grid container direction="column">
                             {/* <Button style={{marginBottom: 6}}>Edit</Button> */}
@@ -218,7 +221,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
                                 <Button>Cancel</Button>
                             </ConfirmDialog>
                         </Grid>
-                    </EditPopper> )
+                    </EditPopper> ) : null
                 }
                 // title=""
                 subheader={date_format(comment.created_at)} 

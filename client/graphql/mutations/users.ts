@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 
 const REGISTER_USER = gql`
-  mutation register( $input: RegisterUserInput! ) {
+    mutation register( $input: RegisterUserInput! ) {
         register( input: $input ) {
             id
             username
@@ -17,7 +17,7 @@ const REGISTER_USER = gql`
 `;
 
 const LOGIN_USER = gql`
-  mutation login( $input: LoginUserInput!) {
+    mutation login( $input: LoginUserInput!) {
         login( input: $input ) {
             cookie
             token
@@ -36,7 +36,7 @@ const LOGIN_USER = gql`
 `;
 
 const UPDATE_USER = gql`
-  mutation update_user( $input: UpdateUserInput! ) {
+    mutation update_user( $input: UpdateUserInput! ) {
         update_user( input: $input ) {
             id
             username
@@ -50,9 +50,16 @@ const UPDATE_USER = gql`
     }
 `;
 
+const DELETE_USER = gql`
+    mutation delete_user( $input: GetUserInput! ) {
+        delete_user( input: $input )
+    }
+`;
+
 
 export {
     REGISTER_USER,
     LOGIN_USER,
-    UPDATE_USER
+    UPDATE_USER,
+    DELETE_USER
 }

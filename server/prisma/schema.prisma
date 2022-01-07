@@ -203,4 +203,6 @@ model Group {
   updated_at        DateTime        @default(now())
 
   group             Invite[]        @relation("GroupInvite")
+
+  @@index([name])
 }

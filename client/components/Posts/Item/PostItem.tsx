@@ -15,7 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IPost } from '../../../types/post';
-import { ROUTES, LINKS } from '../../../utils/constants';
+import { ROUTES, LINKS, ROLES } from '../../../utils/constants';
 import { date_format } from '../../../utils/date-format';
 import styles from '../../../styles/App.module.scss';
 import { LIKE_POST } from '../../../graphql/mutations/likes';
@@ -65,6 +65,8 @@ interface PostItemProps
 
 const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expanded, set_expanded*/ }) => 
 {
+    if (post.group_id) is_for_group = true;
+
     const [expanded, set_expanded] = React.useState(false);
     const handle_expand_click = () => { set_expanded(!expanded); };
 
@@ -192,14 +194,17 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
         gql_update_post({ variables: input });
     }
 
+    const is_available = (!is_for_group && auth.user?.id === post.user?.id) 
+                        || (is_for_group && auth.user?.id === group?.admin_id) 
+                        || (auth.user?.role === ROLES.ADMIN);
+
 
     return (
         <Card className={styles.card} sx={{ maxWidth: 345 }} style={{marginBottom: 10}} raised>
             <CardHeader
                 avatar={
-                    <IconButton onClick={() => router.push(ROUTES.PEOPLE + (is_for_group 
-                                                                            ? group?.id 
-                                                                            : post.user?.id))}>
+                    <IconButton onClick={() => router.push(is_for_group ? ROUTES.GROUPS + group?.id 
+                                                                        : ROUTES.PEOPLE + post.user?.id)}>
                         <Avatar 
                             alt={is_for_group ? group?.name : post.user?.username} 
                             src={LINKS.STATIC_FILES_LINK + (is_for_group 
@@ -209,7 +214,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
                     </IconButton>
                 }
                 action={
-                    auth.user?.id === post.user?.id && (
+                    /*auth.user?.id === post.user?.id*/ is_available ? (
                     <EditPopper>
                         <Grid container direction="column">
                             {/* <Button style={{marginBottom: 6}}>Edit</Button> */}
@@ -243,7 +248,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
                                 <Button>Cancel</Button>
                             </ConfirmDialog>
                         </Grid>
-                    </EditPopper> )
+                    </EditPopper> ) : null
                 }
                 // title=""
                 subheader={date_format(post.created_at)} 

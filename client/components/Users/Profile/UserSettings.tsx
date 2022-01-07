@@ -9,7 +9,10 @@ import { useEffect, useState } from "react";
 import { Card, Grid, IconButton, Avatar, Typography, Button, FormGroup  } from "@mui/material";
 import ImageDialog from "../../Shared/Dialogs/ImageDialog";
 import FormDialog from "../../Shared/Dialogs/FormDialog";
-import { UPDATE_USER } from "../../../graphql/mutations/users";
+import { DELETE_USER, UPDATE_USER } from "../../../graphql/mutations/users";
+import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
+import { ROUTES } from "../../../utils/constants";
+import { TOKEN } from "../../../utils/token";
 
 
 interface IUpdateUser
@@ -86,11 +89,35 @@ const UserSettings: React.FC<UserSettingsProps> = ({ user, button_type = "settin
         onError: (err) => set_errors(err.graphQLErrors[0].extensions?.errors)
     });
 
+    const [gql_delete_user, { loading: delete_user_loading }] = useMutation(DELETE_USER, 
+    {
+        onCompleted: (data) =>
+        {
+            async_logout();
+            router.push(ROUTES.HOME);
+        },
+        onError: (err) => 
+        {
+            console.log(err);
+
+            if (err.message === TOKEN.ERROR_MESSAGE) 
+            {
+                router.push(ROUTES.LOGIN);
+                async_logout();
+            }
+        }
+    });
+
     const update_user = (e: React.FormEvent) =>
     {
         e.preventDefault();
         gql_update_user({ variables: { input: { ...values }}});
         //set_values(initialState);
+    }
+
+    const delete_account = () => 
+    {
+        gql_delete_user({ variables: { input: { id: auth.user?.id }}});
     }
 
     
@@ -112,6 +139,16 @@ const UserSettings: React.FC<UserSettingsProps> = ({ user, button_type = "settin
                                 is_with_button: false
                             }}
                         >
+                            <Grid style={{marginRight: 'auto'}}>
+                            <ConfirmDialog 
+                                button_title='Delete account' 
+                                dialog_title='Delete account'
+                                button_variant='contained'
+                            >
+                                <Button onClick={delete_account}>Delete</Button>
+                                <Button>Cancel</Button>
+                            </ConfirmDialog>
+                            </Grid>
                             <Button onClick={update_user}>Save changes</Button>
                         </FormDialog>
                     </FormGroup>
