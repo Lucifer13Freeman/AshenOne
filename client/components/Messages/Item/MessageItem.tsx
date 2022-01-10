@@ -78,7 +78,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         onCompleted: (data) => 
         {
             async_set_message(data.update_message);
-            message = data.update_message;
+            set_message_text({ text: data.update_message.text });
+            // message = data.update_message;
         },
         onError: (err) => 
         {
@@ -97,8 +98,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         e.preventDefault();
         const input = { input: { 
             message_id: message.id,
-            ...message_text
-            // text: message_text
+            text: message_text
+            // ...message_text
         }}
         gql_update_message({ variables: input });
     }
@@ -225,6 +226,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
                                             button_title='Edit' 
                                             dialog_title='Edit message'
                                             button_variant='text'
+                                            is_default_input={false}
                                             form_content={{
                                                 // text: message_text,
                                                 // set_text: set_message_text,

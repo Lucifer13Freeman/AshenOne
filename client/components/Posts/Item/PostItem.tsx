@@ -170,7 +170,11 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
     
     const [gql_update_post, { loading: update_post_loading }] = useMutation(UPDATE_POST, 
     {
-        onCompleted: (data) => async_set_post(data.update_post),
+        onCompleted: (data) => 
+        {
+            async_set_post(data.update_post);
+            set_post_text({ text: data.update_post.text });
+        },
         onError: (err) => 
         {
             console.log(err);
@@ -188,8 +192,8 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
         e.preventDefault();
         const input = { input: { 
             post_id: post.id,
-            ...post_text
-            // text: post_text
+            text: post_text
+            // ...post_text
         }}
         gql_update_post({ variables: input });
     }

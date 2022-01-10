@@ -147,7 +147,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
 
     const [gql_update_comment, { loading: update_comment_loading }] = useMutation(UPDATE_COMMENT, 
     {
-        onCompleted: (data) => async_set_comment(data.update_comment),
+        onCompleted: (data) => 
+        {
+            async_set_comment(data.update_comment);
+            set_comment_text({ text: data.update_comment.text });
+        },
         onError: (err) => 
         {
             console.log(err);
@@ -165,8 +169,8 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) =>
         e.preventDefault();
         const input = { input: { 
             comment_id: comment.id,
-            ...comment_text
-            // text: comment_text
+            text: comment_text
+            // ...comment_text
         }}
         gql_update_comment({ variables: input });
     }

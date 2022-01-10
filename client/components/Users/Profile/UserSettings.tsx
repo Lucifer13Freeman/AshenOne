@@ -72,8 +72,6 @@ const UserSettings: React.FC<UserSettingsProps> = ({ user, button_type = "settin
                                             email: auth.user.email });
     const [errors, set_errors] = useState(initial_error);
 
-    console.log(values)
-
     const [gql_update_user, { loading: update_user_loading }] = useMutation(UPDATE_USER, 
     {
         // update: (_, __) => router.push(ROUTES.LOGIN),  //window.location.href = '/login',
