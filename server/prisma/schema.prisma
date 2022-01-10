@@ -202,7 +202,7 @@ model Group {
   created_at        DateTime        @default(now())
   updated_at        DateTime        @default(now())
 
-  group             Invite[]        @relation("GroupInvite")
+  group_invite      Invite[]        @relation("GroupInvite")
 
   @@index([name])
 }
