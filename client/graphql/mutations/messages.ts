@@ -4,13 +4,14 @@ import { gql } from "@apollo/client";
 const CREATE_MESSAGE = gql`
     mutation create_message( $input: CreateMessageInput! ) {
         create_message( input: $input ) {
-            id
+            id 
             chat_id 
             user { id username avatar role is_banned }
-            text
+            text 
             image
             audio
             video
+            reactions { user_id message_id content } 
             created_at
             updated_at
         }
@@ -20,13 +21,14 @@ const CREATE_MESSAGE = gql`
 const UPDATE_MESSAGE = gql`
     mutation update_message($input: UpdateMessageInput!) {
         update_message( input: $input ) {
-            id
+            id 
             chat_id 
             user { id username avatar role is_banned }
-            text
+            text 
             image
             audio
             video
+            reactions { user_id message_id content } 
             created_at
             updated_at
         }
