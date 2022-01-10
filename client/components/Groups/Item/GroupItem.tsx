@@ -38,15 +38,19 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
     let latest_post: IPost | undefined;
     let is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
 
+    if (!group.is_private && group.posts && group.posts?.length > 0) 
+        latest_post = group.posts[group.posts?.length - 1];
+
     useEffect(() => 
     {
         is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+        if (!group.is_private && group.posts && group.posts?.length > 0) 
+            latest_post = group.posts[group.posts?.length - 1];
     }, [group]);
 
-    if (group.posts && group.posts?.length > 0) 
-    {
-        latest_post = group.posts[group.posts.length - 1];
-    }
+    // if (!group.is_private && group.posts && group.posts?.length > 0) 
+    //     latest_post = group.posts[group.posts.length - 1];
+    
 
     const [gql_leave_group, { loading: leave_group_loading }] = useMutation(REMOVE_GROUP_MEMBER, 
     {
@@ -122,11 +126,11 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
                         variant="body2" 
                         component="p"
                     >
-                        {group.posts 
+                        {group?.posts 
                             && !group?.is_private 
                             && group?.posts?.length > 0 
                                 ? latest_post?.text 
-                                : 'Send your first post...'}
+                                : ''}
                     </Typography>
                     <Typography 
                         className={styles.latest_post} 
