@@ -349,6 +349,7 @@ input GetAllGroupsInput {
 
 input SearchGroupInput {
   username: String
+  name: String
   post_text: String
   current_user_id: ID
   limit: Int

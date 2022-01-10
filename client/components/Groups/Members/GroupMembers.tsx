@@ -72,10 +72,18 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group }) =>
             router.push(ROUTES.GROUPS);
         }
     }
+
+    let is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+
+    useEffect(() => 
+    {
+        is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+    }, [group]);
     
 
     return (
-        <ItemsSelect>
+      is_member ? 
+      (<ItemsSelect>
         {group && group.members &&
           group.members.map(({ id, username, avatar }: any) => (
             <ListItem button key={id}>
@@ -128,7 +136,7 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ /*members,*/ group }) =>
               )}
             </ListItem>
           ))}
-      </ItemsSelect>
+      </ItemsSelect>) : null
     );
 }
 

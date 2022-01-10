@@ -47,7 +47,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
     // const { group, groups, error: groups_error } = useTypedSelector(state => state.group);
-    const { async_set_group, async_logout } = useActions();
+    const { async_set_group, async_delete_group, async_logout } = useActions();
 
     const [is_followed, set_is_followed] = useState(false);
     const [followers_count, set_followers_count] = useState(0);
@@ -64,7 +64,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
 
     // let is_auth;
     // let is_admin;
-    let is_member;
+    let is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
     // let is_group_admin;
     // let is_group_moderator;
     // let is_available;
@@ -82,7 +82,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
         // is_auth = auth.is_auth && auth.user;
         // is_admin = is_auth && auth.user?.role === ROLES.ADMIN;
 
-        set_group_name({ text: group.name});
+        set_group_name({ text: group?.name});
 
         is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
         // is_group_admin = is_auth && group?.admin_id === auth.user?.id;
@@ -118,6 +118,11 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
             async_set_group(data.remove_group_member)
             set_is_followed(false);
             set_followers_count(followers_count - 1);
+            if (data.remove_group_member.is_private) 
+            {
+                router.push(ROUTES.GROUPS);
+                async_delete_group(data.remove_group_member.id);
+            }
         },
         onError: (err) => console.log(err)
     });
@@ -172,18 +177,18 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                 >
                     <Grid>
                     { is_available ? 
-                        <ImageDialog group_id={group.id} avatar={LINKS.STATIC_FILES_LINK + group.avatar}>
+                        <ImageDialog group_id={group?.id} avatar={LINKS.STATIC_FILES_LINK + group.avatar}>
                             <Avatar 
                                 variant="square" 
-                                alt={group.name} 
-                                src={LINKS.STATIC_FILES_LINK + group.avatar}
+                                alt={group?.name} 
+                                src={LINKS.STATIC_FILES_LINK + group?.avatar}
                                 style={{ height: 150, width: 150 }}
                             />
                         </ImageDialog> :
                         <Avatar 
                             variant="square" 
-                            alt={group.name} 
-                            src={LINKS.STATIC_FILES_LINK + group.avatar}
+                            alt={group?.name} 
+                            src={LINKS.STATIC_FILES_LINK + group?.avatar}
                             style={{ height: 150, width: 150 }}
                         /> }
                         <Grid container direction="row">
@@ -214,7 +219,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                             </Grid> }
                             { is_available &&      
                                 <Grid style={{margin: '0 10px'}}>
-                                    <InviteUsers group_id={group.id}/>
+                                    <InviteUsers group_id={group?.id}/>
                                 </Grid> }
                             { is_group_admin &&
                                 <Grid>
@@ -251,20 +256,21 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
                         style={{ margin: '0 20px' }}
                     >
                         <Typography variant="h4">
-                            {group.name}
+                            {group?.name}
                         </Typography>
                         <div style={{
                             fontSize: 12, 
                             color: 'gray'}}
                         >
-                            Registered at: { date_format(group.created_at) }
+                            Created at: { date_format(group?.created_at) }
                         </div>
-                        { !group.is_private || is_member ?
+                        { !group?.is_private || is_member ?
                             <Button
                                 onClick={() => follow()}
                                 style={{marginTop: 40}}
                                 variant="contained" 
                                 color="primary"
+                                // disabled={group.is_private && !is_member}
                                 fullWidth
                                 endIcon={ is_followed 
                                     ? <HighlightOffOutlinedIcon/> 

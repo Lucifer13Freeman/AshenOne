@@ -58,6 +58,7 @@ const Group: React.FC = () =>
         onError: err => 
         {
             console.log(err);
+            router.push(ROUTES.GROUPS);
 
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -70,13 +71,14 @@ const Group: React.FC = () =>
         nextFetchPolicy: "cache-first"
     });
 
-    let check_member;
+    let is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
 
     useEffect(() => 
     {
-        check_member = group?.members?.find((mem: IUser) => mem.id === auth.user.id) !== undefined;
+        is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
     }, [group]);
 
+    
     const [query, set_query] = useState<string>('');
     const [timer, set_timer]: any = useState(null);
 
@@ -104,6 +106,7 @@ const Group: React.FC = () =>
         onError: err => 
         {
             console.log(err);
+            router.push(ROUTES.GROUPS);
             
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
@@ -120,7 +123,7 @@ const Group: React.FC = () =>
         <MainLayout>  
             <Grid container justifyContent='center' style={{maxWidth: 900}} /*direction='column' flexWrap='nowrap'*/>
                 <GroupProfile group={group} />
-                {!group?.is_private || check_member ? 
+                {!group?.is_private || is_member ? 
                 <Card className={app_styles.card} style={{width: 400}} raised>
                     <Box p={2}>
                         <Grid container direction="row" >
@@ -158,8 +161,8 @@ const Group: React.FC = () =>
                         </Grid> */}
                         
                 </Card> : null}
-                {check_member && <PostForm group_id={group_id}/>}
-                {!group?.is_private || check_member ? <Posts posts={posts} is_for_group={true}/> : null}
+                {is_member && <PostForm group_id={group_id}/>}
+                {!group?.is_private || is_member ? <Posts posts={posts} is_for_group={true}/> : null}
             </Grid>
         </MainLayout>
     );

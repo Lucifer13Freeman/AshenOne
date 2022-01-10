@@ -83,7 +83,7 @@ const GroupsPage: React.FC = () =>
             setTimeout(
                 async () => 
                 {
-                    await search_groups({ variables: { input: { username: e.target.value }}});
+                    await search_groups({ variables: { input: { name: e.target.value }}});
                 }, 500)
         );
     }

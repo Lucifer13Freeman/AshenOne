@@ -8,6 +8,9 @@ export class SearchGroupInput
     readonly username: string;
 
     @Field({ nullable: true })
+    readonly name: string;
+
+    @Field({ nullable: true })
     readonly post_text: string;
 
     @Field(() => ID, { nullable: true })

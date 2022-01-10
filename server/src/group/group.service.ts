@@ -142,28 +142,31 @@ export class GroupService
             {
                 let get_all_groups;
                 
-                if (is_my)
-                {
+                // if (is_my)
+                // {
+                //     get_all_groups = await prisma.group.findMany(
+                //     {
+                //         //where: { member_ids: { hasSome: [current_user_id] } },
+                //         // where: { members: { some: { id: current_user_id } } },
+                //         skip: offset,
+                //         take: limit,
+                //         select: select_group
+                //     });
+                // }
+                // else 
+                // {
                     get_all_groups = await prisma.group.findMany(
                     {
                         //where: { member_ids: { hasSome: [current_user_id] } },
-                        where: { members: { some: { id: current_user_id } } },
+                        // where: { is_private: false },
                         skip: offset,
                         take: limit,
                         select: select_group
                     });
-                }
-                else 
-                {
-                    get_all_groups = await prisma.group.findMany(
-                    {
-                        //where: { member_ids: { hasSome: [current_user_id] } },
-                        where: { is_private: false },
-                        skip: offset,
-                        take: limit,
-                        select: select_group
-                    });
-                }
+                // }
+
+                get_all_groups = get_all_groups.filter((group: Group) => 
+                    !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
 
                 return get_all_groups;
             });
@@ -256,16 +259,17 @@ export class GroupService
     {
         try 
         {
-            const { current_user_id, username, post_text, limit, offset } = dto;
+            const { current_user_id, name, username, post_text, limit, offset } = dto;
 
             const groups = await this.prisma.$transaction(async (prisma) => 
             {
-                const search_groups = await prisma.group.findMany(
+                let search_groups = await prisma.group.findMany(
                 {
                     where: {
+                        name: { contains: name, mode: 'insensitive' },
                         members: { 
                              some: { 
-                                id: current_user_id,
+                                // id: current_user_id,
                                 username: { contains: username, mode: 'insensitive' }
                             }
                         },
@@ -279,6 +283,9 @@ export class GroupService
                     take: limit,
                     select: select_group
                 });
+
+                search_groups = search_groups.filter((group: Group) => 
+                    !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
                
                 return search_groups;
             });

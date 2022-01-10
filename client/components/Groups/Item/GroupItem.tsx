@@ -36,6 +36,12 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
     const { auth, error: auth_error } = useTypedSelector(state => state.auth);
 
     let latest_post: IPost | undefined;
+    let is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+
+    useEffect(() => 
+    {
+        is_member = group?.members.find((mem: IUser) => mem.id === auth.user?.id) !== undefined;
+    }, [group]);
 
     if (group.posts && group.posts?.length > 0) 
     {
@@ -85,31 +91,31 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
     const delete_group = (e: any) =>
     {
         e.stopPropagation();
-        gql_delete_group({ variables: { input: { id: group.id }}});
+        gql_delete_group({ variables: { input: { id: group?.id }}});
     }
 
 
     return (
 
         <Card className={styles.item} style={{ padding: '0 10px' }} raised>
-            <IconButton onClick={() => router.push(ROUTES.GROUPS + group.id)}>
+            <IconButton onClick={() => router.push(ROUTES.GROUPS + group?.id)}>
                 <Avatar 
-                    alt={group.name} 
-                    src={LINKS.STATIC_FILES_LINK + group.avatar}
+                    alt={group?.name} 
+                    src={LINKS.STATIC_FILES_LINK + group?.avatar}
                 />
             </IconButton>
             <CardActionArea style={{ borderRadius: 10, padding: 4 }}>
                 <Grid 
                     container 
                     direction="column" 
-                    onClick={() => /*get_selected_group()*/router.push(ROUTES.GROUPS + group.id)}
+                    onClick={() => /*get_selected_group()*/router.push(ROUTES.GROUPS + group?.id)}
                 >
                     <Typography 
                         className={styles.name} 
                         //variant="body2" 
                         component="p"
                     >
-                        {group.name}
+                        {group?.name}
                     </Typography>
                     <Typography 
                         className={styles.latest_post} 
@@ -117,8 +123,8 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
                         component="p"
                     >
                         {group.posts 
-                            && !group.is_private 
-                            && group.posts?.length > 0 
+                            && !group?.is_private 
+                            && group?.posts?.length > 0 
                                 ? latest_post?.text 
                                 : 'Send your first post...'}
                     </Typography>
@@ -145,6 +151,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
             >
                 <MeetingRoomIcon/>
             </IconButton> */}
+            { is_member &&
             <Grid style={{marginLeft: 'auto'}}>
                 <ConfirmDialog 
                     button_title='Leave' 
@@ -155,7 +162,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ group }) =>
                     <Button onClick={leave_group}>Leave</Button>
                     <Button>Cancel</Button>
                 </ConfirmDialog>
-            </Grid>
+            </Grid> }
             { auth.user?.id === group?.admin_id && 
             <Grid style={{marginLeft: 'auto'}}>
                 <ConfirmDialog 
