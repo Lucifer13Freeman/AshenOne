@@ -100,7 +100,7 @@ const RegisterPage: React.FC = () =>
                         </h1>
                         <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="username-input">
-                                { errors.email ?? 'Username' }
+                                { errors.username ?? 'Username' }
                             </InputLabel>
                             <Input 
                                 id="username-input"
