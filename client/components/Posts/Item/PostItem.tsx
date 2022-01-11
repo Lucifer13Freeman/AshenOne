@@ -202,6 +202,12 @@ const PostItem: React.FC<PostItemProps> = ({ post, is_for_group = false/*, expan
                         || (is_for_group && auth.user?.id === group?.admin_id) 
                         || (auth.user?.role === ROLES.ADMIN);
 
+    // React.useEffect(() => { 
+    //     is_available = (!is_for_group && auth.user?.id === post.user?.id) 
+    //                     || (is_for_group && auth.user?.id === group?.admin_id) 
+    //                     || (auth.user?.role === ROLES.ADMIN);
+    // }, [post]);
+
 
     return (
         <Card className={styles.card} sx={{ maxWidth: 345 }} style={{marginBottom: 10}} raised>

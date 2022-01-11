@@ -50,7 +50,19 @@ const FeedPage: React.FC = () =>
     const [search_posts, { loading: search_post_loading, 
                             data: search_post_data }] = useLazyQuery(SEARCH_POSTS,
     {
-        onCompleted: data => async_set_all_posts(data.search_posts),
+        onCompleted: data => 
+        {
+            const posts = data.search_posts.filter((post: IPost) => post.group_id === null 
+                                                                    ? post.user.id !== auth.user.id 
+                                                                    : post);
+            async_set_all_posts(posts);
+
+            if (posts)
+            {
+                const comments: IComment[] = [].concat(...posts.map((post: IPost) => post.comments));
+                async_set_all_comments(comments);
+            }
+        },
         onError: err => 
         {
             console.log(err);
@@ -72,7 +84,9 @@ const FeedPage: React.FC = () =>
                             is_order_by_desc: true } },
         onCompleted: data => 
         {
-            const posts = data.get_all_posts;
+            const posts = data.get_all_posts.filter((post: IPost) => post.group_id === null 
+                                                                    ? post.user.id !== auth.user.id 
+                                                                    : post);
             async_set_all_posts(posts);
                 
             if (posts)

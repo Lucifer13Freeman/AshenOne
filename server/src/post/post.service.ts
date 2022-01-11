@@ -20,7 +20,7 @@ import { LikeInput } from './inputs/like/like.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { select_user } from 'src/user/selects/user.select';
 import { select_post } from './selects/post.select';
-import { Post, PostLike, Subscription, User } from '@prisma/client';
+import { Group, Post, PostLike, Subscription, User } from '@prisma/client';
 import { select_post_like } from './selects/like.select';
 import { select_subscription } from 'src/subscriptions/selects/subscription.select';
 import { GroupService } from 'src/group/group.service';
@@ -356,14 +356,17 @@ export class PostService
 
                 if (is_for_group_members && !group_id && !user_id)
                 {
-                    const groups = await prisma.group.findMany(
+                    let groups = await prisma.group.findMany(
                     {
-                        where: { members: { some: { id: current_user_id } } },
+                        // where: { members: { some: { id: current_user_id } } },
                         skip: offset,
                         take: limit,
                         select: { id: true },
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
+
+                    groups = groups.filter((group: Group) => 
+                        !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
 
                     const group_ids = groups.map(gr => gr.id);
 
@@ -391,6 +394,8 @@ export class PostService
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
                 }
+
+                // console.log(get_group_posts)
 
                 return get_group_posts;
             });
@@ -422,14 +427,30 @@ export class PostService
 
                 if (is_for_followers && !user_id)
                 {
-                    const subscriptions = await prisma.subscription.findMany(
+                    let subscriptions = await prisma.subscription.findMany(
                     {
-                        where: { follower_id: current_user_id },
-                        //where: { follower: { id: current_user_id } },
+                        where: { 
+                            follower_id: current_user_id, 
+                            // profile_id: { not: current_user_id } 
+                        },
+                        // where: { follower: { id: current_user_id }/*, profile: { id: { not: current_user_id } }*/ },
                         //select: { profile: { id: true } } 
-                        select: { profile_id: true }
+                        select: { profile_id: true, follower_id: true },
+                        orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
-        
+
+                    console.log(subscriptions)
+
+                    console.log(current_user_id)
+                    const test = subscriptions.find(sub => sub.follower_id === current_user_id);
+
+                    console.log(test)
+
+                    // subscriptions = subscriptions.filter(sub => sub.follower_id === current_user_id
+                    //                                             && sub.profile_id !== current_user_id);
+                    
+                    // console.log(subscriptions)
+
                     const profile_ids = subscriptions.map(sub => sub.profile_id);
 
                     if (profile_ids.length > 0) 
@@ -469,6 +490,8 @@ export class PostService
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
                 }
+
+                // console.log(get_user_posts)
 
                 return get_user_posts;
             });
@@ -707,14 +730,17 @@ export class PostService
 
                 if (is_for_group_members && !group_id && !user_id)
                 {
-                    const groups = await prisma.group.findMany(
+                    let groups = await prisma.group.findMany(
                     {
-                        where: { members: { some: { id: current_user_id } } },
+                        // where: { members: { some: { id: current_user_id } } },
                         skip: offset,
                         take: limit,
                         select: { id: true },
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
+
+                    groups = groups.filter((group: Group) => 
+                        !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
 
                     const group_ids = groups.map(gr => gr.id);
 
@@ -782,13 +808,16 @@ export class PostService
 
                 if (is_for_followers && !user_id)
                 {
-                    const subscriptions = await prisma.subscription.findMany(
+                    let subscriptions = await prisma.subscription.findMany(
                     {
                         //where: { follower_id: current_user_id },
                         where: { follower: { id: current_user_id } },
-                        select: { profile_id: true },
+                        select: { profile_id: true, follower_id: true },
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
+
+                    // subscriptions = subscriptions.filter(sub => sub.follower_id === current_user_id
+                    //                                             && sub.profile_id !== current_user_id);
 
                     const profile_ids = subscriptions.map(sub => sub.profile_id);
 
