@@ -12,13 +12,28 @@ const GET_GROUP = gql`
             members { id username avatar role is_banned }
             posts { 
                 id 
-                group_id 
+                user { id username avatar role is_banned }
+                group_id
                 text 
                 image
                 audio
                 video
-                created_at 
-                updated_at 
+                views
+                comments { 
+                    id 
+                    post_id
+                    user { id username avatar role is_banned } 
+                    text 
+                    image
+                    audio
+                    video
+                    likes { id user_id comment_id }
+                    created_at
+                    updated_at
+                }
+                likes { id user_id post_id }
+                created_at
+                updated_at
             }
             is_private
             is_secure
@@ -39,13 +54,28 @@ const GET_ALL_GROUPS = gql`
             members { id username avatar role is_banned }
             posts { 
                 id 
-                group_id 
+                user { id username avatar role is_banned }
+                group_id
                 text 
                 image
                 audio
                 video
-                created_at 
-                updated_at 
+                views
+                comments { 
+                    id 
+                    post_id
+                    user { id username avatar role is_banned } 
+                    text 
+                    image
+                    audio
+                    video
+                    likes { id user_id comment_id }
+                    created_at
+                    updated_at
+                }
+                likes { id user_id post_id }
+                created_at
+                updated_at
             }
             is_private
             is_secure
@@ -66,13 +96,28 @@ const SEARCH_GROUPS = gql`
             members { id username avatar role is_banned }
             posts { 
                 id 
-                group_id 
+                user { id username avatar role is_banned }
+                group_id
                 text 
                 image
                 audio
                 video
-                created_at 
-                updated_at 
+                views
+                comments { 
+                    id 
+                    post_id
+                    user { id username avatar role is_banned } 
+                    text 
+                    image
+                    audio
+                    video
+                    likes { id user_id comment_id }
+                    created_at
+                    updated_at
+                }
+                likes { id user_id post_id }
+                created_at
+                updated_at
             }
             is_private
             is_secure

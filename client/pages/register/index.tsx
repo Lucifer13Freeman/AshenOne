@@ -100,7 +100,7 @@ const RegisterPage: React.FC = () =>
                         </h1>
                         <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="username-input">
-                                Username
+                                { errors.email ?? 'Username' }
                             </InputLabel>
                             <Input 
                                 id="username-input"
@@ -125,7 +125,7 @@ const RegisterPage: React.FC = () =>
                         </FormControl>
                         <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="password-input">
-                                Password
+                                { errors.password ?? 'Password' }
                             </InputLabel>
                             {/* <Input 
                                 id="password-input"
@@ -152,7 +152,7 @@ const RegisterPage: React.FC = () =>
                         </FormControl>
                         <FormControl style={{marginTop: 20}}>
                             <InputLabel htmlFor="confirm-password-input">
-                                Confirm password
+                                { errors.confirm_password ?? 'Confirm password' }
                             </InputLabel>
                             {/* <Input 
                                 id="confirm-password-input"

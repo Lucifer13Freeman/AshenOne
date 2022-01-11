@@ -45,6 +45,10 @@ export class AuthService
 
             //const user = await this.user_service.find_by_email(email);
 
+            for (let value of Object.values(errors)) 
+                if (value !== undefined) 
+                    throw new UserInputError('Bad input', { errors });
+
             let user = await this.user_service.get({ email: email, is_for_login: true });
 
             // if (!user) 
@@ -54,20 +58,12 @@ export class AuthService
             // }
 
 
-            if (user.is_banned) 
-            {
-                errors.is_banned = 'You banned!';
-                throw new UserInputError('You banned!', { errors });
-            }
+            if (user.is_banned) errors.is_banned = 'You banned!';
                  
             
             const is_match = await argon2.verify(user.password, password);
 
-            if (!is_match)
-            {
-                errors.password = 'Password is incorrect!';
-                throw new UserInputError('Password is incorrect!', { errors });
-            }
+            if (!is_match) errors.password = 'Password is incorrect!';
 
 
             for (let value of Object.values(errors)) 
@@ -132,6 +128,10 @@ export class AuthService
             if (password.trim() === '') errors.password = 'Password must not be empty!';
             if (confirm_password.trim() === '') errors.confirm_password = 'Repeat password must not be empty!';
                 
+            for (let value of Object.values(errors)) 
+                if (value !== undefined) 
+                    throw errors;
+                    
             //const is_email_exists = await this.user_model.findOne({ email: email });
             const is_email_exists = await this.user_service.get({ email: email, is_for_regist: true });
             if (is_email_exists) errors.email = 'User with this email is already exists!';
