@@ -35,7 +35,7 @@ model User {
 
   chat_admin        Chat[]          @relation("ChatAdmin")
   chat_ids          String[]        @db.Array(ObjectId)
-  chat_member       Chat[]          @relation("ChatMembers", fields: [chat_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  chat_member       Chat[]          @relation("ChatMembers", fields: [chat_ids], references: [id])
   reactions         Reaction[]      @relation("UserReaction")
   messages          Message[]       @relation("UserMessage")
   subs_follower     Subscription[]  @relation("SubscriptionFollower")
@@ -46,9 +46,9 @@ model User {
   comment_likes     CommentLike[]   @relation("UserCommentLike")
   group_admin       Group[]         @relation("GroupAdmin")
   group_moder_ids   String[]        @db.Array(ObjectId)
-  group_moderator   Group[]         @relation("GroupModerators", fields: [group_moder_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  group_moderator   Group[]         @relation("GroupModerators", fields: [group_moder_ids], references: [id])
   group_ids         String[]        @db.Array(ObjectId)
-  group_member      Group[]         @relation("GroupMembers", fields: [group_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  group_member      Group[]         @relation("GroupMembers", fields: [group_ids], references: [id])
   user_invite       Invite[]        @relation("UserInvite")
   sender_invite     Invite[]        @relation("SenderInvite")
 
@@ -94,7 +94,7 @@ model Chat {
   admin_id          String          @db.ObjectId
   admin             User            @relation("ChatAdmin", fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   member_ids        String[]        @db.Array(ObjectId)
-  members           User[]          @relation("ChatMembers", fields: [member_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  members           User[]          @relation("ChatMembers", fields: [member_ids], references: [id])
   // message_ids       String[]        @db.Array(ObjectId)
   messages          Message[]       @relation("ChatMessage")//, fields: [message_ids], references: [id])
   is_private        Boolean         @default(false)
@@ -193,9 +193,9 @@ model Group {
   admin_id          String          @db.ObjectId
   admin             User            @relation("GroupAdmin", fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   moderator_ids     String[]        @db.Array(ObjectId)
-  moderators        User[]          @relation("GroupModerators", fields: [moderator_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  moderators        User[]          @relation("GroupModerators", fields: [moderator_ids], references: [id])
   member_ids        String[]        @db.Array(ObjectId)
-  members           User[]          @relation("GroupMembers", fields: [member_ids], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  members           User[]          @relation("GroupMembers", fields: [member_ids], references: [id])
   posts             Post[]          @relation("GroupPost")
   is_private        Boolean         @default(false)
   is_secure         Boolean         @default(false)
