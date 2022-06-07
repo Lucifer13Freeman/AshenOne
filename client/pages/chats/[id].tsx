@@ -262,7 +262,7 @@ const ChatPage: React.FC = () =>
                             />
                             <Grid container direction="row">
                                 <ChatMembers /*chat={chat}*//>
-                                { chat?.admin_id === auth.user.id && 
+                                { chat?.admin_id === auth.user?.id && 
                                 <InviteUsers chat_id={chat?.id}/> }
                             </Grid>
                             {/* <ItemsSelect>
