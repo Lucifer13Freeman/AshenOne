@@ -329,7 +329,7 @@ export class GroupService
                     const update_chat = await prisma.group.update(
                     {
                         where: { id: group_id },
-                        data: { members: { set: group.members } },
+                        data: { members: { set: group.members.map(m => ({ id: m.id })) } },
                         select: select_group
                     });
 
@@ -397,7 +397,7 @@ export class GroupService
                     const update_group = await prisma.group.update(
                     {
                         where: { id: group_id },
-                        data: { members: { set: group.members } },
+                        data: { members: { set: group.members.map(m => ({ id: m.id })) } },
                         select: select_group
                     });
 
@@ -445,7 +445,7 @@ export class GroupService
                         {
                             where: { id: group_id },
                             data: {
-                                members: { set: members },
+                                members: { set: members.map(m => ({ id: m.id })) },
                                 admin_id: group.admin_id === user.id ? group.members[0].id : group.admin_id
                             },
                             select: select_group
@@ -507,7 +507,9 @@ export class GroupService
                     {
                         where: { id },
                         data: {
-                            moderators: { set: [...group.moderators, user] }
+                            moderators: { 
+                                set: [...group.moderators.map(m => ({ id: m.id })), { id: user.id }] 
+                            }
                         },
                         select: select_group
                     });
@@ -519,7 +521,11 @@ export class GroupService
                     update_group = await prisma.group.update(
                     {
                         where: { id },
-                        data: { moderators: { set: moderators } },
+                        data: { 
+                            moderators: { 
+                                set: moderators.map(m => ({ id: m.id })) 
+                            } 
+                        },
                         select: select_group
                     });
                 }

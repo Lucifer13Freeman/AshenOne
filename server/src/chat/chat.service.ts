@@ -74,7 +74,15 @@ export class ChatService
             {
                 const is_exist = await prisma.chat.findFirst(
                 {
-                    where: { members: { every: { id: { in: member_ids } } } }// { equals: member_ids } }
+                    where: { 
+                        members: { 
+                            every: { id: { in: member_ids } } 
+                        } 
+                    },
+                    select: { 
+                        id: true,
+                        members: { select: { id: true } } 
+                    }
                 });
 
                 if (is_exist) 
@@ -88,9 +96,11 @@ export class ChatService
                 {
                     data: { 
                         // admin_id: current_user_id,
-                        // member_ids: [...member_ids],
+                        // members: users
+                        // members: [...member_ids],
+                        // members: member_ids.map((id) => ({ id }))
                         admin: { connect: { id: current_user_id } }, 
-                        members: { connect: member_ids.map((id) => ({id})) }
+                        members: { connect: member_ids.map((id) => ({ id })) }
                     },
                     select: select_chat
                 });
@@ -513,17 +523,21 @@ export class ChatService
                 const search_chats = await prisma.chat.findMany(
                 {
                     where: {
-                        members: { 
-                            some: { 
-                                // id: current_user_id,
-                                username: { contains: search_username, mode: 'insensitive' }
+                        OR: [{
+                            members: { 
+                                some: { 
+                                    // id: current_user_id,
+                                    username: { contains: search_username, mode: 'insensitive' }
+                                }
                             }
                         },
-                        messages: {
-                            some: {
-                                text: { contains: search_message_text, mode: 'insensitive' }
+                        {
+                            messages: {
+                                some: {
+                                    text: { contains: search_message_text, mode: 'insensitive' }
+                                }
                             }
-                        }
+                        }]
                     },
                     skip: offset,
                     take: limit,
@@ -648,22 +662,36 @@ export class ChatService
 
                 chat = await this.prisma.$transaction(async (prisma) => 
                 {
-                    const is_exist = await prisma.chat.findFirst(
+                    const existedChat = await prisma.chat.findFirst(
                     {
-                        where: { members: { every: { id: { in: member_ids } } } }
+                        where: { 
+                            members: { 
+                                every: { id: { in: member_ids } } 
+                            } 
+                        },
+                        select: { 
+                            id: true,
+                            members: { select: { id: true } } 
+                        }
                     });
+
+                    const is_exist = existedChat.members.map(m => m.id).toString() === member_ids.toString();
         
                     if (is_exist) 
                     {
                         errors.chat = 'Chat with these members is already exists!';
-                        errors.chat_id = is_exist.id;
+                        errors.chat_id = existedChat.id;
                         throw new UserInputError('Chat with these members is already exists!', { errors });
                     }
 
                     const update_chat = await prisma.chat.update(
                     {
                         where: { id: chat_id },
-                        data: { members: { set: [...chat.members, user] } },
+                        data: { 
+                            members: { 
+                                set: [...chat.members.map(m => ({ id: m.id })), { id: user.id }] 
+                            } 
+                        },
                         select: select_chat
                     });
 
@@ -728,22 +756,43 @@ export class ChatService
     
                     if (invite) await prisma.invite.delete({ where: { id: invite.id }});
 
-                    const is_exist = await prisma.chat.findFirst(
+                    const existedChat = await prisma.chat.findFirst(
                     {
-                        where: { members: { every: { id: { in: member_ids } } } }
+                        where: { 
+                            members: { 
+                                every: { id: { in: member_ids } } 
+                            } 
+                        },
+                        select: { 
+                            id: true,
+                            members: { select: { id: true } } 
+                        }
                     });
+
+                    // console.log(existedChat.members.map(m => m.id).toString())
+                    // console.log(member_ids.toString())
+
+                    // console.log(existedChat)
+
+                    const is_exist = existedChat.members.map(m => m.id).toString() === member_ids.toString();
             
+                    // console.log(is_exist)
+
                     if (is_exist) 
                     {
                         errors.chat = 'Chat with these members is already exists!';
-                        errors.chat_id = is_exist.id;
+                        errors.chat_id = existedChat.id;
                         throw new UserInputError('Chat with these members is already exists!', { errors });
                     }
 
                     const update_chat = await prisma.chat.update(
                     {
                         where: { id: chat_id },
-                        data: { members: { set: [...chat.members, user] } },
+                        data: { 
+                            members: { 
+                                set: [...chat.members.map(m => ({ id: m.id })), { id: user.id }] 
+                            } 
+                        },
                         select: select_chat
                     });
 
@@ -812,7 +861,7 @@ export class ChatService
                         {
                             where: { id: chat_id },
                             data: {
-                                members: { set: members },
+                                members: { set: members.map(m => ({ id: m.id })) },
                                 admin_id: chat.admin_id === user.id ? chat.members[0].id : chat.admin_id
                             },
                             select: select_chat

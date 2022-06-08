@@ -1,12 +1,7 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
-import { RegisterUserInput } from '../auth/inputs/register.input';
-import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { GqlCurrentUser } from 'src/decorators/gql-current-user.decorator';
 import { ChatService } from './chat.service';
 import { CreateChatInput } from './inputs/chat/create-chat.input';
-// import { ChatType } from './selects/dto/chat.dto';
-import { UserService } from 'src/user/user.service';
 import { GetUserInput } from 'src/user/inputs/get-user.input';
 import { GetChatInput } from './inputs/chat/get-chat.input';
 import { GetAllChatsInput } from './inputs/chat/get-all-chats.input';
