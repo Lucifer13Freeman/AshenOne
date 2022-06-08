@@ -18,7 +18,7 @@ export class PostType
     readonly id: string;//ObjectId;
 
     @Field(() => UserType)
-    readonly user: User;//Document;
+    readonly user: UserType;//Document;
 
     @Field(() => ID, { nullable: true })
     readonly group_id?: string;//ObjectId;
@@ -45,7 +45,7 @@ export class PostType
     // readonly likes_count: number; 
 
     @Field(() => [CommentType], { nullable: true })
-    readonly comments: Comment[];//CommentDocument[];
+    readonly comments: CommentType[];//CommentDocument[];
 
     @Field({ nullable: true })
     readonly created_at: Date;

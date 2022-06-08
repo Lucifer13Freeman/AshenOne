@@ -1,29 +1,25 @@
-// import { Connection, Model, ObjectId } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-// import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { FileService } from 'src/file/file.service';
 import { UserService } from 'src/user/user.service';
 import { UserInputError } from 'apollo-server-express';
 import { ChatService } from 'src/chat/chat.service';
-// import { Post, PostDocument } from './schemas/post.schema';
-// import { Comment, CommentDocument } from './schemas/comment.schema';
 import { CreatePostInput } from './inputs/post/create-post.input';
 import { GetPostInput } from './inputs/post/get-post.input';
 import { GetAllPostsInput } from './inputs/post/get-all-post.input';
 import { SearchPostInput } from './inputs/post/search-post.input';
 import { UpdatePostInput } from './inputs/post/update-post.input';
 import { SubscriptionService } from 'src/subscriptions/subscription.service';
-// import { SubscriptionDocument } from 'src/subscriptions/schemas/subscriptions.schema';
-// import { UserDocument } from 'src/user/schemas/user.schema';
 import { LikeInput } from './inputs/like/like.input';
-// import { Like, LikeDocument } from './schemas/like.schema';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { select_user } from 'src/user/selects/user.select';
 import { select_post } from './selects/post.select';
+import { select_comment } from './selects/comment.select';
 import { Group, Post, PostLike, Subscription, User } from '@prisma/client';
 import { select_post_like } from './selects/like.select';
 import { select_subscription } from 'src/subscriptions/selects/subscription.select';
 import { GroupService } from 'src/group/group.service';
+import { PostType } from './dto/post.dto';
+import { GroupType } from 'src/group/dto/group.dto';
 
 
 @Injectable()
@@ -44,7 +40,7 @@ export class PostService
                 private file_service: FileService) {}
 
 
-    async create(dto: CreatePostInput): Promise<Post/*Document*/> 
+    async create(dto: CreatePostInput): Promise<PostType/*Document*/> 
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -124,7 +120,7 @@ export class PostService
     }
 
 
-    async get(dto: GetPostInput): Promise<Post/*Document*/ | null>
+    async get(dto: GetPostInput): Promise<PostType/*Document*/ | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -191,7 +187,7 @@ export class PostService
     }
     
 
-    async get_all(dto: GetAllPostsInput): Promise<Post[]/*Document[]*/ | null>
+    async get_all(dto: GetAllPostsInput): Promise<PostType[]/*Document[]*/ | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -331,7 +327,7 @@ export class PostService
     }
 
 
-    async get_group_posts(dto: GetAllPostsInput): Promise<Post[]>
+    async get_group_posts(dto: GetAllPostsInput): Promise<PostType[]>
     {
         try 
         {
@@ -365,8 +361,8 @@ export class PostService
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
 
-                    groups = groups.filter((group: Group) => 
-                        !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
+                    groups = groups.filter((group: GroupType) => 
+                        !group.is_private || group.members.find((m) => m.id === current_user_id) !== undefined);
 
                     const group_ids = groups.map(gr => gr.id);
 
@@ -410,7 +406,7 @@ export class PostService
     }
 
 
-    async get_user_posts(dto: GetAllPostsInput): Promise<Post[]>
+    async get_user_posts(dto: GetAllPostsInput): Promise<PostType[]>
     {
         try 
         {
@@ -439,12 +435,12 @@ export class PostService
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
 
-                    console.log(subscriptions)
+                    // console.log(subscriptions)
 
-                    console.log(current_user_id)
-                    const test = subscriptions.find(sub => sub.follower_id === current_user_id);
+                    // console.log(current_user_id)
+                    // const test = subscriptions.find(sub => sub.follower_id === current_user_id);
 
-                    console.log(test)
+                    // console.log(test)
 
                     // subscriptions = subscriptions.filter(sub => sub.follower_id === current_user_id
                     //                                             && sub.profile_id !== current_user_id);
@@ -506,7 +502,7 @@ export class PostService
     }
 
 
-    async search(dto: SearchPostInput): Promise<Post[]/*Document[]*/ | null>
+    async search(dto: SearchPostInput): Promise<PostType[]/*Document[]*/ | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -705,7 +701,7 @@ export class PostService
     }
 
 
-    async search_group_posts(dto: SearchPostInput): Promise<Post[]>
+    async search_group_posts(dto: SearchPostInput): Promise<PostType[]>
     {
         try 
         {
@@ -739,8 +735,8 @@ export class PostService
                         orderBy: { created_at: is_order_by_desc ? 'desc' : 'asc' }
                     });
 
-                    groups = groups.filter((group: Group) => 
-                        !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
+                    groups = groups.filter((group: GroupType) => 
+                        !group.is_private || group.members.find((m) => m.id === current_user_id) !== undefined);
 
                     const group_ids = groups.map(gr => gr.id);
 
@@ -786,7 +782,7 @@ export class PostService
     }
 
 
-    async search_user_posts(dto: SearchPostInput): Promise<Post[]>
+    async search_user_posts(dto: SearchPostInput): Promise<PostType[]>
     {
         try 
         {
@@ -899,7 +895,7 @@ export class PostService
     }
 
 
-    async update(dto: UpdatePostInput): Promise<Post/*Document*/ | null>
+    async update(dto: UpdatePostInput): Promise<PostType/*Document*/ | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -1121,7 +1117,7 @@ export class PostService
         // }
     }
 
-    async delete_all_comments_in_post(dto: GetPostInput): Promise<Post/*Document*/ | null>
+    async delete_all_comments_in_post(dto: GetPostInput): Promise<PostType/*Document*/ | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();

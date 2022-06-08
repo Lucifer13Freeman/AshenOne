@@ -15,5 +15,5 @@ export class LoginType
     cookie?: string
 
     @Field(() => UserType, { nullable: true })
-    user?: User;//UserDocument;
+    user?: UserType;//UserDocument;
 }

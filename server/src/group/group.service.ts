@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
-import { Group } from "@prisma/client";
+import { Group, User } from "@prisma/client";
 import { UserInputError } from "apollo-server-express";
 import { FILE_TYPE, INVITE_STATUS } from "src/config/configs/consts.config";
 import { FileService } from "src/file/file.service";
@@ -7,6 +7,7 @@ import { InviteService } from "src/invite/invite.service";
 import { GetPostInput } from "src/post/inputs/post/get-post.input";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UserService } from "src/user/user.service";
+import { GroupType } from "./dto/group.dto";
 import { CreateGroupInput } from "./inputs/create-group.input";
 import { GetAllGroupsInput } from "./inputs/get-all-groups.input";
 import { GetGroupInput } from "./inputs/get-group.input";
@@ -27,7 +28,7 @@ export class GroupService
                 private file_service: FileService) {}
 
 
-    async create(dto: CreateGroupInput): Promise<Group> 
+    async create(dto: CreateGroupInput): Promise<GroupType> 
     {
         try 
         {
@@ -68,6 +69,8 @@ export class GroupService
 
                 return create_group;
             });
+
+            // group['moderator_ids'] = group.moderators.map(m => m.id);
             
             return group;
         } 
@@ -79,7 +82,7 @@ export class GroupService
     }
 
 
-    async get(dto: GetGroupInput): Promise<Group | null>
+    async get(dto: GetGroupInput): Promise<GroupType | null>
     {
         try 
         {
@@ -108,7 +111,7 @@ export class GroupService
 
                 if (current_user_id && get_group.is_private) 
                 {
-                    const is_member = get_group.member_ids.find((id: string) => id === current_user_id);
+                    const is_member = get_group.members.find((m: User) => m.id === current_user_id);
 
                     if (is_member === undefined)
                     {
@@ -130,7 +133,7 @@ export class GroupService
     }
     
 
-    async get_all(dto: GetAllGroupsInput): Promise<Group[] | null>
+    async get_all(dto: GetAllGroupsInput): Promise<GroupType[] | null>
     {
         try 
         {
@@ -165,8 +168,8 @@ export class GroupService
                     });
                 // }
 
-                get_all_groups = get_all_groups.filter((group: Group) => 
-                    !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
+                get_all_groups = get_all_groups.filter((group) => 
+                    !group.is_private || group.members.find((m: User) => m.id === current_user_id) !== undefined);
 
                 return get_all_groups;
             });
@@ -221,7 +224,7 @@ export class GroupService
     }
 
 
-    async delete_all_posts_in_chat(dto: GetPostInput): Promise<Group | null>
+    async delete_all_posts_in_chat(dto: GetPostInput): Promise<GroupType | null>
     {
         try 
         {
@@ -255,7 +258,7 @@ export class GroupService
     }
 
 
-    async search(dto: SearchGroupInput): Promise<Group[] | null>
+    async search(dto: SearchGroupInput): Promise<GroupType[] | null>
     {
         try 
         {
@@ -284,8 +287,8 @@ export class GroupService
                     select: select_group
                 });
 
-                search_groups = search_groups.filter((group: Group) => 
-                    !group.is_private || group.member_ids.find((id) => id === current_user_id) !== undefined);
+                search_groups = search_groups.filter((group) => 
+                    !group.is_private || group.members.find((m: User) => m.id === current_user_id) !== undefined);
                
                 return search_groups;
             });
@@ -300,7 +303,7 @@ export class GroupService
     }
 
 
-    async add_invited_member(dto: GetGroupMemberInput): Promise<Group | null>
+    async add_invited_member(dto: GetGroupMemberInput): Promise<GroupType | null>
     {
         try 
         {
@@ -315,18 +318,18 @@ export class GroupService
 
             let group = await this.get({ id: group_id });
 
-            const is_member = group.member_ids.find((id: string) => id === user.id);
+            const is_member = group.members.find((m: User) => m.id === user.id);
 
             if (invite && is_member === undefined)
             {
-                group.member_ids.push(user_id);
+                group.members.push(user);
 
                 group = await this.prisma.$transaction(async (prisma) => 
                 {
                     const update_chat = await prisma.group.update(
                     {
                         where: { id: group_id },
-                        data: { member_ids: { set: group.member_ids } },
+                        data: { members: { set: group.members } },
                         select: select_group
                     });
 
@@ -351,7 +354,7 @@ export class GroupService
     }
 
 
-    async add_member(dto: GetGroupMemberInput): Promise<Group>
+    async add_member(dto: GetGroupMemberInput): Promise<GroupType>
     {
         try 
         {
@@ -372,14 +375,14 @@ export class GroupService
             let group = await this.get({ id: group_id, 
                                         current_user_id: current_user_id });
             
-            const is_member = group.member_ids.find((id: string) => id === user.id);
+            const is_member = group.members.find((m: User) => m.id === user.id);
 
             if (is_member === undefined)
             {
                 // const invite = await this.invite_service.get({ user_id: user.id, group_id });
                 // if (invite) await this.invite_service.delete({ id: invite.id, current_user_id });
                 
-                group.member_ids.push(user.id);
+                group.members.push(user);
                 
                 group = await this.prisma.$transaction(async (prisma) => 
                 {
@@ -394,7 +397,7 @@ export class GroupService
                     const update_group = await prisma.group.update(
                     {
                         where: { id: group_id },
-                        data: { member_ids: { set: group.member_ids } },
+                        data: { members: { set: group.members } },
                         select: select_group
                     });
 
@@ -412,7 +415,7 @@ export class GroupService
     }
 
     
-    async remove_member(dto: GetGroupMemberInput): Promise<Group | null/*Document*/>//: Promise<Chat> 
+    async remove_member(dto: GetGroupMemberInput): Promise<GroupType | null/*Document*/>//: Promise<Chat> 
     {
         try 
         {
@@ -423,13 +426,13 @@ export class GroupService
             let group = await this.get({ id: group_id, 
                                     current_user_id: current_user_id });
             
-            const is_member = group.member_ids.find((id: string) => id === user.id);
+            const is_member = group.members.find((m: User) => m.id === user.id);
 
             if (is_member !== undefined)
             {
-                group.member_ids = group.member_ids.filter((id: string) => id !== user.id);
+                const members = group.members.filter((m: User) => m.id !== user.id);
 
-                if (group.member_ids.length === 0) 
+                if (members.length === 0) 
                 { 
                     this.delete({ id: group_id, current_user_id });
                     //delete all messages from chat
@@ -442,8 +445,8 @@ export class GroupService
                         {
                             where: { id: group_id },
                             data: {
-                                member_ids: { set: group.member_ids },
-                                admin_id: group.admin_id === user.id ? group.member_ids[0] : group.admin_id
+                                members: { set: members },
+                                admin_id: group.admin_id === user.id ? group.members[0].id : group.admin_id
                             },
                             select: select_group
                         });
@@ -463,7 +466,7 @@ export class GroupService
     }
 
 
-    async update(dto: UpdateGroupInput): Promise<Group | null>
+    async update(dto: UpdateGroupInput): Promise<GroupType | null>
     {
         try 
         {
@@ -473,7 +476,7 @@ export class GroupService
             let group = await this.get({ id, current_user_id });
 
             const is_admin = group.admin_id === current_user_id;
-            const is_moderator = group.moderator_ids.find(id => id === current_user_id) !== undefined;
+            const is_moderator = group.moderators.find((m: User) => m.id === current_user_id) !== undefined;
 
             group = await this.prisma.$transaction(async (prisma) => 
             {
@@ -497,25 +500,26 @@ export class GroupService
 
                 if (is_admin && add_moderator_id)
                 {
-                    const moderator_ids = [...group.moderator_ids, add_moderator_id];
+                    const user = await this.user_service.get({ id: add_moderator_id });
+                    // const moderator_ids = [...group.moderators.map(m => m.id), add_moderator_id];
 
                     update_group = await prisma.group.update(
                     {
                         where: { id },
                         data: {
-                            moderator_ids: { set: moderator_ids }
+                            moderators: { set: [...group.moderators, user] }
                         },
                         select: select_group
                     });
                 }
                 else if (is_admin && remove_moderator_id)
                 {
-                    const moderator_ids = group.moderator_ids.filter((id: string) => id !== remove_moderator_id);
+                    const moderators = group.moderators.filter((m: User) => m.id !== remove_moderator_id);
 
                     update_group = await prisma.group.update(
                     {
                         where: { id },
-                        data: { moderator_ids: { set: moderator_ids } },
+                        data: { moderators: { set: moderators } },
                         select: select_group
                     });
                 }
@@ -533,7 +537,7 @@ export class GroupService
     }
 
 
-    async update_avatar(dto: UpdateGroupInput, image): Promise<Group>
+    async update_avatar(dto: UpdateGroupInput, image): Promise<GroupType>
     {
         let errors = { user_id: undefined }
 
@@ -544,7 +548,7 @@ export class GroupService
             let group = await this.get({ id, current_user_id });
 
             const is_admin = group.admin_id === current_user_id;
-            const is_moderator = group.moderator_ids.find(id => id === current_user_id) !== undefined;
+            const is_moderator = group.moderators.find((m: User) => m.id === current_user_id) !== undefined;
 
             if (is_admin || is_moderator)
             {

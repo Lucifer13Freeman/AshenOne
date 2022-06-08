@@ -20,6 +20,7 @@ import { select_user } from './selects/user.select';
 import { UpdateUserInput } from './inputs/update-user.input';
 import path from 'path';
 import fs from 'fs';
+import { UserType } from './dto/user.dto';
 //import { MongoRepository } from 'typeorm';
 
 
@@ -54,7 +55,7 @@ export class UserService
                 private file_service: FileService) {}
 
 
-    async create(dto: CreateUserInput): Promise<User /*UserDocument*//*IUser*/>//: Promise<User> 
+    async create(dto: CreateUserInput): Promise<UserType> // /*UserDocument*//*IUser*/>//: Promise<User> 
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -119,7 +120,7 @@ export class UserService
     }
 
 
-    async get(dto: GetUserInput): Promise<User/*Document*/ | null> //: Promise<UserDocument | null>//: Promise<User | null>
+    async get(dto: GetUserInput): Promise<UserType/*Document*/ | null> //: Promise<UserDocument | null>//: Promise<User | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -232,7 +233,7 @@ export class UserService
     }
     
 
-    async get_all(dto: GetAllUsersInput): Promise<User[]/*Document[]*//*IUser[]*/ | null>//: Promise<User[] | null>
+    async get_all(dto: GetAllUsersInput): Promise<UserType[]/*Document[]*//*IUser[]*/ | null>//: Promise<User[] | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -329,7 +330,7 @@ export class UserService
     }
 
 
-    async search(dto: SearchUserInput): Promise<User[]/*Document[]*//*IUser[]*/ | null>//: Promise<User[] | null>
+    async search(dto: SearchUserInput): Promise<UserType[]/*Document[]*//*IUser[]*/ | null>//: Promise<User[] | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -401,7 +402,7 @@ export class UserService
     // }
 
     
-    async update(dto: UpdateUserInput): Promise<User/*ObjectId*/>
+    async update(dto: UpdateUserInput): Promise<UserType/*ObjectId*/>
     {
         let errors: any = {
             username: undefined,
@@ -504,7 +505,7 @@ export class UserService
     }
 
 
-    async update_avatar(dto: UpdateUserInput, image): Promise<User>
+    async update_avatar(dto: UpdateUserInput, image): Promise<UserType>
     {
         try 
         {
@@ -590,7 +591,7 @@ export class UserService
     }
 
 
-    async ban(dto: GetUserInput): Promise<User | null>
+    async ban(dto: GetUserInput): Promise<UserType | null>
     {
         let errors: any = {
             user_id: undefined,

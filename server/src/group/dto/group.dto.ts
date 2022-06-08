@@ -23,14 +23,20 @@ export class GroupType
     @Field(() => ID)
     readonly admin_id: string;//ObjectId;
 
-    @Field(() => [ID], { nullable: true })
-    readonly moderator_ids: string;
+    // @Field(() => [ID], { nullable: true })
+    // readonly moderator_ids: string[];
+
+    // @Field(() => [ID], { nullable: true })
+    // readonly moderators: string[];
+
+    @Field(() => [UserType], { nullable: true })
+    readonly moderators: UserType[];
 
     @Field(() => [UserType])
-    readonly members: User[];//Document[];
+    readonly members: UserType[];//Document[];
 
     @Field(() => [PostType], { nullable: true })
-    readonly posts: Post[];//Document[];
+    readonly posts: PostType[];//Document[];
 
     @Field({ nullable: true })
     readonly is_private: boolean;

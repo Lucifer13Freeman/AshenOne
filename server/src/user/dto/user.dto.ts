@@ -19,8 +19,7 @@ export class UserType
     //@IsEmail()
     readonly email: string;
 
-    // @Field({ nullable: true })
-    // readonly password: string;
+    readonly password?: string = undefined;
 
     @Field({ nullable: true })
     readonly avatar: string;

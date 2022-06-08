@@ -107,7 +107,7 @@ export class AuthService
         }
     }
 
-    async register(dto: RegisterUserInput): Promise<User> 
+    async register(dto: RegisterUserInput): Promise<UserType> 
     {
         let errors: any = {
             username: undefined,

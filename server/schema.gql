@@ -102,7 +102,7 @@ type GroupType {
   name: String!
   avatar: String!
   admin_id: ID!
-  moderator_ids: [ID!]
+  moderators: [UserType!]
   members: [UserType!]!
   posts: [PostType!]
   is_private: Boolean

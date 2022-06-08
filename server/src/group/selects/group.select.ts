@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { ISelectPost, select_post } from "src/post/selects/post.select";
 import { ISelectUser, select_user } from "src/user/selects/user.select";
 
@@ -9,9 +10,9 @@ export interface ISelectGroup
     avatar: boolean;
     admin_id: boolean;
     admin: boolean;
-    moderator_ids: boolean;
-    moderators: boolean;
-    member_ids: boolean;
+    // moderator_ids: boolean;
+    moderators: boolean | { select: { id: boolean; }; };
+    // member_ids: boolean;
     members: { select: ISelectUser };
     posts: { select: ISelectPost };
     is_private: boolean;
@@ -26,9 +27,9 @@ export const select_group: ISelectGroup = {
     avatar: true,
     admin_id: true,
     admin: false,
-    moderator_ids: true,
-    moderators: false,
-    member_ids: true,
+    // moderator_ids: true,
+    moderators: { select: { id: true } },//false,
+    // member_ids: true,
     members: { select: select_user },
     posts: { select: select_post },
     is_private: true,

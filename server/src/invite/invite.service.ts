@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Chat, Group, Invite } from "@prisma/client";
+import { Chat, Group, Invite, User } from "@prisma/client";
 import { UserInputError } from "apollo-server-express";
 import { ChatService } from "src/chat/chat.service";
 import { GetChatMemberInput } from "src/chat/inputs/chat/get-member.input";
@@ -70,12 +70,12 @@ export class InviteService
                             id: chat_id, 
                             members: { some: { id: current_user_id } } ,
                         },
-                        select: { member_ids: true }
+                        select: { members: { select: { id: true } } }
                     });
 
                     if (chat)
                     {
-                        const is_member = await chat.member_ids.find((id: string) => id === user_id);
+                        const is_member = await chat.members.find((m: User) => m.id === user_id);
 
                         if (is_member)
                         {
@@ -107,12 +107,12 @@ export class InviteService
                             id: group_id, 
                             members: { some: { id: current_user_id } } ,
                         },
-                        select: { member_ids: true }
+                        select: { members: { select: { id: true } } }
                     });
     
                     if (group)
                     {
-                        const is_member = await group.member_ids.find((id: string) => id === user_id);
+                        const is_member = await group.members.find((m: User) => m.id === user_id);
                         
                         if (is_member)
                         {

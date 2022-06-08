@@ -15,7 +15,7 @@ import { GqlCurrentUser } from 'src/decorators/gql-current-user.decorator';
 import { GetChatMemberInput } from './inputs/chat/get-member.input';
 // import { Message, MessageDocument } from './schemas/message.schema';
 import { MessageService } from './message.service';
-import { Chat, User } from '@prisma/client';
+import { Chat, Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { select_user } from 'src/user/selects/user.select';
 import { select_chat } from './selects/chat.select';
@@ -24,6 +24,7 @@ import { UpdateChatInput } from './inputs/chat/update-chat.input';
 import { connect } from 'http2';
 import { InviteService } from 'src/invite/invite.service';
 import { INVITE_STATUS } from 'src/config/configs/consts.config';
+import { ChatType } from './dto/chat.dto';
 
 
 @Injectable()
@@ -42,7 +43,7 @@ export class ChatService
                 private user_service: UserService) {}
 
 
-    async create(dto: CreateChatInput): Promise<Chat/*Document*/> 
+    async create(dto: CreateChatInput): Promise<ChatType/*Chat*/> 
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -73,7 +74,7 @@ export class ChatService
             {
                 const is_exist = await prisma.chat.findFirst(
                 {
-                    where: { member_ids: { equals: member_ids } }
+                    where: { members: { every: { id: { in: member_ids } } } }// { equals: member_ids } }
                 });
 
                 if (is_exist) 
@@ -127,7 +128,7 @@ export class ChatService
             // }
 
             //await session.commitTransaction();
-            return chat; //await this.get({ id: chat._id });
+            return chat as ChatType; //await this.get({ id: chat._id });
         } 
         catch (err) 
         {
@@ -142,7 +143,7 @@ export class ChatService
     }
 
 
-    async get(dto: GetChatInput): Promise<Chat /*Document*/ | null>
+    async get(dto: GetChatInput): Promise<ChatType/*Chat*/ /*Document*/ | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -179,7 +180,7 @@ export class ChatService
 
                 if (current_user_id) 
                 {
-                    const is_member = get_chat.member_ids.find((id: string) => id === current_user_id);
+                    const is_member = get_chat.members.find((m: User) => m.id === current_user_id);
 
                     if (is_member === undefined)
                     {
@@ -221,7 +222,7 @@ export class ChatService
             // }
 
             //await session.commitTransaction();
-            return chat;
+            return chat as ChatType;
         }
         catch(err)
         {
@@ -236,7 +237,7 @@ export class ChatService
     }
     
 
-    async get_all(dto: GetAllChatsInput): Promise<Chat[]/*Document[]*/ | null>
+    async get_all(dto: GetAllChatsInput): Promise<ChatType[]/*Document[]*/ | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -293,8 +294,8 @@ export class ChatService
                 return get_all_chats;
             });
             
-            chats = chats?.filter((chat: Chat) => 
-                chat.member_ids?.find((id) => id === current_user_id) !== undefined);
+            chats = chats?.filter((chat) => 
+                chat.members?.find((m: User) => m.id === current_user_id) !== undefined);
 
 
 
@@ -346,7 +347,7 @@ export class ChatService
                                             .populate('messages');*/
             
             //await session.commitTransaction();
-            return chats;
+            return chats as ChatType[];
         } 
         catch (err) 
         {
@@ -423,7 +424,7 @@ export class ChatService
     }
 
     
-    async delete_all_messages_in_chat(dto: GetChatInput): Promise<Chat | null>
+    async delete_all_messages_in_chat(dto: GetChatInput): Promise<ChatType | null>
     {
         try 
         {
@@ -447,7 +448,7 @@ export class ChatService
                 return await prisma.chat.findUnique({ where: { id }, select: select_chat });
             });
 
-            return chat;
+            return chat as ChatType;
         }
         catch(err)
         {
@@ -457,7 +458,7 @@ export class ChatService
     }
 
 
-    async search(dto: SearchChatInput): Promise<Chat[]/*Document[]*/ | null>//: Promise<Chat[] | null>
+    async search(dto: SearchChatInput): Promise<ChatType[]/*Document[]*/ | null>//: Promise<Chat[] | null>
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -600,12 +601,12 @@ export class ChatService
                 return search_chats;
             });
 
-            chats = chats.filter((chat: Chat) => 
-                chat.member_ids.find((id) => id === current_user_id) !== undefined);
+            chats = chats.filter((chat) => 
+                chat.members.find((m: User) => m.id === current_user_id) !== undefined);
 
 
             //await session.commitTransaction();
-            return chats;
+            return chats as ChatType[];
         } 
         catch (err) 
         {
@@ -620,7 +621,7 @@ export class ChatService
     }
 
 
-    async add_invited_member(dto: GetChatMemberInput): Promise<Chat | null>
+    async add_invited_member(dto: GetChatMemberInput): Promise<ChatType | null>
     {
         try 
         {
@@ -637,7 +638,7 @@ export class ChatService
 
             let chat = await this.get({ id: chat_id });
 
-            let member_ids = chat.member_ids;
+            let member_ids = chat.members.map((m: User) => m.id);
 
             const is_member = member_ids.find((id: string) => id === user.id);
 
@@ -649,7 +650,7 @@ export class ChatService
                 {
                     const is_exist = await prisma.chat.findFirst(
                     {
-                        where: { member_ids: { equals: member_ids } }
+                        where: { members: { every: { id: { in: member_ids } } } }
                     });
         
                     if (is_exist) 
@@ -662,7 +663,7 @@ export class ChatService
                     const update_chat = await prisma.chat.update(
                     {
                         where: { id: chat_id },
-                        data: { member_ids: { set: member_ids } },
+                        data: { members: { set: [...chat.members, user] } },
                         select: select_chat
                     });
 
@@ -687,7 +688,7 @@ export class ChatService
     }
 
 
-    async add_member(dto: GetChatMemberInput): Promise<Chat/*Document*/>//: Promise<Chat> 
+    async add_member(dto: GetChatMemberInput): Promise<ChatType/*Document*/>//: Promise<Chat> 
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -706,7 +707,7 @@ export class ChatService
 
             let chat = await this.get({ id: chat_id, current_user_id });
 
-            let member_ids = chat.member_ids;
+            let member_ids = chat.members.map((m: User) => m.id);
             
             const is_member = member_ids.find((id: string) => id === user.id);
 
@@ -729,7 +730,7 @@ export class ChatService
 
                     const is_exist = await prisma.chat.findFirst(
                     {
-                        where: { member_ids: { equals: member_ids } }
+                        where: { members: { every: { id: { in: member_ids } } } }
                     });
             
                     if (is_exist) 
@@ -742,14 +743,14 @@ export class ChatService
                     const update_chat = await prisma.chat.update(
                     {
                         where: { id: chat_id },
-                        data: { member_ids: { set: member_ids } },
+                        data: { members: { set: [...chat.members, user] } },
                         select: select_chat
                     });
 
                     return update_chat;
                 });
 
-                return chat;
+                return chat as ChatType;
             }
             else
             {
@@ -770,7 +771,7 @@ export class ChatService
     }
 
     
-    async remove_member(dto: GetChatMemberInput): Promise<Chat | null/*Document*/>//: Promise<Chat> 
+    async remove_member(dto: GetChatMemberInput): Promise<ChatType | null/*Document*/>//: Promise<Chat> 
     {
         // const session = await this.connection.startSession();
         // session.startTransaction();
@@ -788,13 +789,15 @@ export class ChatService
             let chat = await this.get({ id: chat_id, 
                                     current_user_id: current_user_id });
             
-            const is_member = chat.member_ids.find((id: string) => id === user.id);
+            // let member_ids = chat.members.map((m: User) => m.id);
+
+            const is_member = chat.members.find((m: User) => m.id === user.id);
 
             if (is_member !== undefined)
             {
-                chat.member_ids = chat.member_ids.filter((id: string) => id !== user.id);
+                let members = chat.members.filter((m: User) => m.id !== user.id);
 
-                if (chat.member_ids.length === 0) 
+                if (members.length === 0) 
                 { 
                     this.delete({ id: chat_id, current_user_id });
                     //delete all messages from chat
@@ -809,8 +812,8 @@ export class ChatService
                         {
                             where: { id: chat_id },
                             data: {
-                                member_ids: { set: chat.member_ids },
-                                admin_id: chat.admin_id === user.id ? chat.member_ids[0] : chat.admin_id
+                                members: { set: members },
+                                admin_id: chat.admin_id === user.id ? chat.members[0].id : chat.admin_id
                             },
                             select: select_chat
                         });
@@ -819,7 +822,7 @@ export class ChatService
                     });
                 }
                 
-                return chat;
+                return chat as ChatType;
             }
 
             // const is_member = chat.members.find((u: UserDocument) => u.id === user_id);
@@ -863,7 +866,7 @@ export class ChatService
         // }
     }
 
-    async update_chat(dto: UpdateChatInput): Promise<Chat | null>
+    async update_chat(dto: UpdateChatInput): Promise<ChatType | null>
     {
         try 
         {
@@ -875,20 +878,21 @@ export class ChatService
             {
                 chat = await this.prisma.$transaction(async (prisma) => 
                 {
-                    const update_chat = await prisma.group.update(
+                    const update_chat = await prisma.chat.update(
                     {
                         where: { id },
                         data: {
                             is_private: is_private !== undefined ? is_private : chat.is_private,
                             is_secure: is_secure !== undefined ? is_secure : chat.is_secure
-                        }
+                        },
+                        select: select_chat
                     });
 
                     return update_chat;
                 });
             }
 
-            return chat;
+            return chat as ChatType;
         } 
         catch (err) 
         {

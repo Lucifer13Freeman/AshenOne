@@ -20,7 +20,7 @@ export class CommentType
     readonly post_id: string;// ObjectId;
 
     @Field(() => UserType)
-    readonly user: User;//Document;
+    readonly user: UserType;//Document;
 
     @Field()
     readonly text: string;
