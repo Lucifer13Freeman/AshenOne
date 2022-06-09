@@ -92,8 +92,10 @@ export const message_reducer = (state = initial_state, action: MessageAction | R
                 update_message = {...update_messages[message_index]}
                 let update_reactions = [...update_message.reactions];
 
-                const reaction_index: number = update_reactions.findIndex((r: IReaction) => r.id === reaction.id);
+                // const reaction_index: number = update_reactions.findIndex((r: IReaction) => r.id === reaction.id);
                 
+                const reaction_index: number = update_reactions.findIndex((r: IReaction) => r.user_id === reaction.user_id);
+
                 if (reaction_index > -1) update_reactions[reaction_index] = reaction;
                 else update_reactions = [...update_reactions, reaction];
 

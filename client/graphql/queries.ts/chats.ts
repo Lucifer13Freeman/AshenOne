@@ -15,7 +15,7 @@ const GET_CHAT = gql`
                 image
                 audio
                 video
-                reactions { content } 
+                reactions { user_id message_id content } 
                 created_at
                 updated_at
             }
@@ -41,7 +41,7 @@ const GET_ALL_CHATS = gql`
                 image
                 audio
                 video
-                reactions { content } 
+                reactions { user_id message_id content } 
                 created_at
                 updated_at
             }
@@ -67,7 +67,7 @@ const SEARCH_CHATS = gql`
                 image
                 audio
                 video
-                reactions { content } 
+                reactions { user_id message_id content } 
                 created_at
                 updated_at
             }

@@ -53,8 +53,6 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) =>
         onCompleted: (data) => async_delete_message(data.delete_message),
         onError: (err) => 
         {
-            console.log(err);
-        
             if (err.message === TOKEN.ERROR_MESSAGE) 
             {
                 router.push(ROUTES.LOGIN);

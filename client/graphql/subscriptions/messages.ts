@@ -11,7 +11,7 @@ const NEW_MESSAGE = gql`
       image
       audio
       video
-      reactions { content } 
+      reactions { user_id message_id content } 
       created_at
       updated_at
     }
@@ -28,7 +28,7 @@ const UPDATED_MESSAGE = gql`
       image
       audio
       video
-      reactions { content } 
+      reactions { user_id message_id content } 
       created_at
       updated_at
     }

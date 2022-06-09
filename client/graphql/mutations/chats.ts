@@ -43,6 +43,7 @@ const ADD_CHAT_MEMBER = gql`
                 chat_id 
                 user { id username avatar role is_banned } 
                 text 
+                reactions { user_id message_id content } 
                 image
                 audio
                 video
@@ -68,6 +69,7 @@ const ADD_CHAT_INVITED_MEMBER = gql`
                 chat_id 
                 user { id username avatar role is_banned } 
                 text 
+                reactions { user_id message_id content } 
                 image
                 audio
                 video
@@ -93,6 +95,7 @@ const REMOVE_CHAT_MEMBER = gql`
                 chat_id 
                 user { id username avatar } 
                 text 
+                reactions { user_id message_id content } 
                 image
                 audio
                 video
