@@ -1,6 +1,6 @@
 import { useSubscription } from "@apollo/client";
 import { Grid } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { NEW_MESSAGE } from "../../graphql/subscriptions/messages";
 import { useActions } from "../../hooks/useAction";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -48,6 +48,18 @@ const Messages: React.FC<MessagesProps> = ({ messages }) =>
     //         //update_chats();
     //     }
     // }, [message_data, message_error]);
+
+    // const lastMessageRef = useRef(null);
+
+    // const scroll_down = () => (lastMessageRef?.current as any).scrollIntoView({
+    //     behavior: 'smooth',
+    //     block: 'start',
+    // });
+
+    // useEffect(() => 
+    // {
+    //     scroll_down();
+    // }, [messages?.length]);
     
     return (
         <Grid className={styles.messages_container}>
@@ -55,6 +67,7 @@ const Messages: React.FC<MessagesProps> = ({ messages }) =>
                 ? <MessageList messages={messages}/>
                 : <div className={styles.no_messages}>Send your first message...</div>
             }
+            {/* <div ref={lastMessageRef}></div> */}
         </Grid>
     );
 }

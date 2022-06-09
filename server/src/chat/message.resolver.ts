@@ -244,6 +244,7 @@ export class MessageResolver
 
     @Subscription(() => MessageType, 
     {
+        filter: (payload, variables) => payload.chat_id === variables.chat_id
         /*filter: (payload, variables) =>
         payload.new_message.user_id.id === variables.user.id 
         || payload.chat_members.find((u: User) => u.email === variables.user.email)*/
@@ -254,14 +255,20 @@ export class MessageResolver
     }
 
 
-    @Subscription(() => MessageType)
+    @Subscription(() => MessageType, 
+    {
+        filter: (payload, variables) => payload.chat_id === variables.chat_id 
+    })
     async updated_message(/*@CurrentUser() user: GetUserInput*/) 
     {
         return this.pubsub.asyncIterator(EVENTS.UPDATE_MESSAGE_EVENT);
     }
 
 
-    @Subscription(() => String)
+    @Subscription(() => String, 
+    {
+        filter: (payload, variables) => payload.chat_id === variables.chat_id 
+    })
     async deleted_message(/*@CurrentUser() user: GetUserInput*/) 
     {
         return this.pubsub.asyncIterator(EVENTS.DELETE_MESSAGE_EVENT);

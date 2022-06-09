@@ -119,9 +119,9 @@ const ChatPage: React.FC = () =>
     });
 
 
-    const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE);
-    const { data: updated_message_data, error: updated_message_error } = useSubscription(UPDATED_MESSAGE);
-    const { data: deleted_message_data, error: deleted_message_error } = useSubscription(DELETED_MESSAGE);
+    const { data: message_data, error: message_error } = useSubscription(NEW_MESSAGE, { variables: { chat_id } });
+    const { data: updated_message_data, error: updated_message_error } = useSubscription(UPDATED_MESSAGE, { variables: { chat_id } });
+    const { data: deleted_message_data, error: deleted_message_error } = useSubscription(DELETED_MESSAGE, { variables: { chat_id } });
     const { data: reaction_data, error: reaction_error } = useSubscription(NEW_REACTION);
 
     // useEffect(() => 
