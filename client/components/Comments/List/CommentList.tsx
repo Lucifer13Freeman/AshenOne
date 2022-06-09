@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { IComment } from "../../../types/comment";
+import { IComment } from "../../../store/types/comment";
 import CommentItem from "../Item/CommentItem";
 import styles from '../../../styles/Comments.module.scss';
 

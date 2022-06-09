@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import { Dispatch } from 'react';
-import { AuthAction, AuthActionTypes, IAuth } from '../../types/auth';
-import { IUser, UserAction, UserActionTypes } from '../../types/user';
+import { AuthAction, AuthActionTypes, IAuth } from '../types/auth';
+import { IUser, UserAction, UserActionTypes } from '../types/user';
 import Cookies from 'js-cookie';
 import { delete_cookie_with_token, get_token_from_cookie } from '../../utils/token';
 import { useLazyQuery, useQuery } from '@apollo/client';

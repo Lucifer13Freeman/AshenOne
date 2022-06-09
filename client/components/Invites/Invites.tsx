@@ -18,7 +18,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useRouter } from 'next/router';
 import { TOKEN } from '../../utils/token';
 import { ROUTES } from '../../utils/constants';
-import { IInvite } from '../../types/invite';
+import { IInvite } from '../../store/types/invite';
 import InviteList from './List/InviteList';
 import styles from '../../styles/Invites.module.scss';
 import { NEW_INVITE } from '../../graphql/subscriptions/invites';

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import styles from "../../../styles/Item.module.scss";
 import { ROUTES, LINKS } from "../../../utils/constants";
 import React, { useEffect } from "react";
-import { ISubscription } from "../../../types/subscription";
+import { ISubscription } from "../../../store/types/subscription";
 
 
 interface FollowersItemProps 

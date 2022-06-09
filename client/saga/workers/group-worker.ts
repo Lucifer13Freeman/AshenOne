@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { create_group, set_all_groups, 
     set_group, leave_group, delete_group } from '../../store/actions/group';
-import { IGroup } from '../../types/group';
+import { IGroup } from '../../store/types/group';
 
 
 export function* set_all_groups_worker(payload: IGroup[]): Generator<any>

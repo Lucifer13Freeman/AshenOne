@@ -1,6 +1,6 @@
 import { put } from 'redux-saga/effects';
 import { create_subscription, delete_subscription, set_all_subscriptions, set_subscription } from '../../store/actions/subscription';
-import { ISubscription } from '../../types/subscription';
+import { ISubscription } from '../../store/types/subscription';
 
 
 export function* set_all_subscriptions_worker(payload: ISubscription[]): Generator<any>

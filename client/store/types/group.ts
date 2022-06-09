@@ -8,7 +8,8 @@ export interface IGroup
     name: string;
     avatar: string;
     admin_id: string;
-    moderator_ids: string[];
+    // moderator_ids: string[];
+    moderators: { id: string }[];
     members: IUser[];
     posts: IPost[];
     is_private?: boolean;

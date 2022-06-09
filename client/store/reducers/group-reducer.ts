@@ -1,4 +1,4 @@
-import { GroupAction, GroupActionTypes, IGroup, IGroupState } from "../../types/group"
+import { GroupAction, GroupActionTypes, IGroup, IGroupState } from "../types/group"
 
 
 const initial_state: IGroupState = {

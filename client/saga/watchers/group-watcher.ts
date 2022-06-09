@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { GroupActionTypes } from "../../types/group";
+import { GroupActionTypes } from "../../store/types/group";
 import { create_group_worker, set_all_groups_worker,
         set_group_worker, leave_group_worker, delete_group_worker } from "../workers/group-worker";
 

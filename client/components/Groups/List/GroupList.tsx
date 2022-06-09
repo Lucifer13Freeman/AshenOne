@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { IGroup } from "../../../types/group";
+import { IGroup } from "../../../store/types/group";
 import GroupItem from "../Item/GroupItem";
 
 

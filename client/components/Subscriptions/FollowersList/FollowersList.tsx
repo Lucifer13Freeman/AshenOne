@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { ISubscription } from "../../../types/subscription";
+import { ISubscription } from "../../../store/types/subscription";
 import FollowersItem from "../FollowersItem/FollowersItem";
 
 

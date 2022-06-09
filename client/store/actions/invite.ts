@@ -1,4 +1,4 @@
-import { IInvite, InviteActionTypes } from '../../types/invite';
+import { IInvite, InviteActionTypes } from '../types/invite';
 
 
 export const set_all_invites = ({ payload }: any) =>

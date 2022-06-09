@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { SubscriptionsActionTypes } from "../../types/subscription";
+import { SubscriptionsActionTypes } from "../../store/types/subscription";
 import { create_subscription_worker, delete_subscription_worker, 
         set_all_subscriptions_worker, set_subscription_worker } from "../workers/subscription-worker";
 

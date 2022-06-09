@@ -2,7 +2,7 @@ import { put } from 'redux-saga/effects';
 import { create_chat, set_all_chats, set_chat, 
         leave_chat, 
         delete_chat} from '../../store/actions/chat';
-import { IChat } from '../../types/chat';
+import { IChat } from '../../store/types/chat';
 
 
 export function* set_all_chats_worker(payload: IChat[]): Generator<any>

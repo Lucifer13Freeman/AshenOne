@@ -1,4 +1,4 @@
-import { AuthAction, AuthActionTypes, IAuthState } from '../../types/auth';
+import { AuthAction, AuthActionTypes, IAuthState } from '../types/auth';
 
 
 const initial_state: IAuthState = {

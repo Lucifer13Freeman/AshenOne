@@ -1,4 +1,4 @@
-import { ILikePost, IPost, PostActionTypes } from '../../types/post';
+import { ILikePost, IPost, PostActionTypes } from '../types/post';
 
 
 export const set_all_posts = ({ payload }: any) =>

@@ -1,4 +1,4 @@
-import { IPlayerState, PlayerAction, PlayerActionTypes } from "../../types/player"
+import { IPlayerState, PlayerAction, PlayerActionTypes } from "../types/player"
 
 
 const initial_state: IPlayerState = {

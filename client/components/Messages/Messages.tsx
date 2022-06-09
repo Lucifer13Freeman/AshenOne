@@ -5,7 +5,7 @@ import { NEW_MESSAGE } from "../../graphql/subscriptions/messages";
 import { useActions } from "../../hooks/useAction";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import styles from '../../styles/Messages.module.scss';
-import { IMessage } from "../../types/message";
+import { IMessage } from "../../store/types/message";
 import MessageList from './List/MessageList';
 
 

@@ -1,6 +1,6 @@
 import { Card, Grid, IconButton, Avatar, CardActionArea } from "@mui/material";
 import { useRouter } from "next/router";
-import { IUser } from "../../../types/user";
+import { IUser } from "../../../store/types/user";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import styles from "../../../styles/Users.module.scss";
@@ -15,7 +15,7 @@ import { useState } from "react";
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import { CREATE_INVITE, DELETE_INVITE } from "../../../graphql/mutations/invites";
-import { IInvite } from "../../../types/invite";
+import { IInvite } from "../../../store/types/invite";
 import { date_format } from "../../../utils/date-format";
 
 

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { IUser } from "../../../types/user";
+import { IUser } from "../../../store/types/user";
 import { ROUTES, LINKS } from "../../../utils/constants";
 import { Button, 
         Avatar, 
@@ -18,7 +18,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import ItemsSelect from "../../Shared/Selects/ItemsSelect";
-import { IChat } from "../../../types/chat";
+import { IChat } from "../../../store/types/chat";
 import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
 import { useMutation } from "@apollo/client";
 import { TOKEN } from "../../../utils/token";

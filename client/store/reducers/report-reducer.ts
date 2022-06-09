@@ -1,4 +1,4 @@
-import { IReportState, ReportAction, ReportActionTypes } from '../../types/report';
+import { IReportState, ReportAction, ReportActionTypes } from '../types/report';
 
 
 const initial_state: IReportState = {

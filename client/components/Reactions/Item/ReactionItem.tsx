@@ -1,4 +1,4 @@
-import { IReaction } from "../../../types/reaction";
+import { IReaction } from "../../../store/types/reaction";
 
 
 interface ReactionItemProps

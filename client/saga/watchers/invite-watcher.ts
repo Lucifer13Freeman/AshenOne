@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { InviteActionTypes } from "../../types/invite";
+import { InviteActionTypes } from "../../store/types/invite";
 import { create_invite_worker, 
         delete_invite_worker, 
         set_all_invites_worker, 

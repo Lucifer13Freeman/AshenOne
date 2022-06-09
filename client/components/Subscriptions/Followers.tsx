@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { GET_ALL_SUBSCRIPTIONS } from "../../graphql/queries.ts/subscription";
 import { useActions } from "../../hooks/useAction";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { ISubscription } from "../../types/subscription";
+import { ISubscription } from "../../store/types/subscription";
 import { ROUTES } from "../../utils/constants";
 import { TOKEN } from "../../utils/token";
 import FollowersList from "./FollowersList/FollowersList";

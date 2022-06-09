@@ -22,7 +22,7 @@ export class ChatType
     readonly members: User[];//Document[]; //IUser[]; //User[];
 
     @Field(() => [MessageType/*ID*/], { nullable: true })
-    readonly messages: Message[];//Document[]; //IMessage[]; //ObjectId;
+    readonly messages: MessageType[];//Document[]; //IMessage[]; //ObjectId;
 
     @Field({ nullable: true })
     readonly is_private: boolean;

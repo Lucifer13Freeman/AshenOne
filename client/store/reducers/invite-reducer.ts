@@ -1,7 +1,7 @@
 import { IInviteState, 
         InviteAction, 
         InviteActionTypes, 
-        IInvite } from "../../types/invite"
+        IInvite } from "../types/invite"
 
 
 const initial_state: IInviteState = {

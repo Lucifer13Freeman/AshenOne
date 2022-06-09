@@ -14,7 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IComment } from '../../../types/comment';
+import { IComment } from '../../../store/types/comment';
 import { ROUTES, LINKS, ROLES } from '../../../utils/constants';
 import { date_format } from '../../../utils/date-format';
 import styles from '../../../styles/App.module.scss';

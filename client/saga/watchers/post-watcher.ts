@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { PostActionTypes } from "../../types/post";
+import { PostActionTypes } from "../../store/types/post";
 import { create_post_worker, 
         delete_post_worker, 
         set_all_posts_worker, 

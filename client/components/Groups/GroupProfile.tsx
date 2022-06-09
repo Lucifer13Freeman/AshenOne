@@ -7,7 +7,7 @@ import { Print } from "@mui/icons-material";
 import {  Card, Grid, IconButton, Avatar, Typography, 
             Button, RadioGroup, FormControlLabel, Radio, FormGroup  } from "@mui/material";
 import { useRouter } from 'next/router';
-import { IGroup } from '../../types/group';
+import { IGroup } from '../../store/types/group';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useAction';
 import { ACCESS, LINKS, ROLES, ROUTES } from '../../utils/constants';
@@ -22,7 +22,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import FormDialog from '../Shared/Dialogs/FormDialog';
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
-import { IUser } from '../../types/user';
+import { IUser } from '../../store/types/user';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import InviteUsers from '../Invites/InviteUsers';
 
@@ -73,7 +73,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({ group /*group_id*/ }) =>
     const is_admin = is_auth && auth.user?.role === ROLES.ADMIN;
     const is_group_admin = is_auth && group?.admin_id === auth.user?.id;
     const is_group_moderator = is_auth 
-        && group?.moderator_ids.find((id: string) => id === auth.user?.id) !== undefined;
+        && group?.moderators.find((m) => m.id === auth.user?.id) !== undefined;
 
     const is_available = is_group_admin || is_group_moderator;
 

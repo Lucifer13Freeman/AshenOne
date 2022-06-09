@@ -1,4 +1,4 @@
-import { ChatAction, ChatActionTypes, IChat, IChatState } from "../../types/chat"
+import { ChatAction, ChatActionTypes, IChat, IChatState } from "../types/chat"
 
 
 const initial_state: IChatState = {

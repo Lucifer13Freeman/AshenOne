@@ -1,4 +1,4 @@
-import { SubscriptionAction, SubscriptionsActionTypes, ISubscriptionsState, ISubscription } from '../../types/subscription';
+import { SubscriptionAction, SubscriptionsActionTypes, ISubscriptionsState, ISubscription } from '../types/subscription';
 
 
 const initial_state: ISubscriptionsState = {

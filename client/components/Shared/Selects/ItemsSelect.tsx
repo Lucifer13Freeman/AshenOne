@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { IUser } from "../../../types/user";
+import { IUser } from "../../../store/types/user";
 import { ROUTES, LINKS } from "../../../utils/constants";
 import { Button, 
         Avatar, 

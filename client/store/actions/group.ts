@@ -1,4 +1,4 @@
-import { GroupActionTypes, IGroup } from '../../types/group';
+import { GroupActionTypes, IGroup } from '../types/group';
 
 
 export const set_all_groups = ({ payload }: any) =>

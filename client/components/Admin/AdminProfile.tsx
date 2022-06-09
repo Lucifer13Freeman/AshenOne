@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import {  Card, Grid, IconButton, Avatar, Typography, Button  } from "@mui/material";
 import { date_format } from "../../utils/date-format";
 import { LINKS } from "../../utils/constants";
-import { IUser } from "../../types/user";
+import { IUser } from "../../store/types/user";
 import ImageDialog from "../Shared/Dialogs/ImageDialog";
 import styles from "../../styles/App.module.scss";
 import { useTypedSelector } from "../../hooks/useTypedSelector";

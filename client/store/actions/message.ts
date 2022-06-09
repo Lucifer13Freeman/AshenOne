@@ -1,5 +1,5 @@
-import { IMessage, MessageActionTypes } from '../../types/message';
-import { IReaction, ReactionActionTypes } from '../../types/reaction';
+import { IMessage, MessageActionTypes } from '../types/message';
+import { IReaction, ReactionActionTypes } from '../types/reaction';
 
 
 export const set_all_messages = ({ payload }: any) =>

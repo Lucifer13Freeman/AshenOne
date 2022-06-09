@@ -35,13 +35,13 @@ import ChatMembers from '../../components/Chats/Members/ChatMembers';
 import MessageForm from '../../components/Messages/MessageForm';
 import Messages from "../../components/Messages/Messages";
 //import Chat from '../../components/Chats/Chat';
-import { IChat } from "../../types/chat";
+import { IChat } from "../../store/types/chat";
 import { makeStyles, createStyles } from "@mui/styles";
 import ItemsSelect from "../../components/Shared/Selects/ItemsSelect";
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 import ConfirmDialog from "../../components/Shared/Dialogs/ConfirmDialog";
 import { REMOVE_CHAT_MEMBER } from "../../graphql/mutations/chats";
-import { IUser } from "../../types/user";
+import { IUser } from "../../store/types/user";
 import InviteUsers from "../../components/Invites/InviteUsers";
 
 

@@ -20,7 +20,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import app_styles from '../../styles/App.module.scss';
 import MainLayout from "../../layouts/MainLayout";
 import GroupProfile from "../../components/Groups/GroupProfile";
-import { IUser } from "../../types/user";
+import { IUser } from "../../store/types/user";
 import { SEARCH_GROUP_POSTS } from "../../graphql/queries.ts/posts";
 import ItemsSelect from "../../components/Shared/Selects/ItemsSelect";
 import { REMOVE_GROUP_MEMBER } from "../../graphql/mutations/groups";

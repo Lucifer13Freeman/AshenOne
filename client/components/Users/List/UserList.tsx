@@ -1,8 +1,8 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { IInvite } from "../../../types/invite";
-import { IUser } from "../../../types/user";
+import { IInvite } from "../../../store/types/invite";
+import { IUser } from "../../../store/types/user";
 import UserItem from "../Item/UserItem";
 
 

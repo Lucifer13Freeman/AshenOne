@@ -1,5 +1,5 @@
-import { IMessage, IMessageState, MessageAction, MessageActionTypes } from "../../types/message"
-import { IReaction, ReactionAction, ReactionActionTypes } from "../../types/reaction"
+import { IMessage, IMessageState, MessageAction, MessageActionTypes } from "../types/message"
+import { IReaction, ReactionAction, ReactionActionTypes } from "../types/reaction"
 
 
 const initial_state: IMessageState = {

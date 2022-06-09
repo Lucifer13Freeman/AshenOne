@@ -8,7 +8,7 @@ const GET_GROUP = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 
@@ -50,7 +50,7 @@ const GET_ALL_GROUPS = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 
@@ -92,7 +92,7 @@ const SEARCH_GROUPS = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 

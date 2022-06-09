@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { IReaction } from "../../../types/reaction";
+import { IReaction } from "../../../store/types/reaction";
 import ReactionItem from "../Item/ReactionItem";
 
 

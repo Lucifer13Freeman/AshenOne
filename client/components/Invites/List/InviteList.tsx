@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { IInvite } from "../../../types/invite";
+import { IInvite } from "../../../store/types/invite";
 import InviteItem from "../Item/InviteItem";
 
 

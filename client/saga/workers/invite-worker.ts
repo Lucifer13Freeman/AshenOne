@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { create_invite, delete_invite, 
         set_all_invites, set_invite/*, set_sent_invites*/ } from '../../store/actions/invite';
-import { IInvite } from '../../types/invite';
+import { IInvite } from '../../store/types/invite';
 
 
 export function* set_all_invites_worker(payload: IInvite[]): Generator<any>

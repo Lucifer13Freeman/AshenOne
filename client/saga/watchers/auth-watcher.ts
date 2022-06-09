@@ -1,5 +1,5 @@
 import { takeEvery, takeLatest } from "redux-saga/effects";
-import { AuthActionTypes } from "../../types/auth";
+import { AuthActionTypes } from "../../store/types/auth";
 import { login_worker, logout_worker } from "../workers/auth-workers";
 
 

@@ -1,4 +1,4 @@
-import { ILikePost, IPost, IPostState, PostAction, PostActionTypes } from "../../types/post"
+import { ILikePost, IPost, IPostState, PostAction, PostActionTypes } from "../types/post"
 
 
 const initial_state: IPostState = {

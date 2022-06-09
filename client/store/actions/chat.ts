@@ -1,4 +1,4 @@
-import { ChatActionTypes, IChat } from '../../types/chat';
+import { ChatActionTypes, IChat } from '../types/chat';
 
 
 export const set_all_chats = ({ payload }: any) =>

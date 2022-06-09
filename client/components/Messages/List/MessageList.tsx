@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { IMessage } from "../../../types/message";
+import { IMessage } from "../../../store/types/message";
 import MessageItem from "../Item/MessageItem";
 
 

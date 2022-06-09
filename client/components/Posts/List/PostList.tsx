@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { IPost } from "../../../types/post";
+import { IPost } from "../../../store/types/post";
 import PostItem from "../Item/PostItem";
 
 

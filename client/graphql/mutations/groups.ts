@@ -8,7 +8,7 @@ const CREATE_GROUP = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 
@@ -35,7 +35,7 @@ const UPDATE_GROUP = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 
@@ -68,7 +68,7 @@ const ADD_GROUP_MEMBER = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 
@@ -95,7 +95,7 @@ const ADD_GROUP_INVITED_MEMBER = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 
@@ -122,7 +122,7 @@ const REMOVE_GROUP_MEMBER = gql`
             name
             avatar
             admin_id
-            moderator_ids
+            moderators { id }
             members { id username avatar role is_banned }
             posts { 
                 id 

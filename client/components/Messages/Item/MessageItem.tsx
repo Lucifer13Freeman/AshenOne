@@ -5,10 +5,10 @@ import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import styles from "../../../styles/MessageItem.module.scss";
 import reaction_styles from "../../../styles/Reactions.module.scss";
 import { ROUTES, LINKS } from "../../../utils/constants";
-import { IChat } from "../../../types/chat";
-import { IMessage } from "../../../types/message";
+import { IChat } from "../../../store/types/chat";
+import { IMessage } from "../../../store/types/message";
 import { date_format } from "../../../utils/date-format";
-import { IUser } from "../../../types/user";
+import { IUser } from "../../../store/types/user";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import EditPopper from "../../Shared/Poppers/EditPopper";
 import ConfirmDialog from "../../Shared/Dialogs/ConfirmDialog";
@@ -19,7 +19,7 @@ import { DELETE_MESSAGE, UPDATE_MESSAGE } from "../../../graphql/mutations/messa
 import { TOKEN } from "../../../utils/token";
 import { useEffect, useState } from "react";
 import ReactionPopper from "../../Reactions/ReactionPopper";
-import { IReaction } from "../../../types/reaction";
+import { IReaction } from "../../../store/types/reaction";
 
 
 interface MessageItemProps 

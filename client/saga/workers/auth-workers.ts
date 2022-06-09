@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import { put, call } from 'redux-saga/effects';
 import { login, logout } from '../../store/actions/auth';
-import { AuthActionTypes, IAuth } from '../../types/auth';
+import { AuthActionTypes, IAuth } from '../../store/types/auth';
 
 
 export function* login_worker(payload: IAuth): Generator<any>

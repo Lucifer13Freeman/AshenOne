@@ -1,8 +1,8 @@
 import { put } from 'redux-saga/effects';
 import { create_message, delete_message, 
         set_all_messages, set_message, set_reaction } from '../../store/actions/message';
-import { IMessage } from '../../types/message';
-import { IReaction } from '../../types/reaction';
+import { IMessage } from '../../store/types/message';
+import { IReaction } from '../../store/types/reaction';
 
 
 export function* set_all_messages_worker(payload: IMessage[]): Generator<any>

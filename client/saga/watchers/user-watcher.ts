@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { UserActionTypes } from "../../types/user";
+import { UserActionTypes } from "../../store/types/user";
 import { set_all_users_worker, set_user_worker } from "../workers/user-workers";
 
 

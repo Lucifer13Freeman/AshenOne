@@ -5,7 +5,7 @@ import { REACTIONS } from "../../utils/constants";
 import styles from "../../styles/Reactions.module.scss";
 import { useMutation } from "@apollo/client";
 import { CREATE_REACTION } from "../../graphql/mutations/reactions";
-import { IMessage } from "../../types/message";
+import { IMessage } from "../../store/types/message";
 import { useActions } from "../../hooks/useAction";
 
 

@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { ChatActionTypes } from "../../types/chat";
+import { ChatActionTypes } from "../../store/types/chat";
 import { create_chat_worker, set_all_chats_worker, 
         set_chat_worker, leave_chat_worker, delete_chat_worker } from "../workers/chat-worker";
 

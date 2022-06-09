@@ -23,7 +23,7 @@ import { TOKEN } from "../../utils/token";
 import ChatList from '../../components/Chats/List/ChatList';
 import styles from '../../styles/App.module.scss';
 import { NEW_MESSAGE } from "../../graphql/subscriptions/messages";
-import { IChat } from "../../types/chat";
+import { IChat } from "../../store/types/chat";
 
 
 const ChatsPage: React.FC = () =>

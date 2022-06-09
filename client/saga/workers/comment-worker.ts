@@ -2,7 +2,7 @@ import { put } from 'redux-saga/effects';
 import { create_comment, delete_comment, 
         set_all_comments, set_comment, 
         like_comment } from '../../store/actions/comment';
-import { IComment, ILikeComment } from '../../types/comment';
+import { IComment, ILikeComment } from '../../store/types/comment';
 
 
 export function* set_all_comments_worker(payload: IComment[]): Generator<any>

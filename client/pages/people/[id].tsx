@@ -8,7 +8,7 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 import { useActions } from "../../hooks/useAction";
 import { useState } from "react";
 import { GetServerSideProps } from "next";
-import { IUser } from "../../types/user";
+import { IUser } from "../../store/types/user";
 import UserProfile from "../../components/Users/Profile/UserProfile";
 import MainLayout from "../../layouts/MainLayout";
 import { useRouter } from "next/router";
@@ -19,10 +19,10 @@ import { GET_ALL_POSTS, GET_USER_POSTS } from "../../graphql/queries.ts/posts";
 import Posts from "../../components/Posts/Posts";
 import Followers from "../../components/Subscriptions/Followers";
 import { GET_ALL_SUBSCRIPTIONS } from "../../graphql/queries.ts/subscription";
-import { ISubscription } from "../../types/subscription";
-import { IPost } from "../../types/post";
+import { ISubscription } from "../../store/types/subscription";
+import { IPost } from "../../store/types/post";
 import PostForm from "../../components/Posts/PostForm";
-import { IComment } from "../../types/comment";
+import { IComment } from "../../store/types/comment";
 
 
 // interface UserProps 

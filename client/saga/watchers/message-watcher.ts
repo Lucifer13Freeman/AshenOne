@@ -1,6 +1,6 @@
 import { takeEvery } from "redux-saga/effects";
-import { MessageActionTypes } from "../../types/message";
-import { ReactionActionTypes } from "../../types/reaction";
+import { MessageActionTypes } from "../../store/types/message";
+import { ReactionActionTypes } from "../../store/types/reaction";
 import { create_message_worker, delete_message_worker, 
         set_all_messages_worker, set_message_worker, 
         set_reaction_worker } from "../workers/message-worker";

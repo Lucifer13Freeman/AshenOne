@@ -5,7 +5,7 @@ import { useActions } from '../hooks/useAction'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import MainLayout from '../layouts/MainLayout'
 import styles from '../styles/Home.module.scss'
-import { IUser } from '../types/user'
+import { IUser } from '../store/types/user'
 
 
 const Home: React.FC = () => 

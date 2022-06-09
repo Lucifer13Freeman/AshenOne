@@ -24,7 +24,7 @@ export class GroupType
     readonly admin_id: string;//ObjectId;
 
     // @Field(() => [ID], { nullable: true })
-    // readonly moderator_ids: string[];
+    // moderator_ids?: string[];
 
     // @Field(() => [ID], { nullable: true })
     // readonly moderators: string[];

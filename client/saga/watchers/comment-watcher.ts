@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { CommentActionTypes } from "../../types/comment";
+import { CommentActionTypes } from "../../store/types/comment";
 import { create_comment_worker, 
         delete_comment_worker, 
         set_all_comments_worker, 

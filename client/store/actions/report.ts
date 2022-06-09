@@ -1,4 +1,4 @@
-import { IStatisticsReport, ReportActionTypes } from "../../types/report";
+import { IStatisticsReport, ReportActionTypes } from "../types/report";
 
 
 export const set_statistics_report = ({ payload }: any) =>

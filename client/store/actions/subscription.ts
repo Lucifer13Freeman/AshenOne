@@ -1,4 +1,4 @@
-import { SubscriptionsActionTypes, ISubscription } from '../../types/subscription';
+import { SubscriptionsActionTypes, ISubscription } from '../types/subscription';
 
 
 export const set_all_subscriptions = ({ payload }: any) =>

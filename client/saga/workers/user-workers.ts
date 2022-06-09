@@ -1,6 +1,6 @@
 import { put } from 'redux-saga/effects';
 import { set_all_users, set_user } from '../../store/actions/user';
-import { IUser } from '../../types/user';
+import { IUser } from '../../store/types/user';
 
 
 export function* set_all_users_worker(payload: IUser[]): Generator<any>

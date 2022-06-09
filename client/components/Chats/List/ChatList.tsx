@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { IChat } from "../../../types/chat";
+import { IChat } from "../../../store/types/chat";
 import ChatItem from "../Item/ChatItem";
 
 

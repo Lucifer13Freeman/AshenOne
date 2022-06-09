@@ -1,4 +1,4 @@
-import { IStatisticsReport } from "../../types/report";
+import { IStatisticsReport } from "../../store/types/report";
 import { date_format } from "../../utils/date-format";
 
 

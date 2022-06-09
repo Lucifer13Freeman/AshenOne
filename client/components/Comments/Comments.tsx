@@ -5,7 +5,7 @@ import { NEW_COMMENT } from "../../graphql/subscriptions/comments";
 import { useActions } from "../../hooks/useAction";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import styles from '../../styles/Comments.module.scss';
-import { IComment } from "../../types/comment";
+import { IComment } from "../../store/types/comment";
 import CommentList from './List/CommentList';
 
 

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { IUser } from "../../../types/user";
+import { IUser } from "../../../store/types/user";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import styles from "../../../styles/App.module.scss";
@@ -13,7 +13,7 @@ import { ROUTES, LINKS } from "../../../utils/constants";
 import { GET_ALL_SUBSCRIPTIONS } from "../../../graphql/queries.ts/subscription";
 import { CREATE_SUBSCRIPTION, DELETE_SUBSCRIPTION } from "../../../graphql/mutations/subscription";
 import { useEffect, useState } from "react";
-import { ISubscription } from "../../../types/subscription";
+import { ISubscription } from "../../../store/types/subscription";
 import Followers from '../../Subscriptions/Followers';
 import { Print } from "@mui/icons-material";
 import PrinterForm from "../../Printer/PrinterForm";

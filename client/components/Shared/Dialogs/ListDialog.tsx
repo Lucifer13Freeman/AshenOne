@@ -13,8 +13,8 @@ import { Badge, FormControl, Grid, IconButton,
         Input, InputLabel, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
-import { IInvite } from '../../../types/invite';
-import { IUser } from '../../../types/user';
+import { IInvite } from '../../../store/types/invite';
+import { IUser } from '../../../store/types/user';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import SlideTransitionRight from '../Transitions/SlideTransitionRight';
 import SlideTransitionUp from '../Transitions/SlideTransitionUp';

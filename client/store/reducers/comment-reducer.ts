@@ -2,7 +2,7 @@ import { ICommentState,
         CommentAction, 
         CommentActionTypes, 
         IComment, 
-        ILikeComment } from "../../types/comment"
+        ILikeComment } from "../types/comment"
 
 
 const initial_state: ICommentState = {

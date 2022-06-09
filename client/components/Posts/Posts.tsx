@@ -5,7 +5,7 @@ import { NEW_LIKE_POST, NEW_POST } from "../../graphql/subscriptions/posts";
 import { useActions } from "../../hooks/useAction";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import styles from '../../styles/Posts.module.scss';
-import { IPost } from "../../types/post";
+import { IPost } from "../../store/types/post";
 import PostList from './List/PostList';
 import PostForm from "./PostForm";
 

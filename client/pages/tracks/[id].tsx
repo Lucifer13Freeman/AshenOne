@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import CommentList from "../../components/CommentList";
 import { useInput } from "../../hooks/useInput";
 import MainLayout from "../../layouts/MainLayout";
-import { IComment, ITrack } from "../../types/track";
+import { IComment, ITrack } from "../../store/types/track";
 
 const TrackPage = ({ server_track }: any) =>
 {

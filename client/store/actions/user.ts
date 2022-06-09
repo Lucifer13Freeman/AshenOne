@@ -1,6 +1,6 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { Dispatch } from 'react';
-import { IUser, UserAction, UserActionTypes } from '../../types/user';
+import { IUser, UserAction, UserActionTypes } from '../types/user';
 
 
 export const set_all_users = ({ payload }: any) =>

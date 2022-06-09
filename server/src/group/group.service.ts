@@ -70,7 +70,7 @@ export class GroupService
                 return create_group;
             });
 
-            // group['moderator_ids'] = group.moderators.map(m => m.id);
+            // (group as GroupType).moderator_ids = group.moderators.map((m: User) => m.id);
             
             return group;
         } 
@@ -122,6 +122,8 @@ export class GroupService
 
                 return get_group;
             });
+
+            // (group as GroupType).moderator_ids = group.moderators.map((m: User) => m.id);
             
             return group;
         }
@@ -173,6 +175,8 @@ export class GroupService
 
                 return get_all_groups;
             });
+
+            // (groups as GroupType[]) = groups.map(());
 
             return groups;
         } 

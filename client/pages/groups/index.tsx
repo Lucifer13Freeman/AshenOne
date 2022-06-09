@@ -24,7 +24,7 @@ import { TOKEN } from "../../utils/token";
 import GroupList from '../../components/Groups/List/GroupList';
 import styles from '../../styles/App.module.scss';
 import { NEW_MESSAGE } from "../../graphql/subscriptions/messages";
-import { IGroup } from "../../types/group";
+import { IGroup } from "../../store/types/group";
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import CreateGroupDialog from "../../components/Groups/CreateGroupDialog";
 

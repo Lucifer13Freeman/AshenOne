@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { IUser } from "../../../types/user";
+import { IUser } from "../../../store/types/user";
 import styles from "../../../styles/App.module.scss";
 import { date_format } from '../../../utils/date-format';
 import { useTypedSelector } from "../../../hooks/useTypedSelector";

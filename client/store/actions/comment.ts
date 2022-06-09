@@ -1,4 +1,4 @@
-import { IComment, CommentActionTypes, ILikeComment } from '../../types/comment';
+import { IComment, CommentActionTypes, ILikeComment } from '../types/comment';
 
 
 export const set_all_comments = ({ payload }: any) =>

@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { create_post, delete_post, set_all_posts, 
         set_post, like_post } from '../../store/actions/post';
-import { ILikePost, IPost } from '../../types/post';
+import { ILikePost, IPost } from '../../store/types/post';
 
 
 export function* set_all_posts_worker(payload: IPost[]): Generator<any>

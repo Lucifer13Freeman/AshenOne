@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { ReportActionTypes } from "../../types/report";
+import { ReportActionTypes } from "../../store/types/report";
 import { set_statistics_report_worker } from "../workers/report-worker";
 
 

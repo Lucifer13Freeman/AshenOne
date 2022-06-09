@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { IUser } from "../../../types/user";
+import { IUser } from "../../../store/types/user";
 import { ROUTES, LINKS } from "../../../utils/constants";
 import { Button, 
         Avatar, 
@@ -17,7 +17,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { IGroup } from "../../../types/group";
+import { IGroup } from "../../../store/types/group";
 import { useMutation } from "@apollo/client";
 import { REMOVE_GROUP_MEMBER } from "../../../graphql/mutations/groups";
 import { TOKEN } from "../../../utils/token";
