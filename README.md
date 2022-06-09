@@ -2,13 +2,13 @@
 
 My little social network fullstack project
 
-Backend: Node.js, Nest.js, MongoDB, Prisma (ORM), Apollo Server, GraphQL
+Backend: Node.js, Nest.js, PostgreSQL, Prisma (ORM), Apollo Server, GraphQL
 
 Frontend: Next.js (React + SSR), Material UI, SCSS, Redux, Saga, Apollo Client, GraphQL, axios
 
 Instruction and steps:
 You need to create "static" folder with "image" folder in the "server" folder, 
-MongoDB claster and create .env file in server folder with MongoDB URI and other constants
+PostgreSQL server and create .env file in server folder with PostgreSQL URI and other constants
 
 Comands for the terminal opened inside project's folder:
 
